@@ -53,7 +53,7 @@ jobs:
             - name: Build and Package
               run: "./scripts/ci_package.sh"
 
-            - run: mv dist/element-*.tar.gz dist/elecord.tar.gz
+            - run: mv dist/elecord-*.tar.gz dist/elecord.tar.gz
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v4
