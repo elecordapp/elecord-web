@@ -4,7 +4,7 @@
 
 set -ex
 
-rm dist/element-*.tar.gz || true # rm previous artifacts without failing if it doesn't exist
+rm dist/elecord-*.tar.gz || true # rm previous artifacts without failing if it doesn't exist
 
 DIST_VERSION=`$(dirname $0)/get-version-from-git.sh`
 
