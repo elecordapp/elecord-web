@@ -76,6 +76,8 @@ jobs:
             - name: extract tarball
               run: tar -xvzf pages/elecord.tar.gz
 
+            - run: mv elecord-*/ elecord
+
             - run: ls
 
             - name: Deploy to Cloudflare Pages
@@ -83,4 +85,4 @@ jobs:
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                  command: pages deploy elecord-* --project-name=elecord-web
+                  command: pages deploy elecord --project-name=elecord-web
