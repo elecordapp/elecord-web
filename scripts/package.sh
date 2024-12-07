@@ -15,6 +15,9 @@ VERSION=$version yarn build
 # `yarn build`, but it's just too painful.
 cp config.sample.json webapp/
 
+# Copy any required files for deployment
+cp .github/cfp_headers webapp/_headers
+
 mkdir -p dist
 cp -r webapp elecord-$version
 
