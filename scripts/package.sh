@@ -19,7 +19,7 @@ mkdir -p dist
 cp -r webapp elecord-$version
 
 # Just in case you have a local config, remove it before packaging
-rm elecord-$version/config.json || true
+# rm elecord-$version/config.json || true
 
 # GNU/BSD compatibility workaround
 tar_perms=(--owner=0 --group=0) && [ "$(uname)" == "Darwin" ] && tar_perms=(--uid=0 --gid=0)
