@@ -83,3 +83,12 @@ jobs:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   command: pages deploy dist --project-name=elecord-web
+            - name: print deployment-url
+              env:
+                  DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+              run: echo $DEPLOYMENT_URL
+
+            - name: print pages-deployment-alias-url
+              env:
+                  DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+              run: echo $DEPLOYMENT_ALIAS_URL
