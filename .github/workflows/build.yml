@@ -60,3 +60,20 @@ jobs:
               with:
                   name: webapp
                   path: dist/elecord.tar.gz
+    deploy:
+        needs: build
+        name: Deploy webapp
+        runs-on: ubuntu-24.04
+        steps:
+            - run: mkdir -p pages
+
+            - name: Download Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: webapp
+                  path: pages
+            
+            - name: extract tarball
+              run: tar -xvzf pages/elecord.tar.gz
+
+            - run: ls
