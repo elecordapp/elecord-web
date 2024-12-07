@@ -20,8 +20,8 @@ jobs:
             matrix:
                 image:
                     - ubuntu-24.04
-                    - windows-2022
-                    - macos-14
+                    # - windows-2022
+                    # - macos-14
                 isDevelop:
                     - ${{ github.event_name == 'push' && github.ref_name == 'develop' }}
                 # Skip the ubuntu-24.04 build for the develop branch as the dedicated CD build_develop workflow handles that
@@ -46,5 +46,17 @@ jobs:
             - name: Install Dependencies
               run: "./scripts/layered.sh"
 
-            - name: Build
-              run: "yarn build"
+            # - name: Build
+            #   run: "yarn build"
+
+            # Build step from develop workflow
+            - name: Build and Package
+              run: "./scripts/ci_package.sh"
+
+            - run: mv dist/element-*.tar.gz dist/elecord.tar.gz
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: webapp
+                  path: dist/elecord.tar.gz
