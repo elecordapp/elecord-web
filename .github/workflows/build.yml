@@ -65,24 +65,21 @@ jobs:
         name: Deploy webapp
         runs-on: ubuntu-24.04
         steps:
-            - run: mkdir -p pages
-
             - name: Download Artifact
               uses: actions/download-artifact@v4
               with:
                   name: webapp
-                  path: pages
+                  path: .
             
-            - name: extract tarball
-              run: tar -xvzf pages/elecord.tar.gz
+            - name: Extract tarball
+              run: tar -xvzf elecord.tar.gz
 
-            - run: mv elecord-*/ elecord
-
-            - run: ls
+            - name: Move to dist
+              run: mv elecord-*/ dist
 
             - name: Deploy to Cloudflare Pages
               uses: cloudflare/wrangler-action@v3
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                  command: pages deploy elecord --project-name=elecord-web
+                  command: pages deploy dist --project-name=elecord-web
