@@ -74,14 +74,18 @@ jobs:
               with:
                   name: webapp
                   path: .
-            
+
             - name: Extract tarball
               run: tar -xvzf elecord.tar.gz
 
             - name: Move to dist
               run: mv elecord-*/ dist
 
-            # Set the Cloudflare pages branch
+            # Set the Cloudflare pages branch name
+            # - PR to master    : test
+            # - Push to master  : dev
+            # - PR to release   : preview
+            # - Push to release : main (Production environment)
             - name: Set Pages branch
               run: |
                   if [[ "${{ github.event_name }}" == "pull_request" ]]; then
@@ -98,7 +102,7 @@ jobs:
                       fi
                   fi
 
-            # Deploy to Cloudflare using wrangler
+            # Deploy to Cloudflare Pages (using wrangler)
             - name: Deploy to Cloudflare Pages
               id: cf
               uses: cloudflare/wrangler-action@v3
@@ -124,6 +128,7 @@ jobs:
                   reactions: -1
                   mode: recreate
 
+            # When deploying to the preview branch, add the preview URL
             - name: Add preview URL
               run: |
                   if [[ "${{ env.cf_branch }}" == "preview" ]]; then
