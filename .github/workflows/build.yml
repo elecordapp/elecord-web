@@ -85,7 +85,7 @@ jobs:
             # - PR to master    : test
             # - Push to master  : dev
             # - PR to release   : preview
-            # - Push to release : main (Production environment)
+            # - Push to release : release (Production environment)
             - name: Set Pages branch
               run: |
                   if [[ "${{ github.event_name }}" == "pull_request" ]]; then
@@ -98,7 +98,7 @@ jobs:
                       if [[ "${{ github.ref_name }}" == "master" ]]; then
                           echo "cf_branch=dev" >> $GITHUB_ENV
                       elif [[ "${{ github.ref_name }}" == "release" ]]; then
-                          echo "cf_branch=main" >> $GITHUB_ENV
+                          echo "cf_branch=release" >> $GITHUB_ENV
                       fi
                   fi
 
