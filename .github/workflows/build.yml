@@ -105,6 +105,7 @@ jobs:
                       | **Type**          | 🔀 Preview |
                   pr-number: ${{ github.event.pull_request.number }}
                   comment-tag: CFPages-deployment
+                  reactions: -1
                   mode: recreate
 
             - name: Update status comment (Success)
@@ -121,4 +122,5 @@ jobs:
                       | **Type**          | 🔀 Preview |
                   pr-number: ${{ github.event.pull_request.number }}
                   comment-tag: CFPages-deployment
+                  reactions: rocket
                   mode: recreate
