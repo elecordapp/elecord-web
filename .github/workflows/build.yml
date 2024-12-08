@@ -2,7 +2,7 @@ name: Build
 on:
     pull_request: {}
     push:
-        branches: [develop, master]
+        branches: [release, master]
     merge_group:
         types: [checks_requested]
 # develop pushes and repository_dispatch handled in build_develop.yaml
@@ -81,6 +81,23 @@ jobs:
             - name: Move to dist
               run: mv elecord-*/ dist
 
+            # Set the Cloudflare pages branch
+            - name: Set Pages branch
+              run: |
+                  if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+                      if [[ "${{ github.event.pull_request.base.ref }}" == "master" ]]; then
+                          echo "cf_branch=test" >> $GITHUB_ENV
+                      elif [[ "${{ github.event.pull_request.base.ref }}" == "release" ]]; then
+                          echo "cf_branch=preview" >> $GITHUB_ENV
+                      fi
+                  elif [[ "${{ github.event_name }}" == "push" ]]; then
+                      if [[ "${{ github.ref_name }}" == "master" ]]; then
+                          echo "cf_branch=dev" >> $GITHUB_ENV
+                      elif [[ "${{ github.ref_name }}" == "release" ]]; then
+                          echo "cf_branch=main" >> $GITHUB_ENV
+                      fi
+                  fi
+
             # Deploy to Cloudflare using wrangler
             - name: Deploy to Cloudflare Pages
               id: cf
@@ -88,7 +105,7 @@ jobs:
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                  command: pages deploy dist --project-name=elecord-web --branch=main
+                  command: pages deploy dist --project-name=elecord-web --branch=${{ env.cf_branch }}
 
             # Update PR status comment with deployment URL
             - name: Update status comment (Failure)
@@ -102,11 +119,16 @@ jobs:
                       |-------------------|:-:|
                       | **Status**        | ❌ Failure. Check workflow logs for details |
                       | **Preview URL**   | Not available |
-                      | **Type**          | 🔀 Preview |
                   pr-number: ${{ github.event.pull_request.number }}
                   comment-tag: CFPages-deployment
                   reactions: -1
                   mode: recreate
+
+            - name: Add preview URL
+              run: |
+                  if [[ "${{ env.cf_branch }}" == "preview" ]]; then
+                      echo -e "cf_preview=https://preview.elecord.app\n" >> $GITHUB_ENV
+                  fi
 
             - name: Update status comment (Success)
               if: ${{ github.event_name == 'pull_request' && success() }}
@@ -118,8 +140,7 @@ jobs:
                       | **Latest commit** | <code>${{ github.event.pull_request.head.sha || github.sha }}</code> |
                       |-------------------|:-:|
                       | **Status**        | ✅ Deployed! |
-                      | **Preview URL**   | ${{ steps.cf.outputs.deployment-url != '' && steps.cf.outputs.deployment-url || 'Not available' }} |
-                      | **Type**          | 🔀 Preview |
+                      | **URL**           | ${{ env.cf_preview }}${{ steps.cf.outputs.deployment-url != '' && steps.cf.outputs.deployment-url || 'Not available' }} |
                   pr-number: ${{ github.event.pull_request.number }}
                   comment-tag: CFPages-deployment
                   reactions: rocket
