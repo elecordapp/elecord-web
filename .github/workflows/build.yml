@@ -60,11 +60,13 @@ jobs:
               with:
                   name: webapp
                   path: dist/elecord.tar.gz
+
     deploy:
         needs: build
         name: Deploy webapp
         runs-on: ubuntu-24.04
         steps:
+            # Download and extract the build folder
             - name: Download Artifact
               uses: actions/download-artifact@v4
               with:
@@ -77,18 +79,62 @@ jobs:
             - name: Move to dist
               run: mv elecord-*/ dist
 
+            # Deploy to Cloudflare using wrangler
             - name: Deploy to Cloudflare Pages
+              id: cf
               uses: cloudflare/wrangler-action@v3
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   command: pages deploy dist --project-name=elecord-web
             - name: print deployment-url
-              env:
-                  DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-              run: echo $DEPLOYMENT_URL
+              run: echo ${{ steps.cf.outputs.deployment-url }}
 
-            - name: print pages-deployment-alias-url
-              env:
-                  DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
-              run: echo $DEPLOYMENT_ALIAS_URL
+            - run: echo ${{ github.event_name }}
+            - run: echo ${{ github.event.pull_request.head.sha }}
+            - run: echo ${{ github.sha }}
+            - run: echo ${{ github.ref_name }}
+            - run: echo ${{ github.event.pull_request.number }}
+
+            - name: test logic
+              if: ${{ github.event_name == 'pull_request_target' && success() }}
+              run: echo "pass"
+            
+            - name: test logic
+              if: ${{ github.event_name == 'pull_request_target' && failure() }}
+              run: echo "fail"
+
+            # Update PR status comment with deployment URL
+            - name: Update status comment (Success)
+              if: ${{ github.event_name == 'pull_request_target' && success() }}
+              uses: thollander/actions-comment-pull-request@v3
+              with:
+                  GITHUB_TOKEN: ${{ secrets.PR_COMMENTS }}
+                  message: |
+                      ## Cloudflare Pages deployment
+                      
+                      | **Latest commit** | <code>${{ github.event.pull_request.head.sha || github.sha }}</code> |
+                      |-------------------|:-:|
+                      | **Status**        | ✅ Deployed! |
+                      | **Preview URL**   | ${{ steps.cf.outputs.deployment-url != '' && steps.cf.outputs.deployment-url || 'Not available' }} |
+                      | **Type**          | 🔀 Preview |
+                  pr_number: ${{ github.event.pull_request.number }}
+                  comment_tag: CFPages-deployment
+                  mode: recreate
+
+            - name: Update status comment (Failure)
+              if: ${{ github.event_name == 'pull_request_target' && failure() }}
+              uses: thollander/actions-comment-pull-request@v3
+              with:
+                  GITHUB_TOKEN: ${{ secrets.PR_COMMENTS }}
+                  message: |
+                      ## Cloudflare Pages deployment
+                      
+                      | **Latest commit** | <code>${{ github.event.pull_request.head.sha || github.sha }}</code> |
+                      |-------------------|:-:|
+                      | **Status**        | ❌ Failure. Check workflow logs for details |
+                      | **Preview URL**   | Not available |
+                      | **Type**          | 🔀 Preview |
+                  pr_number: ${{ github.event.pull_request.number }}
+                  comment_tag: CFPages-deployment
+                  mode: recreate
