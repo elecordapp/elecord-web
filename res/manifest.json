@@ -1,8 +1,8 @@
 {
-    "name": "Element",
-    "short_name": "Element",
+    "name": "elecord",
+    "short_name": "elecord",
     "display": "standalone",
-    "theme_color": "#76CFA6",
+    "theme_color": "#3e9fed",
     "start_url": "index.html",
     "icons": [
         {

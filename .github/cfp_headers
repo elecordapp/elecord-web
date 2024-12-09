@@ -5,6 +5,7 @@
   X-Frame-Options: SAMEORIGIN
   Content-Security-Policy: frame-ancestors 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  permissions-policy: accelerometer=(), gyroscope=(), magnetometer=(), usb=(), interest-cohort=()
 
 /version
   Content-Type: text/plain
