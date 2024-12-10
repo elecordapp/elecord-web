@@ -6,7 +6,9 @@
 
 #### Privacy focused chat app for gamers
 
+<br>
+
 > [!NOTE]
 > Elecord is a modified fork of [Element](https://element.io/), a [Matrix](https://matrix.org/) web client.
 > 
-> (For detailed documentation, see [element-web](https://github.com/element-hq/element-web))
+> (For more detailed documentation, see [element-web](https://github.com/element-hq/element-web))
