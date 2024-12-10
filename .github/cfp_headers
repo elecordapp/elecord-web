@@ -15,3 +15,27 @@
 
 /.well-known/assetlinks.json
   Content-Type: application/json
+
+/
+  Cache-Control: no-cache
+
+/config.*.json
+  Cache-Control: no-cache
+
+/config.json
+  Cache-Control: no-cache
+
+/i18n
+  Cache-Control: no-cache
+
+/home
+  Cache-Control: no-cache
+
+/sites
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/version
+  Cache-Control: no-cache
