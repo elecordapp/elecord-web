@@ -132,7 +132,7 @@ jobs:
             - name: Add preview URL
               run: |
                   if [[ "${{ env.cf_branch }}" == "preview" ]]; then
-                      echo -e "cf_preview=https://preview.elecord.app\n" >> $GITHUB_ENV
+                      echo -e "cf_preview=https://preview.elecord.app / " >> $GITHUB_ENV
                   fi
 
             - name: Update status comment (Success)
