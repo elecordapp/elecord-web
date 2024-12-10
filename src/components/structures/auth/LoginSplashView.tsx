@@ -75,7 +75,7 @@ export function LoginSplashView(props: Props): React.JSX.Element {
 
                 {/* elecord mono icon on loading screen */}
                 <div>
-                    <img src="vector-icons/128-mono.png" style={{ width: '12%' }} />
+                    <img src="vector-icons/128-mono.png" />
                 </div>
 
                 <AccessibleButton kind="link_inline" onClick={props.onLogoutClick}>
