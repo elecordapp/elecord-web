@@ -2,10 +2,12 @@
   ! Access-Control-Allow-Origin
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
+  X-Frame-Options: sameorigin
   Content-Security-Policy: frame-ancestors 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  permissions-policy: accelerometer=(), gyroscope=(), magnetometer=(), usb=(), interest-cohort=()
+  permissions-policy: autoplay=(*), interest-cohort=()
+  X-Robots-Tag: noindex
+  Referrer-Policy: no-referrer-when-downgrade
   Cache-Control: no-cache
 
 /version
@@ -28,10 +30,10 @@
   Cache-Control: no-cache
 
 /home
-  Cache-Control: no-cache
+  Cache-Control: no-store
 
 /sites
-  Cache-Control: no-cache
+  Cache-Control: no-store
 
 /index.html
-  Cache-Control: no-cache
+  Cache-Control: no-store
