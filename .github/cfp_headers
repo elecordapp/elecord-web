@@ -25,13 +25,13 @@
   Cache-Control: no-store
 
 /i18n
-  Cache-Control: no-store
+  Cache-Control: no-cache
 
 /home
-  Cache-Control: no-store
+  Cache-Control: no-cache
 
 /sites
-  Cache-Control: no-store
+  Cache-Control: no-cache
 
 /index.html
-  Cache-Control: no-store
+  Cache-Control: no-cache
