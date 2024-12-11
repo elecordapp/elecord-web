@@ -6,9 +6,11 @@
   Content-Security-Policy: frame-ancestors 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   permissions-policy: accelerometer=(), gyroscope=(), magnetometer=(), usb=(), interest-cohort=()
+  Cache-Control: no-cache
 
 /version
   Content-Type: text/plain
+  Cache-Control: no-store
 
 /apple-app-site-association
   Content-Type: application/json
@@ -16,14 +18,11 @@
 /.well-known/assetlinks.json
   Content-Type: application/json
 
-/
-  Cache-Control: no-cache
-
 /config.*.json
-  Cache-Control: no-cache
+  Cache-Control: no-store
 
 /config.json
-  Cache-Control: no-cache
+  Cache-Control: no-store
 
 /i18n
   Cache-Control: no-cache
@@ -35,7 +34,4 @@
   Cache-Control: no-cache
 
 /index.html
-  Cache-Control: no-cache
-
-/version
   Cache-Control: no-cache
