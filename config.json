@@ -1,5 +1,4 @@
 {
-    "default_server_name": "matrix.org",
     "default_server_config": {
         "m.homeserver": {
             "base_url": "https://matrix-client.matrix.org"
@@ -18,8 +17,6 @@
         "https://scalar-staging.vector.im/api",
         "https://scalar-staging.riot.im/scalar/api"
     ],
-    "bug_report_endpoint_url": "https://element.io/bugreports/submit",
-    "uisi_autorageshake_app": "element-auto-uisi",
     "show_labs_settings": false,
     "room_directory": {
         "servers": ["matrix.org", "gitter.im"]
@@ -40,14 +37,32 @@
     ],
     "privacy_policy_url": "https://element.io/cookie-policy",
     "setting_defaults": {
-        "RustCrypto.staged_rollout_percent": 100
+        "RustCrypto.staged_rollout_percent": 100,
+        "fontSizeDelta": 2,
+        "use_system_theme": false,
+        "showRedactions": false,
+        "showTwelveHourTimestamps": true,
+        "urlPreviewsEnabled_e2ee": true,
+        "Spaces.showPeopleInSpace": false,
+        "videoInputMuted": true,
+        "useOnlyCurrentProfiles": true
     },
     "features": {
         "feature_video_rooms": true,
         "feature_group_calls": true,
-        "feature_element_call_video_rooms": true
+        "feature_element_call_video_rooms": true,
+        "feature_pinning": true,
+        "feature_custom_themes": true,
+        "feature_html_topic": true
     },
     "element_call": {
-        "url": "https://call.element.io"
+        "url": "https://call.element.io",
+        "use_exclusively": true,
+        "brand": "Elecord Voice"
+    },
+    "default_theme": "dark",
+    "disable_3pid_login": true,
+    "embedded_pages": {
+        "login_for_welcome": true
     }
 }
