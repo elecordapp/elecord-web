@@ -110,6 +110,11 @@ jobs:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   command: pages deploy dist --project-name=elecord-web --branch=${{ env.cf_branch }}
+            
+            - name: Deployment URL
+              if: ${{ steps.cf.outputs.deployment-url != '' }}
+              run: |
+                  echo "Deployed to ${{ steps.cf.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
 
             # Update PR status comment with deployment URL
             - name: Update status comment (Failure)
