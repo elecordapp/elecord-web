@@ -93,12 +93,15 @@ jobs:
                           echo "cf_branch=test" >> $GITHUB_ENV
                       elif [[ "${{ github.event.pull_request.base.ref }}" == "release" ]]; then
                           echo "cf_branch=preview" >> $GITHUB_ENV
+                          echo "cf_domain=https://preview.elecord.app / " >> $GITHUB_ENV
                       fi
                   elif [[ "${{ github.event_name }}" == "push" ]]; then
                       if [[ "${{ github.ref_name }}" == "master" ]]; then
                           echo "cf_branch=dev" >> $GITHUB_ENV
+                          echo "cf_domain=https://dev.elecord.app / " >> $GITHUB_ENV
                       elif [[ "${{ github.ref_name }}" == "release" ]]; then
                           echo "cf_branch=release" >> $GITHUB_ENV
+                          echo "cf_domain=https://web.elecord.app / " >> $GITHUB_ENV
                       fi
                   fi
 
@@ -110,11 +113,6 @@ jobs:
                   apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   command: pages deploy dist --project-name=elecord-web --branch=${{ env.cf_branch }}
-            
-            - name: Deployment URL
-              if: ${{ steps.cf.outputs.deployment-url != '' }}
-              run: |
-                  echo "Deployed to ${{ steps.cf.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
 
             # Update PR status comment with deployment URL
             - name: Update status comment (Failure)
@@ -133,13 +131,6 @@ jobs:
                   reactions: -1
                   mode: recreate
 
-            # When deploying to the preview branch, add the preview URL
-            - name: Add preview URL
-              run: |
-                  if [[ "${{ env.cf_branch }}" == "preview" ]]; then
-                      echo -e "cf_preview=https://preview.elecord.app / " >> $GITHUB_ENV
-                  fi
-
             - name: Update status comment (Success)
               if: ${{ github.event_name == 'pull_request' && success() }}
               uses: thollander/actions-comment-pull-request@v3
@@ -150,8 +141,13 @@ jobs:
                       | **Latest commit** | <code>${{ github.event.pull_request.head.sha || github.sha }}</code> |
                       |-------------------|:-:|
                       | **Status**        | ✅ Deployed! |
-                      | **URL**           | ${{ env.cf_preview }}${{ steps.cf.outputs.deployment-url != '' && steps.cf.outputs.deployment-url || 'Not available' }} |
+                      | **URL**           | ${{ env.cf_domain }}${{ steps.cf.outputs.deployment-url != '' && steps.cf.outputs.deployment-url || 'Not available' }} |
                   pr-number: ${{ github.event.pull_request.number }}
                   comment-tag: CFPages-deployment
                   reactions: rocket
                   mode: recreate
+
+            - name: Add URL to summary
+              if: ${{ steps.cf.outputs.deployment-url != '' }}
+              run: |
+                  echo "${{ env.cf_domain }}${{ steps.cf.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
