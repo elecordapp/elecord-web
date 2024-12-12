@@ -5,7 +5,7 @@
   X-Frame-Options: sameorigin
   Content-Security-Policy: frame-ancestors 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  permissions-policy: autoplay=(*), interest-cohort=()
+  permissions-policy: autoplay=(*), screen-wake-lock=(*), interest-cohort=()
   X-Robots-Tag: noindex
   Referrer-Policy: no-referrer-when-downgrade
   Cache-Control: no-cache
