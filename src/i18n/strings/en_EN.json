@@ -318,7 +318,7 @@
         "reset_password_title": "Reset your password",
         "server_picker_custom": "Other homeserver",
         "server_picker_description": "You can use the custom server options to sign into other Matrix servers by specifying a different homeserver URL. This allows you to use %(brand)s with an existing Matrix account on a different homeserver.",
-        "server_picker_description_matrix.org": "Join millions for free on the largest public server",
+        "server_picker_description_matrix.org": "Join for free on the largest public server",
         "server_picker_dialog_title": "Decide where your account is hosted",
         "server_picker_explainer": "Use your preferred Matrix homeserver if you have one, or host your own.",
         "server_picker_failed_validate_homeserver": "Unable to validate homeserver",
