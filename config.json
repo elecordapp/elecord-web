@@ -38,7 +38,6 @@
     "privacy_policy_url": "https://element.io/cookie-policy",
     "setting_defaults": {
         "RustCrypto.staged_rollout_percent": 100,
-        "baseFontSizeV2": "18",
         "use_system_theme": false,
         "showRedactions": false,
         "showTwelveHourTimestamps": true,
