@@ -726,7 +726,9 @@
         "subspace_join_rule_restricted_description": "Anyone in <SpaceName/> will be able to find and join."
     },
     "credits": {
-        "default_cover_photo": "The <photo>default cover photo</photo> is © <author>Jesús Roncero</author> used under the terms of <terms>CC-BY-SA 4.0</terms>.",
+        "elecord_web": "The <elecord>elecord-web app</elecord> is © <author1>hazzuk</author1> provided under the terms of the underlying <element>element-web</element> source code by <author2>Element</author2>, licensed <terms1>AGPLv3</terms1> or <terms2>GPLv3</terms2>.",
+        "elecord_logo": "The <logo>elecord logo</logo> is © <author>hazzuk</author> used under the terms of the <terms>elecord logo license</terms>.",
+        "default_cover_photo": "The default cover photo by <author>Felix Mittermeier</author> on <unsplash>Unsplash</unsplash>.",
         "twemoji": "The <twemoji>Twemoji</twemoji> emoji art is © <author>Twitter, Inc and other contributors</author> used under the terms of <terms>CC-BY 4.0</terms>.",
         "twemoji_colr": "The <colr>twemoji-colr</colr> font is © <author>Mozilla Foundation</author> used under the terms of <terms>Apache 2.0</terms>."
     },

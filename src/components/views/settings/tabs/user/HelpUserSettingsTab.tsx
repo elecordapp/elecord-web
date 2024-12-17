@@ -114,12 +114,74 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
                     <ul>
                         <li>
                             {_t(
-                                "credits|default_cover_photo",
+                                "credits|elecord_web",
                                 {},
                                 {
-                                    photo: (sub) => (
+                                    elecord: (sub) => (
                                         <ExternalLink
-                                            href="themes/element/img/backgrounds/lake.jpg"
+                                            href="https://github.com/elecordapp/elecord-web"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    author1: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/hazzuk"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    element: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/element-hq/element-web"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    author2: (sub) => (
+                                        <ExternalLink
+                                            href="https://element.io"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    terms1: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-AGPL-3.0"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    terms2: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-GPL-3.0"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                },
+                            )}
+                        </li>
+                        <li>
+                            {_t(
+                                "credits|elecord_logo",
+                                {},
+                                {
+                                    logo: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/elecordapp/elecord-web/tree/master/res/vector-icons"
                                             rel="noreferrer noopener"
                                             target="_blank"
                                         >
@@ -127,11 +189,43 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
                                         </ExternalLink>
                                     ),
                                     author: (sub) => (
-                                        <ExternalLink href="https://www.flickr.com/golan">{sub}</ExternalLink>
+                                        <ExternalLink
+                                            href="https://github.com/hazzuk"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
                                     ),
                                     terms: (sub) => (
                                         <ExternalLink
-                                            href="https://creativecommons.org/licenses/by-sa/4.0/"
+                                            href="https://github.com/elecordapp/elecord-web/blob/master/LOGO_LICENSE.txt"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                },
+                            )}
+                        </li>
+                        <li>
+                            {_t(
+                                "credits|default_cover_photo",
+                                {},
+                                {
+                                    author: (sub) => (
+                                        <ExternalLink
+                                            href="https://unsplash.com/@felix_mittermeier"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    unsplash: (sub) => (
+                                        <ExternalLink
+                                            href="https://unsplash.com"
                                             rel="noreferrer noopener"
                                             target="_blank"
                                         >
