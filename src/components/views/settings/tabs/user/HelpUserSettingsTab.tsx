@@ -110,6 +110,9 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
         // Also, &nbsp; is ugly but necessary.
         return (
             <SettingsSubsection heading={_t("common|credits")}>
+                <div>
+                    <img src="vector-icons/128-mono.png" />
+                </div>
                 <SettingsSubsectionText>
                     <ul>
                         <li>
