@@ -355,7 +355,7 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
             <SettingsTab>
                 <SettingsSection>
                     {bugReportingSection}
-                    <SettingsSubsection heading={_t("common|faq")} description={faqText} />
+                    {/* <SettingsSubsection heading={_t("common|faq")} description={faqText} /> */}
                     <SettingsSubsection heading={_t("setting|help_about|versions")}>
                         <SettingsSubsectionText>
                             <CopyableText getTextToCopy={this.getVersionTextToCopy}>
