@@ -181,7 +181,7 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
                                 {
                                     logo: (sub) => (
                                         <ExternalLink
-                                            href="https://github.com/elecordapp/elecord-web/tree/master/res/vector-icons"
+                                            href="https://github.com/elecordapp/elecord-web/blob/master/res/vector-icons/1240x600.png"
                                             rel="noreferrer noopener"
                                             target="_blank"
                                         >
