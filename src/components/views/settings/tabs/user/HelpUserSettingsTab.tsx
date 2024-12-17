@@ -114,69 +114,69 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
                     <img src="vector-icons/128-mono.png" />
                 </div>
                 <SettingsSubsectionText>
+                    <span>
+                        {_t(
+                            "credits|elecord_web",
+                            {},
+                            {
+                                elecord: (sub) => (
+                                    <ExternalLink
+                                        href="https://github.com/elecordapp/elecord-web"
+                                        rel="noreferrer noopener"
+                                        target="_blank"
+                                    >
+                                        {sub}
+                                    </ExternalLink>
+                                ),
+                                author1: (sub) => (
+                                    <ExternalLink
+                                        href="https://github.com/hazzuk"
+                                        rel="noreferrer noopener"
+                                        target="_blank"
+                                    >
+                                        {sub}
+                                    </ExternalLink>
+                                ),
+                                element: (sub) => (
+                                    <ExternalLink
+                                        href="https://github.com/element-hq/element-web"
+                                        rel="noreferrer noopener"
+                                        target="_blank"
+                                    >
+                                        {sub}
+                                    </ExternalLink>
+                                ),
+                                author2: (sub) => (
+                                    <ExternalLink
+                                        href="https://element.io"
+                                        rel="noreferrer noopener"
+                                        target="_blank"
+                                    >
+                                        {sub}
+                                    </ExternalLink>
+                                ),
+                                terms1: (sub) => (
+                                    <ExternalLink
+                                        href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-AGPL-3.0"
+                                        rel="noreferrer noopener"
+                                        target="_blank"
+                                    >
+                                        {sub}
+                                    </ExternalLink>
+                                ),
+                                terms2: (sub) => (
+                                    <ExternalLink
+                                        href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-GPL-3.0"
+                                        rel="noreferrer noopener"
+                                        target="_blank"
+                                    >
+                                        {sub}
+                                    </ExternalLink>
+                                ),
+                            },
+                        )}
+                    </span>
                     <ul>
-                        <li>
-                            {_t(
-                                "credits|elecord_web",
-                                {},
-                                {
-                                    elecord: (sub) => (
-                                        <ExternalLink
-                                            href="https://github.com/elecordapp/elecord-web"
-                                            rel="noreferrer noopener"
-                                            target="_blank"
-                                        >
-                                            {sub}
-                                        </ExternalLink>
-                                    ),
-                                    author1: (sub) => (
-                                        <ExternalLink
-                                            href="https://github.com/hazzuk"
-                                            rel="noreferrer noopener"
-                                            target="_blank"
-                                        >
-                                            {sub}
-                                        </ExternalLink>
-                                    ),
-                                    element: (sub) => (
-                                        <ExternalLink
-                                            href="https://github.com/element-hq/element-web"
-                                            rel="noreferrer noopener"
-                                            target="_blank"
-                                        >
-                                            {sub}
-                                        </ExternalLink>
-                                    ),
-                                    author2: (sub) => (
-                                        <ExternalLink
-                                            href="https://element.io"
-                                            rel="noreferrer noopener"
-                                            target="_blank"
-                                        >
-                                            {sub}
-                                        </ExternalLink>
-                                    ),
-                                    terms1: (sub) => (
-                                        <ExternalLink
-                                            href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-AGPL-3.0"
-                                            rel="noreferrer noopener"
-                                            target="_blank"
-                                        >
-                                            {sub}
-                                        </ExternalLink>
-                                    ),
-                                    terms2: (sub) => (
-                                        <ExternalLink
-                                            href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-GPL-3.0"
-                                            rel="noreferrer noopener"
-                                            target="_blank"
-                                        >
-                                            {sub}
-                                        </ExternalLink>
-                                    ),
-                                },
-                            )}
-                        </li>
                         <li>
                             {_t(
                                 "credits|elecord_logo",
