@@ -2,10 +2,10 @@ name: Build
 on:
     pull_request: {}
     # temporarily disable non-pr builds
-    # push:
-    #     branches: [release, master]
-    # merge_group:
-    #     types: [checks_requested]
+    push:
+        branches: [release, master]
+    merge_group:
+        types: [checks_requested]
 # develop pushes and repository_dispatch handled in build_develop.yaml
 env:
     # These must be set for fetchdep.sh to get the right branch
