@@ -17,8 +17,8 @@ set -ex
 yarn install --frozen-lockfile
 
 # Pass appropriate repo to fetchdep.sh
-export PR_ORG=element-hq
-export PR_REPO=element-web
+export PR_ORG=elecordapp
+export PR_REPO=elecord-web
 
 # Set up the js-sdk first
 scripts/fetchdep.sh matrix-org matrix-js-sdk develop
