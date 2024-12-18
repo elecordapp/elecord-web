@@ -21,7 +21,7 @@ export PR_ORG=elecordapp
 export PR_REPO=elecord-web
 
 # Set up the js-sdk first
-scripts/fetchdep.sh matrix-org matrix-js-sdk develop
+scripts/fetchdep.sh elecordapp matrix-js-sdk develop
 pushd matrix-js-sdk
 [ -n "$JS_SDK_GITHUB_BASE_REF" ] && git fetch --depth 1 origin $JS_SDK_GITHUB_BASE_REF && git checkout $JS_SDK_GITHUB_BASE_REF
 yarn link

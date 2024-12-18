@@ -30,7 +30,7 @@ interface Commit {
     };
 }
 
-const REPOS = ["elecordapp/elecord-web", "matrix-org/matrix-js-sdk"] as const;
+const REPOS = ["elecordapp/elecord-web", "elecordapp/matrix-js-sdk"] as const;
 
 export type DevelopVersionString = string & { _developVersionString: never };
 
