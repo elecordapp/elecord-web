@@ -30,7 +30,6 @@ import {
 import ResizeNotifier from "../../../../src/utils/ResizeNotifier";
 import { IRoomState } from "../../../../src/components/structures/RoomView";
 import { MatrixClientPeg } from "../../../../src/MatrixClientPeg";
-import { ScopedRoomContextProvider } from "../../../../src/contexts/ScopedRoomContext.tsx";
 
 jest.mock("../../../../src/utils/beacon", () => ({
     useBeacon: jest.fn(),
@@ -92,9 +91,9 @@ describe("MessagePanel", function () {
 
     const getComponent = (props = {}, roomContext: Partial<IRoomState> = {}) => (
         <MatrixClientContext.Provider value={client}>
-            <ScopedRoomContextProvider {...defaultRoomContext} {...roomContext}>
+            <RoomContext.Provider value={{ ...defaultRoomContext, ...roomContext }}>
                 <MessagePanel {...defaultProps} {...props} />
-            </ScopedRoomContextProvider>
+            </RoomContext.Provider>
         </MatrixClientContext.Provider>
     );
 

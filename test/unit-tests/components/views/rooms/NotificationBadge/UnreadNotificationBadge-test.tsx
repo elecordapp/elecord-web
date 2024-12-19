@@ -165,7 +165,7 @@ describe("UnreadNotificationBadge", () => {
             },
             ts: 5,
         });
-        room.addLiveEvents([event], { addToState: true });
+        room.addLiveEvents([event]);
 
         const { container } = render(getComponent(THREAD_ID));
         expect(container.querySelector(".mx_NotificationBadge_dot")).toBeTruthy();

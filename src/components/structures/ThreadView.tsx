@@ -51,7 +51,6 @@ import { ComposerInsertPayload, ComposerType } from "../../dispatcher/payloads/C
 import Heading from "../views/typography/Heading";
 import { SdkContextClass } from "../../contexts/SDKContext";
 import { ThreadPayload } from "../../dispatcher/payloads/ThreadPayload";
-import { ScopedRoomContextProvider } from "../../contexts/ScopedRoomContext.tsx";
 
 interface IProps {
     room: Room;
@@ -76,7 +75,7 @@ interface IState {
 
 export default class ThreadView extends React.Component<IProps, IState> {
     public static contextType = RoomContext;
-    declare public context: React.ContextType<typeof RoomContext>;
+    public declare context: React.ContextType<typeof RoomContext>;
 
     private dispatcherRef?: string;
     private layoutWatcherRef?: string;
@@ -423,12 +422,14 @@ export default class ThreadView extends React.Component<IProps, IState> {
         }
 
         return (
-            <ScopedRoomContextProvider
-                {...this.context}
-                timelineRenderingType={TimelineRenderingType.Thread}
-                threadId={this.state.thread?.id}
-                liveTimeline={this.state?.thread?.timelineSet?.getLiveTimeline()}
-                narrow={this.state.narrow}
+            <RoomContext.Provider
+                value={{
+                    ...this.context,
+                    timelineRenderingType: TimelineRenderingType.Thread,
+                    threadId: this.state.thread?.id,
+                    liveTimeline: this.state?.thread?.timelineSet?.getLiveTimeline(),
+                    narrow: this.state.narrow,
+                }}
             >
                 <BaseCard
                     className={classNames("mx_ThreadView mx_ThreadPanel", {
@@ -462,7 +463,7 @@ export default class ThreadView extends React.Component<IProps, IState> {
                         />
                     )}
                 </BaseCard>
-            </ScopedRoomContextProvider>
+            </RoomContext.Provider>
         );
     }
 }

@@ -41,7 +41,7 @@ describe("<RoomTopic/>", () => {
             ts: 123,
             event: true,
         });
-        room.addLiveEvents([topicEvent], { addToState: true });
+        room.addLiveEvents([topicEvent]);
 
         return room;
     }

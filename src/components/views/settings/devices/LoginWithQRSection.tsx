@@ -7,7 +7,13 @@ Please see LICENSE files in the repository root for full details.
 */
 
 import React from "react";
-import { IServerVersions, OidcClientConfig, MatrixClient, DEVICE_CODE_SCOPE } from "matrix-js-sdk/src/matrix";
+import {
+    IServerVersions,
+    IClientWellKnown,
+    OidcClientConfig,
+    MatrixClient,
+    DEVICE_CODE_SCOPE,
+} from "matrix-js-sdk/src/matrix";
 import QrCodeIcon from "@vector-im/compound-design-tokens/assets/web/icons/qr-code";
 import { Text } from "@vector-im/compound-web";
 
@@ -19,6 +25,7 @@ import { useMatrixClientContext } from "../../../../contexts/MatrixClientContext
 interface IProps {
     onShowQr: () => void;
     versions?: IServerVersions;
+    wellKnown?: IClientWellKnown;
     oidcClientConfig?: OidcClientConfig;
     isCrossSigningReady?: boolean;
 }
@@ -28,8 +35,10 @@ export function shouldShowQr(
     isCrossSigningReady: boolean,
     oidcClientConfig?: OidcClientConfig,
     versions?: IServerVersions,
+    wellKnown?: IClientWellKnown,
 ): boolean {
-    const msc4108Supported = !!versions?.unstable_features?.["org.matrix.msc4108"];
+    const msc4108Supported =
+        !!versions?.unstable_features?.["org.matrix.msc4108"] || !!wellKnown?.["io.element.rendezvous"]?.server;
 
     const deviceAuthorizationGrantSupported =
         oidcClientConfig?.metadata?.grant_types_supported.includes(DEVICE_CODE_SCOPE);
@@ -42,9 +51,15 @@ export function shouldShowQr(
     );
 }
 
-const LoginWithQRSection: React.FC<IProps> = ({ onShowQr, versions, oidcClientConfig, isCrossSigningReady }) => {
+const LoginWithQRSection: React.FC<IProps> = ({
+    onShowQr,
+    versions,
+    wellKnown,
+    oidcClientConfig,
+    isCrossSigningReady,
+}) => {
     const cli = useMatrixClientContext();
-    const offerShowQr = shouldShowQr(cli, !!isCrossSigningReady, oidcClientConfig, versions);
+    const offerShowQr = shouldShowQr(cli, !!isCrossSigningReady, oidcClientConfig, versions, wellKnown);
 
     return (
         <SettingsSubsection heading={_t("settings|sessions|sign_in_with_qr")}>

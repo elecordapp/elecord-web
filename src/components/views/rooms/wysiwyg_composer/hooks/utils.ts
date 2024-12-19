@@ -22,7 +22,7 @@ import { isNotNull } from "../../../../../Typeguards";
 export function focusComposer(
     composerElement: MutableRefObject<HTMLElement | null>,
     renderingType: TimelineRenderingType,
-    roomContext: Pick<IRoomState, "timelineRenderingType">,
+    roomContext: IRoomState,
     timeoutId: MutableRefObject<number | null>,
 ): void {
     if (renderingType === roomContext.timelineRenderingType) {
@@ -123,7 +123,7 @@ export function handleEventWithAutocomplete(
 export function handleClipboardEvent(
     event: ClipboardEvent | InputEvent,
     data: DataTransfer | null,
-    roomContext: Pick<IRoomState, "room" | "timelineRenderingType" | "replyToEvent">,
+    roomContext: IRoomState,
     mxClient: MatrixClient,
     eventRelation?: IEventRelation,
 ): boolean {

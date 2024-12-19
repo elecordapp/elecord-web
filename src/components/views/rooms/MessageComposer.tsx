@@ -48,9 +48,14 @@ import MessageComposerButtons from "./MessageComposerButtons";
 import AccessibleButton, { ButtonEvent } from "../elements/AccessibleButton";
 import { ViewRoomPayload } from "../../../dispatcher/payloads/ViewRoomPayload";
 import { isLocalRoom } from "../../../utils/localRoom/isLocalRoom";
+import { Features } from "../../../settings/Settings";
 import { VoiceMessageRecording } from "../../../audio/VoiceMessageRecording";
 import { SendWysiwygComposer, sendMessage, getConversionFunctions } from "./wysiwyg_composer/";
 import { MatrixClientProps, withMatrixClientHOC } from "../../../contexts/MatrixClientContext";
+import { setUpVoiceBroadcastPreRecording } from "../../../voice-broadcast/utils/setUpVoiceBroadcastPreRecording";
+import { SdkContextClass } from "../../../contexts/SDKContext";
+import { VoiceBroadcastInfoState } from "../../../voice-broadcast";
+import { createCantStartVoiceMessageBroadcastDialog } from "../dialogs/CantStartVoiceMessageBroadcastDialog";
 import { UIFeature } from "../../../settings/UIFeature";
 import { formatTimeLeft } from "../../../DateUtils";
 import RoomReplacedSvg from "../../../../res/img/room_replaced.svg";
@@ -96,6 +101,7 @@ interface IState {
     isStickerPickerOpen: boolean;
     showStickersButton: boolean;
     showPollsButton: boolean;
+    showVoiceBroadcastButton: boolean;
     isWysiwygLabEnabled: boolean;
     isRichTextEnabled: boolean;
     initialComposerContent: string;
@@ -117,10 +123,11 @@ export class MessageComposer extends React.Component<IProps, IState> {
     private _voiceRecording: Optional<VoiceMessageRecording>;
 
     public static contextType = RoomContext;
-    declare public context: React.ContextType<typeof RoomContext>;
+    public declare context: React.ContextType<typeof RoomContext>;
 
     public static defaultProps = {
         compact: false,
+        showVoiceBroadcastButton: false,
         isRichTextEnabled: true,
     };
 
@@ -148,6 +155,7 @@ export class MessageComposer extends React.Component<IProps, IState> {
             isStickerPickerOpen: false,
             showStickersButton: SettingsStore.getValue("MessageComposerInput.showStickersButton"),
             showPollsButton: SettingsStore.getValue("MessageComposerInput.showPollsButton"),
+            showVoiceBroadcastButton: SettingsStore.getValue(Features.VoiceBroadcast),
             isWysiwygLabEnabled: isWysiwygLabEnabled,
             isRichTextEnabled: isRichTextEnabled,
             initialComposerContent: initialComposerContent,
@@ -242,6 +250,7 @@ export class MessageComposer extends React.Component<IProps, IState> {
 
         SettingsStore.monitorSetting("MessageComposerInput.showStickersButton", null);
         SettingsStore.monitorSetting("MessageComposerInput.showPollsButton", null);
+        SettingsStore.monitorSetting(Features.VoiceBroadcast, null);
         SettingsStore.monitorSetting("feature_wysiwyg_composer", null);
 
         this.dispatcherRef = dis.register(this.onAction);
@@ -289,6 +298,12 @@ export class MessageComposer extends React.Component<IProps, IState> {
                         const showPollsButton = SettingsStore.getValue("MessageComposerInput.showPollsButton");
                         if (this.state.showPollsButton !== showPollsButton) {
                             this.setState({ showPollsButton });
+                        }
+                        break;
+                    }
+                    case Features.VoiceBroadcast: {
+                        if (this.state.showVoiceBroadcastButton !== settingUpdatedPayload.newValue) {
+                            this.setState({ showVoiceBroadcastButton: !!settingUpdatedPayload.newValue });
                         }
                         break;
                     }
@@ -518,7 +533,13 @@ export class MessageComposer extends React.Component<IProps, IState> {
     }
 
     private onRecordStartEndClick = (): void => {
-        this.voiceRecordingButton.current?.onRecordStartEndClick();
+        const currentBroadcastRecording = SdkContextClass.instance.voiceBroadcastRecordingsStore.getCurrent();
+
+        if (currentBroadcastRecording && currentBroadcastRecording.getState() !== VoiceBroadcastInfoState.Stopped) {
+            createCantStartVoiceMessageBroadcastDialog();
+        } else {
+            this.voiceRecordingButton.current?.onRecordStartEndClick();
+        }
 
         if (this.context.narrow) {
             this.toggleButtonMenu();
@@ -677,6 +698,17 @@ export class MessageComposer extends React.Component<IProps, IState> {
                                         isRichTextEnabled={this.state.isRichTextEnabled}
                                         onComposerModeClick={this.onRichTextToggle}
                                         toggleButtonMenu={this.toggleButtonMenu}
+                                        showVoiceBroadcastButton={this.state.showVoiceBroadcastButton}
+                                        onStartVoiceBroadcastClick={() => {
+                                            setUpVoiceBroadcastPreRecording(
+                                                this.props.room,
+                                                MatrixClientPeg.safeGet(),
+                                                SdkContextClass.instance.voiceBroadcastPlaybacksStore,
+                                                SdkContextClass.instance.voiceBroadcastRecordingsStore,
+                                                SdkContextClass.instance.voiceBroadcastPreRecordingStore,
+                                            );
+                                            this.toggleButtonMenu();
+                                        }}
                                     />
                                 )}
                                 {showSendButton && (

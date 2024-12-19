@@ -85,6 +85,7 @@ exports[`<MjolnirUserSettingsTab /> renders correctly when user has no ignored u
                   class="mx_AccessibleButton mx_AccessibleButton_hasKind mx_AccessibleButton_kind_primary"
                   role="button"
                   tabindex="0"
+                  type="submit"
                 >
                   Ignore
                 </div>
@@ -149,6 +150,7 @@ exports[`<MjolnirUserSettingsTab /> renders correctly when user has no ignored u
                   class="mx_AccessibleButton mx_AccessibleButton_hasKind mx_AccessibleButton_kind_primary"
                   role="button"
                   tabindex="0"
+                  type="submit"
                 >
                   Subscribe
                 </div>

@@ -39,7 +39,7 @@ export interface SendMessageParams {
     mxClient: MatrixClient;
     relation?: IEventRelation;
     replyToEvent?: MatrixEvent;
-    roomContext: Pick<IRoomState, "timelineRenderingType" | "room">;
+    roomContext: IRoomState;
 }
 
 export async function sendMessage(
@@ -177,7 +177,7 @@ export async function sendMessage(
 
 interface EditMessageParams {
     mxClient: MatrixClient;
-    roomContext: Pick<IRoomState, "timelineRenderingType">;
+    roomContext: IRoomState;
     editorStateTransfer: EditorStateTransfer;
 }
 

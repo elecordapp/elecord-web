@@ -14,7 +14,7 @@ import { PlainTextComposer } from "../../../../../../../src/components/views/roo
 import * as mockUseSettingsHook from "../../../../../../../src/hooks/useSettings";
 import * as mockKeyboard from "../../../../../../../src/Keyboard";
 import { createMocks } from "../utils";
-import { ScopedRoomContextProvider } from "../../../../../../../src/contexts/ScopedRoomContext.tsx";
+import RoomContext from "../../../../../../../src/contexts/RoomContext";
 
 describe("PlainTextComposer", () => {
     const customRender = (
@@ -275,9 +275,9 @@ describe("PlainTextComposer", () => {
         const { defaultRoomContext } = createMocks();
 
         render(
-            <ScopedRoomContextProvider {...defaultRoomContext}>
+            <RoomContext.Provider value={defaultRoomContext}>
                 <PlainTextComposer onChange={jest.fn()} onSend={jest.fn()} disabled={false} initialContent="" />
-            </ScopedRoomContextProvider>,
+            </RoomContext.Provider>,
         );
 
         expect(screen.getByTestId("autocomplete-wrapper")).toBeInTheDocument();

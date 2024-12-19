@@ -129,7 +129,6 @@ export class Helpers {
         const timelineMessage = this.page.locator(".mx_MTextBody", { hasText: message });
         await timelineMessage.click({ button: "right" });
         await this.page.getByRole("menuitem", { name: "Pin", exact: true }).click();
-        await this.assertMessageInBanner(message);
     }
 
     /**

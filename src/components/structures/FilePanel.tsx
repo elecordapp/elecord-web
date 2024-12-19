@@ -34,7 +34,6 @@ import { Layout } from "../../settings/enums/Layout";
 import RoomContext, { TimelineRenderingType } from "../../contexts/RoomContext";
 import Measured from "../views/elements/Measured";
 import EmptyState from "../views/right_panel/EmptyState";
-import { ScopedRoomContextProvider } from "../../contexts/ScopedRoomContext.tsx";
 
 interface IProps {
     roomId: string;
@@ -52,7 +51,7 @@ interface IState {
  */
 class FilePanel extends React.Component<IProps, IState> {
     public static contextType = RoomContext;
-    declare public context: React.ContextType<typeof RoomContext>;
+    public declare context: React.ContextType<typeof RoomContext>;
 
     // This is used to track if a decrypted event was a live event and should be
     // added to the timeline.
@@ -105,11 +104,7 @@ class FilePanel extends React.Component<IProps, IState> {
         }
 
         if (!this.state.timelineSet.eventIdToTimeline(ev.getId()!)) {
-            this.state.timelineSet.addEventToTimeline(ev, timeline, {
-                fromCache: false,
-                addToState: false,
-                toStartOfTimeline: false,
-            });
+            this.state.timelineSet.addEventToTimeline(ev, timeline, false);
         }
     }
 
@@ -274,10 +269,12 @@ class FilePanel extends React.Component<IProps, IState> {
 
         if (this.state.timelineSet) {
             return (
-                <ScopedRoomContextProvider
-                    {...this.context}
-                    timelineRenderingType={TimelineRenderingType.File}
-                    narrow={this.state.narrow}
+                <RoomContext.Provider
+                    value={{
+                        ...this.context,
+                        timelineRenderingType: TimelineRenderingType.File,
+                        narrow: this.state.narrow,
+                    }}
                 >
                     <BaseCard
                         className="mx_FilePanel"
@@ -301,11 +298,16 @@ class FilePanel extends React.Component<IProps, IState> {
                             layout={Layout.Group}
                         />
                     </BaseCard>
-                </ScopedRoomContextProvider>
+                </RoomContext.Provider>
             );
         } else {
             return (
-                <ScopedRoomContextProvider {...this.context} timelineRenderingType={TimelineRenderingType.File}>
+                <RoomContext.Provider
+                    value={{
+                        ...this.context,
+                        timelineRenderingType: TimelineRenderingType.File,
+                    }}
+                >
                     <BaseCard
                         className="mx_FilePanel"
                         onClose={this.props.onClose}
@@ -313,7 +315,7 @@ class FilePanel extends React.Component<IProps, IState> {
                     >
                         <Spinner />
                     </BaseCard>
-                </ScopedRoomContextProvider>
+                </RoomContext.Provider>
             );
         }
     }

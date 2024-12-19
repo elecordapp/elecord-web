@@ -158,7 +158,7 @@ describe("RoomHeader", () => {
 
         fireEvent.click(facePile);
 
-        expect(setCardSpy).toHaveBeenCalledWith({ phase: RightPanelPhases.MemberList });
+        expect(setCardSpy).toHaveBeenCalledWith({ phase: RightPanelPhases.RoomMemberList });
     });
 
     it("has room info icon that opens the room info panel", async () => {
@@ -589,7 +589,7 @@ describe("RoomHeader", () => {
                 state_key: "",
                 room_id: room.roomId,
             });
-            room.addLiveEvents([joinRuleEvent], { addToState: true });
+            room.addLiveEvents([joinRuleEvent]);
 
             render(<RoomHeader room={room} />, getWrapper());
 

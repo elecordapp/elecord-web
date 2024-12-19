@@ -51,14 +51,13 @@ interface IState {
         naturalHeight: number;
     };
     hover: boolean;
-    focus: boolean;
     showImage: boolean;
     placeholder: Placeholder;
 }
 
 export default class MImageBody extends React.Component<IBodyProps, IState> {
     public static contextType = RoomContext;
-    declare public context: React.ContextType<typeof RoomContext>;
+    public declare context: React.ContextType<typeof RoomContext>;
 
     private unmounted = false;
     private image = createRef<HTMLImageElement>();
@@ -72,7 +71,6 @@ export default class MImageBody extends React.Component<IBodyProps, IState> {
         imgError: false,
         imgLoaded: false,
         hover: false,
-        focus: false,
         showImage: SettingsStore.getValue("showImages"),
         placeholder: Placeholder.NoImage,
     };
@@ -122,29 +120,30 @@ export default class MImageBody extends React.Component<IBodyProps, IState> {
         }
     };
 
-    private get shouldAutoplay(): boolean {
-        return !(
+    protected onImageEnter = (e: React.MouseEvent<HTMLImageElement>): void => {
+        this.setState({ hover: true });
+
+        if (
             !this.state.contentUrl ||
             !this.state.showImage ||
             !this.state.isAnimated ||
             SettingsStore.getValue("autoplayGifs")
-        );
-    }
-
-    protected onImageEnter = (): void => {
-        this.setState({ hover: true });
+        ) {
+            return;
+        }
+        const imgElement = e.currentTarget;
+        imgElement.src = this.state.contentUrl;
     };
 
-    protected onImageLeave = (): void => {
+    protected onImageLeave = (e: React.MouseEvent<HTMLImageElement>): void => {
         this.setState({ hover: false });
-    };
 
-    private onFocus = (): void => {
-        this.setState({ focus: true });
-    };
-
-    private onBlur = (): void => {
-        this.setState({ focus: false });
+        const url = this.state.thumbUrl ?? this.state.contentUrl;
+        if (!url || !this.state.showImage || !this.state.isAnimated || SettingsStore.getValue("autoplayGifs")) {
+            return;
+        }
+        const imgElement = e.currentTarget;
+        imgElement.src = url;
     };
 
     private reconnectedListener = createReconnectedListener((): void => {
@@ -471,20 +470,14 @@ export default class MImageBody extends React.Component<IBodyProps, IState> {
 
         let showPlaceholder = Boolean(placeholder);
 
-        const hoverOrFocus = this.state.hover || this.state.focus;
         if (thumbUrl && !this.state.imgError) {
-            let url = thumbUrl;
-            if (hoverOrFocus && this.shouldAutoplay) {
-                url = this.state.contentUrl!;
-            }
-
             // Restrict the width of the thumbnail here, otherwise it will fill the container
             // which has the same width as the timeline
             // mx_MImageBody_thumbnail resizes img to exactly container size
             img = (
                 <img
                     className="mx_MImageBody_thumbnail"
-                    src={url}
+                    src={thumbUrl}
                     ref={this.image}
                     alt={content.body}
                     onError={this.onImageError}
@@ -500,13 +493,13 @@ export default class MImageBody extends React.Component<IBodyProps, IState> {
             showPlaceholder = false; // because we're hiding the image, so don't show the placeholder.
         }
 
-        if (this.state.isAnimated && !SettingsStore.getValue("autoplayGifs") && !hoverOrFocus) {
+        if (this.state.isAnimated && !SettingsStore.getValue("autoplayGifs") && !this.state.hover) {
             // XXX: Arguably we may want a different label when the animated image is WEBP and not GIF
             gifLabel = <p className="mx_MImageBody_gifLabel">GIF</p>;
         }
 
         let banner: ReactNode | undefined;
-        if (this.state.showImage && hoverOrFocus) {
+        if (this.state.showImage && this.state.hover) {
             banner = this.getBanner(content);
         }
 
@@ -575,13 +568,7 @@ export default class MImageBody extends React.Component<IBodyProps, IState> {
     protected wrapImage(contentUrl: string | null | undefined, children: JSX.Element): ReactNode {
         if (contentUrl) {
             return (
-                <a
-                    href={contentUrl}
-                    target={this.props.forExport ? "_blank" : undefined}
-                    onClick={this.onClick}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
-                >
+                <a href={contentUrl} target={this.props.forExport ? "_blank" : undefined} onClick={this.onClick}>
                     {children}
                 </a>
             );
@@ -670,14 +657,17 @@ export default class MImageBody extends React.Component<IBodyProps, IState> {
 }
 
 interface PlaceholderIProps {
+    hover?: boolean;
     maxWidth?: number;
 }
 
 export class HiddenImagePlaceholder extends React.PureComponent<PlaceholderIProps> {
     public render(): React.ReactNode {
         const maxWidth = this.props.maxWidth ? this.props.maxWidth + "px" : null;
+        let className = "mx_HiddenImagePlaceholder";
+        if (this.props.hover) className += " mx_HiddenImagePlaceholder_hover";
         return (
-            <div className="mx_HiddenImagePlaceholder" style={{ maxWidth: `min(100%, ${maxWidth}px)` }}>
+            <div className={className} style={{ maxWidth: `min(100%, ${maxWidth}px)` }}>
                 <div className="mx_HiddenImagePlaceholder_button">
                     <span className="mx_HiddenImagePlaceholder_eye" />
                     <span>{_t("timeline|m.image|show_image")}</span>

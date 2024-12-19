@@ -15,7 +15,7 @@ import userEvent from "@testing-library/user-event";
 
 import DMRoomMap from "../../../../../src/utils/DMRoomMap";
 import RoomSummaryCard from "../../../../../src/components/views/right_panel/RoomSummaryCard";
-import { ShareDialog } from "../../../../../src/components/views/dialogs/ShareDialog";
+import ShareDialog from "../../../../../src/components/views/dialogs/ShareDialog";
 import ExportDialog from "../../../../../src/components/views/dialogs/ExportDialog";
 import MatrixClientContext from "../../../../../src/contexts/MatrixClientContext";
 import defaultDispatcher from "../../../../../src/dispatcher/dispatcher";
@@ -30,8 +30,7 @@ import { _t } from "../../../../../src/languageHandler";
 import { tagRoom } from "../../../../../src/utils/room/tagRoom";
 import { DefaultTagID } from "../../../../../src/stores/room-list/models";
 import { Action } from "../../../../../src/dispatcher/actions";
-import { TimelineRenderingType } from "../../../../../src/contexts/RoomContext";
-import { ScopedRoomContextProvider } from "../../../../../src/contexts/ScopedRoomContext.tsx";
+import RoomContext, { TimelineRenderingType } from "../../../../../src/contexts/RoomContext";
 
 jest.mock("../../../../../src/utils/room/tagRoom");
 
@@ -173,14 +172,14 @@ describe("<RoomSummaryCard />", () => {
             const onSearchChange = jest.fn();
             const { rerender } = render(
                 <MatrixClientContext.Provider value={mockClient}>
-                    <ScopedRoomContextProvider {...({ timelineRenderingType: TimelineRenderingType.Search } as any)}>
+                    <RoomContext.Provider value={{ timelineRenderingType: TimelineRenderingType.Search } as any}>
                         <RoomSummaryCard
                             room={room}
                             permalinkCreator={new RoomPermalinkCreator(room)}
                             onSearchChange={onSearchChange}
                             focusRoomSearch={true}
                         />
-                    </ScopedRoomContextProvider>
+                    </RoomContext.Provider>
                 </MatrixClientContext.Provider>,
             );
 
@@ -189,13 +188,13 @@ describe("<RoomSummaryCard />", () => {
 
             rerender(
                 <MatrixClientContext.Provider value={mockClient}>
-                    <ScopedRoomContextProvider {...({ timelineRenderingType: TimelineRenderingType.Room } as any)}>
+                    <RoomContext.Provider value={{ timelineRenderingType: TimelineRenderingType.Room } as any}>
                         <RoomSummaryCard
                             room={room}
                             permalinkCreator={new RoomPermalinkCreator(room)}
                             onSearchChange={onSearchChange}
                         />
-                    </ScopedRoomContextProvider>
+                    </RoomContext.Provider>
                 </MatrixClientContext.Provider>,
             );
             expect(screen.getByPlaceholderText("Search messages…")).toHaveValue("");
@@ -255,7 +254,10 @@ describe("<RoomSummaryCard />", () => {
 
         fireEvent.click(getByText("People"));
 
-        expect(RightPanelStore.instance.pushCard).toHaveBeenCalledWith({ phase: RightPanelPhases.MemberList }, true);
+        expect(RightPanelStore.instance.pushCard).toHaveBeenCalledWith(
+            { phase: RightPanelPhases.RoomMemberList },
+            true,
+        );
     });
 
     it("opens room threads list on button click", () => {

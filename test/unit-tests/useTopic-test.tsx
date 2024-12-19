@@ -29,7 +29,7 @@ describe("useTopic", () => {
             event: true,
         });
 
-        room.addLiveEvents([topic], { addToState: true });
+        room.addLiveEvents([topic]);
 
         function RoomTopic() {
             const topic = useTopic(room);
@@ -52,7 +52,7 @@ describe("useTopic", () => {
         });
 
         act(() => {
-            room.addLiveEvents([updatedTopic], { addToState: true });
+            room.addLiveEvents([updatedTopic]);
         });
 
         expect(screen.queryByText("New topic")).toBeInTheDocument();

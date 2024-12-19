@@ -15,38 +15,23 @@ import { createRoot, Root } from "react-dom/client";
 export class ReactRootManager {
     private roots: Root[] = [];
     private rootElements: Element[] = [];
-    private revertElements: Array<null | Element> = [];
 
     public get elements(): Element[] {
         return this.rootElements;
     }
 
-    /**
-     * Render a React component into a new root based on the given root element
-     * @param children the React component to render
-     * @param rootElement the root element to render the component into
-     * @param revertElement the element to replace the root element with when unmounting
-     */
-    public render(children: ReactNode, rootElement: Element, revertElement?: Element): void {
-        const root = createRoot(rootElement);
+    public render(children: ReactNode, element: Element): void {
+        const root = createRoot(element);
         this.roots.push(root);
-        this.rootElements.push(rootElement);
-        this.revertElements.push(revertElement ?? null);
+        this.rootElements.push(element);
         root.render(children);
     }
 
-    /**
-     * Unmount all roots and revert the elements they were rendered into
-     */
     public unmount(): void {
         while (this.roots.length) {
             const root = this.roots.pop()!;
-            const rootElement = this.rootElements.pop();
-            const revertElement = this.revertElements.pop();
+            this.rootElements.pop();
             root.unmount();
-            if (revertElement) {
-                rootElement?.replaceWith(revertElement);
-            }
         }
     }
 }

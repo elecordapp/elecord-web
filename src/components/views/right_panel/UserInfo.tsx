@@ -63,7 +63,7 @@ import PowerSelector from "../elements/PowerSelector";
 import MemberAvatar from "../avatars/MemberAvatar";
 import PresenceLabel from "../rooms/PresenceLabel";
 import BulkRedactDialog from "../dialogs/BulkRedactDialog";
-import { ShareDialog } from "../dialogs/ShareDialog";
+import ShareDialog from "../dialogs/ShareDialog";
 import ErrorDialog from "../dialogs/ErrorDialog";
 import QuestionDialog from "../dialogs/QuestionDialog";
 import ConfirmUserActionDialog from "../dialogs/ConfirmUserActionDialog";
@@ -1739,13 +1739,13 @@ export const UserInfoHeader: React.FC<{
 interface IProps {
     user: Member;
     room?: Room;
-    phase: RightPanelPhases.MemberInfo | RightPanelPhases.EncryptionPanel;
+    phase: RightPanelPhases.RoomMemberInfo | RightPanelPhases.SpaceMemberInfo | RightPanelPhases.EncryptionPanel;
     onClose(): void;
     verificationRequest?: VerificationRequest;
     verificationRequestPromise?: Promise<VerificationRequest>;
 }
 
-const UserInfo: React.FC<IProps> = ({ user, room, onClose, phase = RightPanelPhases.MemberInfo, ...props }) => {
+const UserInfo: React.FC<IProps> = ({ user, room, onClose, phase = RightPanelPhases.RoomMemberInfo, ...props }) => {
     const cli = useContext(MatrixClientContext);
 
     // fetch latest room member if we have a room, so we don't show historical information, falling back to user
@@ -1767,6 +1767,8 @@ const UserInfo: React.FC<IProps> = ({ user, room, onClose, phase = RightPanelPha
     // We have no previousPhase for when viewing a UserInfo without a Room at this time
     if (room && phase === RightPanelPhases.EncryptionPanel) {
         cardState = { member };
+    } else if (room?.isSpaceRoom()) {
+        cardState = { spaceId: room.roomId };
     }
 
     const onEncryptionPanelClose = (): void => {
@@ -1775,7 +1777,8 @@ const UserInfo: React.FC<IProps> = ({ user, room, onClose, phase = RightPanelPha
 
     let content: JSX.Element | undefined;
     switch (phase) {
-        case RightPanelPhases.MemberInfo:
+        case RightPanelPhases.RoomMemberInfo:
+        case RightPanelPhases.SpaceMemberInfo:
             content = (
                 <BasicUserInfo
                     room={room as Room}
@@ -1820,7 +1823,7 @@ const UserInfo: React.FC<IProps> = ({ user, room, onClose, phase = RightPanelPha
             closeLabel={closeLabel}
             cardState={cardState}
             onBack={(ev: ButtonEvent) => {
-                if (RightPanelStore.instance.previousCard.phase === RightPanelPhases.MemberList) {
+                if (RightPanelStore.instance.previousCard.phase === RightPanelPhases.RoomMemberList) {
                     PosthogTrackers.trackInteraction("WebRightPanelRoomUserInfoBackButton", ev);
                 }
             }}

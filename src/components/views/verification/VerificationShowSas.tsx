@@ -14,6 +14,7 @@ import SasEmoji from "@matrix-org/spec/sas-emoji.json";
 import { _t, getNormalizedLanguageKeys, getUserLanguage } from "../../../languageHandler";
 import { PendingActionSpinner } from "../right_panel/EncryptionInfo";
 import AccessibleButton from "../elements/AccessibleButton";
+import { fixupColorFonts } from "../../../utils/FontManager";
 
 interface IProps {
     pending?: boolean;
@@ -87,6 +88,11 @@ export default class VerificationShowSas extends React.Component<IProps, IState>
         this.state = {
             pending: false,
         };
+
+        // As this component is also used before login (during complete security),
+        // also make sure we have a working emoji font to display the SAS emojis here.
+        // This is also done from LoggedInView.
+        fixupColorFonts();
     }
 
     private onMatchClick = (): void => {

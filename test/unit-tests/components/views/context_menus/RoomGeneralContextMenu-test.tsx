@@ -127,7 +127,7 @@ describe("RoomGeneralContextMenu", () => {
             user: "@user:id",
             ts: 1000,
         });
-        room.addLiveEvents([event], { addToState: true });
+        room.addLiveEvents([event], {});
 
         const { container } = getComponent({});
 

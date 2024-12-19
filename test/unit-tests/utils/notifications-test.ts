@@ -121,7 +121,7 @@ describe("notifications", () => {
                 user: USER_ID,
                 msg: "Hello",
             });
-            room.addLiveEvents([message], { addToState: true });
+            room.addLiveEvents([message]);
             sendReadReceiptSpy = jest.spyOn(client, "sendReadReceipt").mockResolvedValue({});
             jest.spyOn(client, "getRooms").mockReturnValue([room]);
             jest.spyOn(SettingsStore, "getValue").mockImplementation((name) => {
@@ -187,7 +187,7 @@ describe("notifications", () => {
                 user: USER_ID,
                 ts: 1,
             });
-            room.addLiveEvents([message], { addToState: true });
+            room.addLiveEvents([message]);
             room.setUnreadNotificationCount(NotificationCountType.Total, 1);
 
             await clearAllNotifications(client);
@@ -202,7 +202,7 @@ describe("notifications", () => {
                 user: USER_ID,
                 ts: 1,
             });
-            room.addLiveEvents([message], { addToState: true });
+            room.addLiveEvents([message]);
             room.setUnreadNotificationCount(NotificationCountType.Total, 1);
 
             jest.spyOn(SettingsStore, "getValue").mockReset().mockReturnValue(false);

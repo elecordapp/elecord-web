@@ -43,6 +43,25 @@ import { attachMentions, attachRelation } from "./SendMessageComposer";
 import { filterBoolean } from "../../../utils/arrays";
 import { MatrixClientPeg } from "../../../MatrixClientPeg";
 
+function getHtmlReplyFallback(mxEvent: MatrixEvent): string {
+    const html = mxEvent.getContent().formatted_body;
+    if (!html) {
+        return "";
+    }
+    const rootNode = new DOMParser().parseFromString(html, "text/html").body;
+    const mxReply = rootNode.querySelector("mx-reply");
+    return (mxReply && mxReply.outerHTML) || "";
+}
+
+function getTextReplyFallback(mxEvent: MatrixEvent): string {
+    const body: string = mxEvent.getContent().body;
+    const lines = body.split("\n").map((l) => l.trim());
+    if (lines.length > 2 && lines[0].startsWith("> ") && lines[1].length === 0) {
+        return `${lines[0]}\n\n`;
+    }
+    return "";
+}
+
 // exported for tests
 export function createEditContent(
     model: EditorModel,
@@ -53,6 +72,15 @@ export function createEditContent(
     if (isEmote) {
         model = stripEmoteCommand(model);
     }
+    const isReply = !!editedEvent.replyEventId;
+    let plainPrefix = "";
+    let htmlPrefix = "";
+
+    if (isReply) {
+        plainPrefix = getTextReplyFallback(editedEvent);
+        htmlPrefix = getHtmlReplyFallback(editedEvent);
+    }
+
     const body = textSerialize(model);
 
     const newContent: RoomMessageEventContent = {
@@ -61,18 +89,19 @@ export function createEditContent(
     };
     const contentBody: RoomMessageTextEventContent & Omit<ReplacementEvent<RoomMessageEventContent>, "m.relates_to"> = {
         "msgtype": newContent.msgtype,
-        "body": `* ${body}`,
+        "body": `${plainPrefix} * ${body}`,
         "m.new_content": newContent,
     };
 
     const formattedBody = htmlSerializeIfNeeded(model, {
+        forceHTML: isReply,
         useMarkdown: SettingsStore.getValue("MessageComposerInput.useMarkdown"),
     });
     if (formattedBody) {
         newContent.format = "org.matrix.custom.html";
         newContent.formatted_body = formattedBody;
         contentBody.format = newContent.format;
-        contentBody.formatted_body = `* ${formattedBody}`;
+        contentBody.formatted_body = `${htmlPrefix} * ${formattedBody}`;
     }
 
     // Build the mentions properties for both the content and new_content.
@@ -92,7 +121,7 @@ interface IState {
 
 class EditMessageComposer extends React.Component<IEditMessageComposerProps, IState> {
     public static contextType = RoomContext;
-    declare public context: React.ContextType<typeof RoomContext>;
+    public declare context: React.ContextType<typeof RoomContext>;
 
     private readonly editorRef = createRef<BasicMessageComposer>();
     private dispatcherRef?: string;

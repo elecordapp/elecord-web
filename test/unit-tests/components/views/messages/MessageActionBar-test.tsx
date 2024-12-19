@@ -35,7 +35,6 @@ import dispatcher from "../../../../../src/dispatcher/dispatcher";
 import SettingsStore from "../../../../../src/settings/SettingsStore";
 import { Action } from "../../../../../src/dispatcher/actions";
 import PinningUtils from "../../../../../src/utils/PinningUtils";
-import { ScopedRoomContextProvider } from "../../../../../src/contexts/ScopedRoomContext.tsx";
 
 jest.mock("../../../../../src/dispatcher/dispatcher");
 
@@ -118,9 +117,9 @@ describe("<MessageActionBar />", () => {
     } as unknown as IRoomState;
     const getComponent = (props = {}, roomContext: Partial<IRoomState> = {}) =>
         render(
-            <ScopedRoomContextProvider {...defaultRoomContext} {...roomContext}>
+            <RoomContext.Provider value={{ ...defaultRoomContext, ...roomContext }}>
                 <MessageActionBar {...defaultProps} {...props} />
-            </ScopedRoomContextProvider>,
+            </RoomContext.Provider>,
         );
 
     beforeEach(() => {

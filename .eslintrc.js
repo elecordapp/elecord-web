@@ -42,10 +42,6 @@ module.exports = {
                 name: "setImmediate",
                 message: "Use setTimeout instead.",
             },
-            {
-                name: "Buffer",
-                message: "Buffer is not available in the web.",
-            },
         ],
 
         "import/no-duplicates": ["error"],
@@ -259,9 +255,6 @@ module.exports = {
                         additionalTestBlockFunctions: ["beforeAll", "beforeEach", "oldBackendOnly"],
                     },
                 ],
-
-                // These are fine in tests
-                "no-restricted-globals": "off",
             },
         },
         {

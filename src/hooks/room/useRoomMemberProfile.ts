@@ -7,11 +7,10 @@ Please see LICENSE files in the repository root for full details.
 */
 
 import { RoomMember } from "matrix-js-sdk/src/matrix";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 
-import { TimelineRenderingType } from "../../contexts/RoomContext";
+import RoomContext, { TimelineRenderingType } from "../../contexts/RoomContext";
 import { useSettingValue } from "../useSettings";
-import { useScopedRoomContext } from "../../contexts/ScopedRoomContext.tsx";
 
 export function useRoomMemberProfile({
     userId = "",
@@ -22,7 +21,7 @@ export function useRoomMemberProfile({
     member?: RoomMember | null;
     forceHistorical?: boolean;
 }): RoomMember | undefined | null {
-    const context = useScopedRoomContext("room", "timelineRenderingType");
+    const context = useContext(RoomContext);
     const useOnlyCurrentProfiles = useSettingValue("useOnlyCurrentProfiles");
 
     const member = useMemo(() => {

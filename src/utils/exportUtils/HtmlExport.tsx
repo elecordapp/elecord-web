@@ -431,7 +431,7 @@ export default class HTMLExporter extends Exporter {
                 !this.needsDateSeparator(event, prevEvent) &&
                 shouldFormContinuation(prevEvent, event, this.room.client, false);
             const body = await this.createMessageBody(event, shouldBeJoined);
-            this.totalSize += new TextEncoder().encode(body).byteLength;
+            this.totalSize += Buffer.byteLength(body);
             content += body;
             prevEvent = event;
         }

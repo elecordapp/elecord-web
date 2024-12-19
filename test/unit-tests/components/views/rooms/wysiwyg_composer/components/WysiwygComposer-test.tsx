@@ -18,6 +18,7 @@ import defaultDispatcher from "../../../../../../../src/dispatcher/dispatcher";
 import * as EventUtils from "../../../../../../../src/utils/EventUtils";
 import { Action } from "../../../../../../../src/dispatcher/actions";
 import MatrixClientContext from "../../../../../../../src/contexts/MatrixClientContext";
+import RoomContext from "../../../../../../../src/contexts/RoomContext";
 import {
     ComposerContext,
     getDefaultContextValue,
@@ -31,21 +32,20 @@ import Autocompleter, { ICompletion } from "../../../../../../../src/autocomplet
 import AutocompleteProvider from "../../../../../../../src/autocomplete/AutocompleteProvider";
 import * as Permalinks from "../../../../../../../src/utils/permalinks/Permalinks";
 import { PermalinkParts } from "../../../../../../../src/utils/permalinks/PermalinkConstructor";
-import { ScopedRoomContextProvider } from "../../../../../../../src/contexts/ScopedRoomContext.tsx";
 
 describe("WysiwygComposer", () => {
     const customRender = (onChange = jest.fn(), onSend = jest.fn(), disabled = false, initialContent?: string) => {
         const { mockClient, defaultRoomContext } = createMocks();
         return render(
             <MatrixClientContext.Provider value={mockClient}>
-                <ScopedRoomContextProvider {...defaultRoomContext}>
+                <RoomContext.Provider value={defaultRoomContext}>
                     <WysiwygComposer
                         onChange={onChange}
                         onSend={onSend}
                         disabled={disabled}
                         initialContent={initialContent}
                     />
-                </ScopedRoomContextProvider>
+                </RoomContext.Provider>
             </MatrixClientContext.Provider>,
         );
     };
@@ -523,7 +523,7 @@ describe("WysiwygComposer", () => {
         ) => {
             return render(
                 <MatrixClientContext.Provider value={client}>
-                    <ScopedRoomContextProvider {...roomContext}>
+                    <RoomContext.Provider value={roomContext}>
                         <ComposerContext.Provider
                             value={getDefaultContextValue({ editorStateTransfer: _editorStateTransfer })}
                         >
@@ -537,7 +537,7 @@ describe("WysiwygComposer", () => {
                                 }
                             />
                         </ComposerContext.Provider>
-                    </ScopedRoomContextProvider>
+                    </RoomContext.Provider>
                 </MatrixClientContext.Provider>,
             );
         };

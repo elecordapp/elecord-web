@@ -194,7 +194,6 @@ export class StopGapWidgetDriver extends WidgetDriver {
                 EventType.CallSDPStreamMetadataChanged,
                 EventType.CallSDPStreamMetadataChangedPrefix,
                 EventType.CallReplaces,
-                EventType.CallEncryptionKeysPrefix,
             ];
             for (const eventType of sendRecvToDevice) {
                 this.allowedCapabilities.add(

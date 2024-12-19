@@ -118,7 +118,7 @@ export async function buildAndEncodePickleKey(
             data.encrypted,
         );
         if (pickleKeyBuf) {
-            return encodeUnpaddedBase64(new Uint8Array(pickleKeyBuf));
+            return encodeUnpaddedBase64(pickleKeyBuf);
         }
     } catch {
         logger.error("Error decrypting pickle key");

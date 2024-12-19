@@ -17,9 +17,7 @@ describe("<VerificationQRCode />", () => {
     });
 
     it("renders a QR code", async () => {
-        const { container, getAllByAltText } = render(
-            <VerificationQRCode qrCodeBytes={new Uint8ClampedArray(Buffer.from("asd"))} />,
-        );
+        const { container, getAllByAltText } = render(<VerificationQRCode qrCodeBytes={Buffer.from("asd")} />);
         // wait for the spinner to go away
         await waitFor(() => getAllByAltText("QR Code").length === 1);
         expect(container).toMatchSnapshot();

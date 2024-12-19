@@ -418,7 +418,7 @@ describe("Lifecycle", () => {
                         undefined,
                     );
 
-                    expect(MatrixClientPeg.start).toHaveBeenCalledWith({ rustCryptoStoreKey: expect.any(Uint8Array) });
+                    expect(MatrixClientPeg.start).toHaveBeenCalledWith({ rustCryptoStoreKey: expect.any(Buffer) });
                 });
 
                 describe("with a refresh token", () => {

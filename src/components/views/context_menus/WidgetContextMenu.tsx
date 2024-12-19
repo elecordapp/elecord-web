@@ -18,6 +18,7 @@ import { _t } from "../../../languageHandler";
 import { isAppWidget } from "../../../stores/WidgetStore";
 import WidgetUtils from "../../../utils/WidgetUtils";
 import { WidgetMessagingStore } from "../../../stores/widgets/WidgetMessagingStore";
+import RoomContext from "../../../contexts/RoomContext";
 import dis from "../../../dispatcher/dispatcher";
 import SettingsStore from "../../../settings/SettingsStore";
 import Modal from "../../../Modal";
@@ -29,7 +30,6 @@ import { Container, WidgetLayoutStore } from "../../../stores/widgets/WidgetLayo
 import { getConfigLivestreamUrl, startJitsiAudioLivestream } from "../../../Livestream";
 import { ModuleRunner } from "../../../modules/ModuleRunner";
 import { ElementWidget } from "../../../stores/widgets/StopGapWidget";
-import { useScopedRoomContext } from "../../../contexts/ScopedRoomContext.tsx";
 
 interface IProps extends Omit<ComponentProps<typeof IconizedContextMenu>, "children"> {
     app: IWidget;
@@ -114,7 +114,7 @@ export const WidgetContextMenu: React.FC<IProps> = ({
     ...props
 }) => {
     const cli = useContext(MatrixClientContext);
-    const { room, roomId } = useScopedRoomContext("room", "roomId");
+    const { room, roomId } = useContext(RoomContext);
 
     const widgetMessaging = WidgetMessagingStore.instance.getMessagingForUid(WidgetUtils.getWidgetUid(app));
     const canModify = userWidget || WidgetUtils.canUserModifyWidgets(cli, roomId);

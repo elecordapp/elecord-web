@@ -119,6 +119,7 @@ import { ValidatedServerConfig } from "../../utils/ValidatedServerConfig";
 import { isLocalRoom } from "../../utils/localRoom/isLocalRoom";
 import { SDKContext, SdkContextClass } from "../../contexts/SDKContext";
 import { viewUserDeviceSettings } from "../../actions/handlers/viewUserDeviceSettings";
+import { cleanUpBroadcasts, VoiceBroadcastResumer } from "../../voice-broadcast";
 import GenericToast from "../views/toasts/GenericToast";
 import RovingSpotlightDialog from "../views/dialogs/spotlight/SpotlightDialog";
 import { findDMForUser } from "../../utils/dm/findDMForUser";
@@ -226,6 +227,7 @@ export default class MatrixChat extends React.PureComponent<IProps, IState> {
     private focusNext: FocusNextType;
     private subTitleStatus: string;
     private prevWindowWidth: number;
+    private voiceBroadcastResumer?: VoiceBroadcastResumer;
 
     private readonly loggedInView = createRef<LoggedInViewType>();
     private dispatcherRef?: string;
@@ -499,6 +501,7 @@ export default class MatrixChat extends React.PureComponent<IProps, IState> {
         window.removeEventListener("resize", this.onWindowResized);
 
         this.stores.accountPasswordStore.clearPassword();
+        this.voiceBroadcastResumer?.destroy();
     }
 
     private onWindowResized = (): void => {
@@ -648,9 +651,10 @@ export default class MatrixChat extends React.PureComponent<IProps, IState> {
                 break;
             case "logout":
                 LegacyCallHandler.instance.hangupAllCalls();
-                Promise.all([...[...CallStore.instance.connectedCalls].map((call) => call.disconnect())]).finally(() =>
-                    Lifecycle.logout(this.stores.oidcClientStore),
-                );
+                Promise.all([
+                    ...[...CallStore.instance.connectedCalls].map((call) => call.disconnect()),
+                    cleanUpBroadcasts(this.stores),
+                ]).finally(() => Lifecycle.logout(this.stores.oidcClientStore));
                 break;
             case "require_registration":
                 startAnyRegistrationFlow(payload as any);
@@ -1675,6 +1679,8 @@ export default class MatrixChat extends React.PureComponent<IProps, IState> {
                 });
             }
         });
+
+        this.voiceBroadcastResumer = new VoiceBroadcastResumer(cli);
     }
 
     /**

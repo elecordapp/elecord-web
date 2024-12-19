@@ -35,7 +35,7 @@ describe("MessagePreviewStore", () => {
         event: MatrixEvent,
         fireAction = true,
     ): Promise<void> {
-        room.addLiveEvents([event], { addToState: true });
+        room.addLiveEvents([event]);
         if (fireAction) {
             // @ts-ignore private access
             await store.onAction({

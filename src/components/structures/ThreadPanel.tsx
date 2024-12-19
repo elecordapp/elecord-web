@@ -20,7 +20,7 @@ import MatrixClientContext, { useMatrixClientContext } from "../../contexts/Matr
 import { _t } from "../../languageHandler";
 import { ContextMenuButton } from "../../accessibility/context_menu/ContextMenuButton";
 import ContextMenu, { ChevronFace, MenuItemRadio, useContextMenu } from "./ContextMenu";
-import RoomContext, { TimelineRenderingType } from "../../contexts/RoomContext";
+import RoomContext, { TimelineRenderingType, useRoomContext } from "../../contexts/RoomContext";
 import TimelinePanel from "./TimelinePanel";
 import { Layout } from "../../settings/enums/Layout";
 import { RoomPermalinkCreator } from "../../utils/permalinks/Permalinks";
@@ -30,7 +30,6 @@ import { ButtonEvent } from "../views/elements/AccessibleButton";
 import Spinner from "../views/elements/Spinner";
 import { clearRoomNotification } from "../../utils/notifications";
 import EmptyState from "../views/right_panel/EmptyState";
-import { ScopedRoomContextProvider, useScopedRoomContext } from "../../contexts/ScopedRoomContext.tsx";
 
 interface IProps {
     roomId: string;
@@ -69,7 +68,7 @@ export const ThreadPanelHeader: React.FC<{
     setFilterOption: (filterOption: ThreadFilterType) => void;
 }> = ({ filterOption, setFilterOption }) => {
     const mxClient = useMatrixClientContext();
-    const roomContext = useScopedRoomContext("room");
+    const roomContext = useRoomContext();
     const [menuDisplayed, button, openMenu, closeMenu] = useContextMenu<HTMLElement>();
     const options: readonly ThreadPanelHeaderOption[] = [
         {
@@ -185,11 +184,13 @@ const ThreadPanel: React.FC<IProps> = ({ roomId, onClose, permalinkCreator }) =>
     }, [timelineSet, timelinePanel]);
 
     return (
-        <ScopedRoomContextProvider
-            {...roomContext}
-            timelineRenderingType={TimelineRenderingType.ThreadsList}
-            showHiddenEvents={true}
-            narrow={narrow}
+        <RoomContext.Provider
+            value={{
+                ...roomContext,
+                timelineRenderingType: TimelineRenderingType.ThreadsList,
+                showHiddenEvents: true,
+                narrow,
+            }}
         >
             <BaseCard
                 header={
@@ -240,7 +241,7 @@ const ThreadPanel: React.FC<IProps> = ({ roomId, onClose, permalinkCreator }) =>
                     </div>
                 )}
             </BaseCard>
-        </ScopedRoomContextProvider>
+        </RoomContext.Provider>
     );
 };
 export default ThreadPanel;

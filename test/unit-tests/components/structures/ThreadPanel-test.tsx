@@ -20,6 +20,7 @@ import {
 
 import ThreadPanel, { ThreadFilterType, ThreadPanelHeader } from "../../../../src/components/structures/ThreadPanel";
 import MatrixClientContext from "../../../../src/contexts/MatrixClientContext";
+import RoomContext from "../../../../src/contexts/RoomContext";
 import { _t } from "../../../../src/languageHandler";
 import { MatrixClientPeg } from "../../../../src/MatrixClientPeg";
 import { RoomPermalinkCreator } from "../../../../src/utils/permalinks/Permalinks";
@@ -27,7 +28,6 @@ import ResizeNotifier from "../../../../src/utils/ResizeNotifier";
 import { createTestClient, getRoomContext, mkRoom, mockPlatformPeg, stubClient } from "../../../test-utils";
 import { mkThread } from "../../../test-utils/threads";
 import { IRoomState } from "../../../../src/components/structures/RoomView";
-import { ScopedRoomContextProvider } from "../../../../src/contexts/ScopedRoomContext.tsx";
 
 jest.mock("../../../../src/utils/Feedback");
 
@@ -81,11 +81,11 @@ describe("ThreadPanel", () => {
                 room: mockRoom,
             } as unknown as IRoomState;
             const { container } = render(
-                <ScopedRoomContextProvider {...roomContextObject}>
+                <RoomContext.Provider value={roomContextObject}>
                     <MatrixClientContext.Provider value={mockClient}>
                         <ThreadPanelHeader filterOption={ThreadFilterType.All} setFilterOption={() => undefined} />
                     </MatrixClientContext.Provider>
-                </ScopedRoomContextProvider>,
+                </RoomContext.Provider>,
             );
             fireEvent.click(getByRole(container, "button", { name: "Mark all as read" }));
             await waitFor(() =>
@@ -114,8 +114,8 @@ describe("ThreadPanel", () => {
 
         const TestThreadPanel = () => (
             <MatrixClientContext.Provider value={mockClient}>
-                <ScopedRoomContextProvider
-                    {...getRoomContext(room, {
+                <RoomContext.Provider
+                    value={getRoomContext(room, {
                         canSendMessages: true,
                     })}
                 >
@@ -125,7 +125,7 @@ describe("ThreadPanel", () => {
                         resizeNotifier={new ResizeNotifier()}
                         permalinkCreator={new RoomPermalinkCreator(room)}
                     />
-                </ScopedRoomContextProvider>
+                </RoomContext.Provider>
             </MatrixClientContext.Provider>
         );
 
@@ -209,11 +209,11 @@ describe("ThreadPanel", () => {
                 return event ? Promise.resolve(event) : Promise.reject();
             });
             const [allThreads, myThreads] = room.threadsTimelineSets;
-            allThreads!.addLiveEvent(otherThread.rootEvent, { addToState: true });
-            allThreads!.addLiveEvent(mixedThread.rootEvent, { addToState: true });
-            allThreads!.addLiveEvent(ownThread.rootEvent, { addToState: true });
-            myThreads!.addLiveEvent(mixedThread.rootEvent, { addToState: true });
-            myThreads!.addLiveEvent(ownThread.rootEvent, { addToState: true });
+            allThreads!.addLiveEvent(otherThread.rootEvent);
+            allThreads!.addLiveEvent(mixedThread.rootEvent);
+            allThreads!.addLiveEvent(ownThread.rootEvent);
+            myThreads!.addLiveEvent(mixedThread.rootEvent);
+            myThreads!.addLiveEvent(ownThread.rootEvent);
 
             const renderResult = render(<TestThreadPanel />);
             await waitFor(() => expect(renderResult.container.querySelector(".mx_AutoHideScrollbar")).toBeFalsy());
@@ -258,7 +258,7 @@ describe("ThreadPanel", () => {
                 return event ? Promise.resolve(event) : Promise.reject();
             });
             const [allThreads] = room.threadsTimelineSets;
-            allThreads!.addLiveEvent(otherThread.rootEvent, { addToState: true });
+            allThreads!.addLiveEvent(otherThread.rootEvent);
 
             const renderResult = render(<TestThreadPanel />);
             await waitFor(() => expect(renderResult.container.querySelector(".mx_AutoHideScrollbar")).toBeFalsy());

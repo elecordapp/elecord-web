@@ -11,7 +11,7 @@ import { MatrixClient } from "matrix-js-sdk/src/matrix";
 
 import AuthPage from "../../views/auth/AuthPage";
 import CompleteSecurityBody from "../../views/auth/CompleteSecurityBody";
-import { InitialCryptoSetupDialog } from "../../views/dialogs/security/InitialCryptoSetupDialog";
+import CreateCrossSigningDialog from "../../views/dialogs/security/CreateCrossSigningDialog";
 
 interface IProps {
     matrixClient: MatrixClient;
@@ -25,7 +25,7 @@ export default class E2eSetup extends React.Component<IProps> {
         return (
             <AuthPage>
                 <CompleteSecurityBody>
-                    <InitialCryptoSetupDialog
+                    <CreateCrossSigningDialog
                         matrixClient={this.props.matrixClient}
                         onFinished={this.props.onFinished}
                         accountPassword={this.props.accountPassword}

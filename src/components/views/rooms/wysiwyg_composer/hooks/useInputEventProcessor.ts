@@ -16,6 +16,7 @@ import { KeyBindingAction } from "../../../../../accessibility/KeyboardShortcuts
 import { findEditableEvent } from "../../../../../utils/EventUtils";
 import dis from "../../../../../dispatcher/dispatcher";
 import { Action } from "../../../../../dispatcher/actions";
+import { useRoomContext } from "../../../../../contexts/RoomContext";
 import { IRoomState } from "../../../../structures/RoomView";
 import { ComposerContextState, useComposerContext } from "../ComposerContext";
 import EditorStateTransfer from "../../../../../utils/EditorStateTransfer";
@@ -25,7 +26,6 @@ import { getEventsFromEditorStateTransfer, getEventsFromRoom } from "../utils/ev
 import { endEditing } from "../utils/editing";
 import Autocomplete from "../../Autocomplete";
 import { handleClipboardEvent, handleEventWithAutocomplete, isEventToHandleAsClipboardEvent } from "./utils";
-import { useScopedRoomContext } from "../../../../../contexts/ScopedRoomContext.tsx";
 
 export function useInputEventProcessor(
     onSend: () => void,
@@ -33,7 +33,7 @@ export function useInputEventProcessor(
     initialContent?: string,
     eventRelation?: IEventRelation,
 ): (event: WysiwygEvent, composer: Wysiwyg, editor: HTMLElement) => WysiwygEvent | null {
-    const roomContext = useScopedRoomContext("liveTimeline", "room", "replyToEvent", "timelineRenderingType");
+    const roomContext = useRoomContext();
     const composerContext = useComposerContext();
     const mxClient = useMatrixClientContext();
     const isCtrlEnterToSend = useSettingValue<boolean>("MessageComposerInput.ctrlEnterToSend");
@@ -94,7 +94,7 @@ function handleKeyboardEvent(
     initialContent: string | undefined,
     composer: Wysiwyg,
     editor: HTMLElement,
-    roomContext: Pick<IRoomState, "liveTimeline" | "timelineRenderingType" | "room">,
+    roomContext: IRoomState,
     composerContext: ComposerContextState,
     mxClient: MatrixClient | undefined,
     autocompleteRef: React.RefObject<Autocomplete>,
@@ -175,7 +175,7 @@ function dispatchEditEvent(
     isForward: boolean,
     editorStateTransfer: EditorStateTransfer | undefined,
     composerContext: ComposerContextState,
-    roomContext: Pick<IRoomState, "liveTimeline" | "timelineRenderingType" | "room">,
+    roomContext: IRoomState,
     mxClient: MatrixClient,
 ): boolean {
     const foundEvents = editorStateTransfer

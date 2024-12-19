@@ -23,6 +23,7 @@ import classNames from "classnames";
 import { isOnlyCtrlOrCmdKeyEvent, Key } from "../../Keyboard";
 import PageTypes from "../../PageTypes";
 import MediaDeviceHandler from "../../MediaDeviceHandler";
+import { fixupColorFonts } from "../../utils/FontManager";
 import dis from "../../dispatcher/dispatcher";
 import { IMatrixClientCreds } from "../../MatrixClientPeg";
 import SettingsStore from "../../settings/SettingsStore";
@@ -147,6 +148,8 @@ class LoggedInView extends React.Component<IProps, IState> {
         this._matrixClient = this.props.matrixClient;
 
         MediaDeviceHandler.loadDevices();
+
+        fixupColorFonts();
 
         this._roomView = React.createRef();
         this._resizeContainer = React.createRef();

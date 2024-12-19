@@ -268,6 +268,7 @@ export default class MjolnirUserSettingsTab extends React.Component<{}, IState> 
                                 onChange={this.onPersonalRuleChanged}
                             />
                             <AccessibleButton
+                                type="submit"
                                 kind="primary"
                                 onClick={this.onAddPersonalRule}
                                 disabled={this.state.busy}
@@ -294,7 +295,12 @@ export default class MjolnirUserSettingsTab extends React.Component<{}, IState> 
                                 value={this.state.newList}
                                 onChange={this.onNewListChanged}
                             />
-                            <AccessibleButton kind="primary" onClick={this.onSubscribeList} disabled={this.state.busy}>
+                            <AccessibleButton
+                                type="submit"
+                                kind="primary"
+                                onClick={this.onSubscribeList}
+                                disabled={this.state.busy}
+                            >
                                 {_t("action|subscribe")}
                             </AccessibleButton>
                         </form>

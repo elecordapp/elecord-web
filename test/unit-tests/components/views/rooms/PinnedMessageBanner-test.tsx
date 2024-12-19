@@ -20,7 +20,6 @@ import RightPanelStore from "../../../../../src/stores/right-panel/RightPanelSto
 import { RightPanelPhases } from "../../../../../src/stores/right-panel/RightPanelStorePhases";
 import { UPDATE_EVENT } from "../../../../../src/stores/AsyncStore";
 import { Action } from "../../../../../src/dispatcher/actions";
-import ResizeNotifier from "../../../../../src/utils/ResizeNotifier.ts";
 
 describe("<PinnedMessageBanner />", () => {
     const userId = "@alice:server.org";
@@ -29,12 +28,10 @@ describe("<PinnedMessageBanner />", () => {
     let mockClient: MatrixClient;
     let room: Room;
     let permalinkCreator: RoomPermalinkCreator;
-    let resizeNotifier: ResizeNotifier;
     beforeEach(() => {
         mockClient = stubClient();
         room = new Room(roomId, mockClient, userId);
         permalinkCreator = new RoomPermalinkCreator(room);
-        resizeNotifier = new ResizeNotifier();
         jest.spyOn(dis, "dispatch").mockReturnValue(undefined);
     });
 
@@ -80,7 +77,7 @@ describe("<PinnedMessageBanner />", () => {
      */
     function renderBanner() {
         return render(
-            <PinnedMessageBanner permalinkCreator={permalinkCreator} room={room} resizeNotifier={resizeNotifier} />,
+            <PinnedMessageBanner permalinkCreator={permalinkCreator} room={room} />,
             withClientContextRenderOptions(mockClient),
         );
     }
@@ -148,9 +145,7 @@ describe("<PinnedMessageBanner />", () => {
             event3.getId()!,
         ]);
         jest.spyOn(pinnedEventHooks, "useSortedFetchedPinnedEvents").mockReturnValue([event1, event2, event3]);
-        rerender(
-            <PinnedMessageBanner permalinkCreator={permalinkCreator} room={room} resizeNotifier={resizeNotifier} />,
-        );
+        rerender(<PinnedMessageBanner permalinkCreator={permalinkCreator} room={room} />);
         await expect(screen.findByText("Third pinned message")).resolves.toBeVisible();
         expect(asFragment()).toMatchSnapshot();
     });
@@ -211,42 +206,6 @@ describe("<PinnedMessageBanner />", () => {
         expect(asFragment()).toMatchSnapshot();
     });
 
-    describe("Notify the timeline to resize", () => {
-        beforeEach(() => {
-            jest.spyOn(resizeNotifier, "notifyTimelineHeightChanged");
-            jest.spyOn(pinnedEventHooks, "usePinnedEvents").mockReturnValue([event1.getId()!, event2.getId()!]);
-            jest.spyOn(pinnedEventHooks, "useSortedFetchedPinnedEvents").mockReturnValue([event1, event2]);
-        });
-
-        it("should notify the timeline to resize when we display the banner", async () => {
-            renderBanner();
-            await expect(screen.findByText("Second pinned message")).resolves.toBeVisible();
-            // The banner is displayed, so we need to resize the timeline
-            expect(resizeNotifier.notifyTimelineHeightChanged).toHaveBeenCalledTimes(1);
-
-            await userEvent.click(screen.getByRole("button", { name: "View the pinned message in the timeline." }));
-            await expect(screen.findByText("First pinned message")).resolves.toBeVisible();
-            // The banner is already displayed, so we don't need to resize the timeline
-            expect(resizeNotifier.notifyTimelineHeightChanged).toHaveBeenCalledTimes(1);
-        });
-
-        it("should notify the timeline to resize when we hide the banner", async () => {
-            const { rerender } = renderBanner();
-            await expect(screen.findByText("Second pinned message")).resolves.toBeVisible();
-            // The banner is displayed, so we need to resize the timeline
-            expect(resizeNotifier.notifyTimelineHeightChanged).toHaveBeenCalledTimes(1);
-
-            // The banner has no event to display and is hidden
-            jest.spyOn(pinnedEventHooks, "usePinnedEvents").mockReturnValue([]);
-            jest.spyOn(pinnedEventHooks, "useSortedFetchedPinnedEvents").mockReturnValue([]);
-            rerender(
-                <PinnedMessageBanner permalinkCreator={permalinkCreator} room={room} resizeNotifier={resizeNotifier} />,
-            );
-            // The timeline should be resized
-            expect(resizeNotifier.notifyTimelineHeightChanged).toHaveBeenCalledTimes(2);
-        });
-    });
-
     describe("Right button", () => {
         beforeEach(() => {
             jest.spyOn(pinnedEventHooks, "usePinnedEvents").mockReturnValue([event1.getId()!, event2.getId()!]);
@@ -258,8 +217,6 @@ describe("<PinnedMessageBanner />", () => {
             jest.spyOn(RightPanelStore.instance, "isOpenForRoom").mockReturnValue(false);
 
             renderBanner();
-            await expect(screen.findByText("Second pinned message")).resolves.toBeVisible();
-
             expect(screen.getByRole("button", { name: "View all" })).toBeVisible();
         });
 
@@ -267,12 +224,10 @@ describe("<PinnedMessageBanner />", () => {
             // The Right panel is opened on another card
             jest.spyOn(RightPanelStore.instance, "isOpenForRoom").mockReturnValue(true);
             jest.spyOn(RightPanelStore.instance, "currentCard", "get").mockReturnValue({
-                phase: RightPanelPhases.MemberList,
+                phase: RightPanelPhases.RoomMemberList,
             });
 
             renderBanner();
-            await expect(screen.findByText("Second pinned message")).resolves.toBeVisible();
-
             expect(screen.getByRole("button", { name: "View all" })).toBeVisible();
         });
 
@@ -284,8 +239,6 @@ describe("<PinnedMessageBanner />", () => {
             });
 
             renderBanner();
-            await expect(screen.findByText("Second pinned message")).resolves.toBeVisible();
-
             expect(screen.getByRole("button", { name: "Close list" })).toBeVisible();
         });
 
@@ -310,7 +263,6 @@ describe("<PinnedMessageBanner />", () => {
             });
 
             renderBanner();
-            await expect(screen.findByText("Second pinned message")).resolves.toBeVisible();
             expect(screen.getByRole("button", { name: "Close list" })).toBeVisible();
 
             jest.spyOn(RightPanelStore.instance, "isOpenForRoom").mockReturnValue(false);

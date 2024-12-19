@@ -23,6 +23,7 @@ import React, { useState } from "react";
 
 import ThreadView from "../../../../src/components/structures/ThreadView";
 import MatrixClientContext from "../../../../src/contexts/MatrixClientContext";
+import RoomContext from "../../../../src/contexts/RoomContext";
 import { SdkContextClass } from "../../../../src/contexts/SDKContext";
 import { Action } from "../../../../src/dispatcher/actions";
 import dispatcher from "../../../../src/dispatcher/dispatcher";
@@ -33,7 +34,6 @@ import { mockPlatformPeg } from "../../../test-utils/platform";
 import { getRoomContext } from "../../../test-utils/room";
 import { mkMessage, stubClient } from "../../../test-utils/test-utils";
 import { mkThread } from "../../../test-utils/threads";
-import { ScopedRoomContextProvider } from "../../../../src/contexts/ScopedRoomContext.tsx";
 
 describe("ThreadView", () => {
     const ROOM_ID = "!roomId:example.org";
@@ -51,8 +51,8 @@ describe("ThreadView", () => {
 
         return (
             <MatrixClientContext.Provider value={mockClient}>
-                <ScopedRoomContextProvider
-                    {...getRoomContext(room, {
+                <RoomContext.Provider
+                    value={getRoomContext(room, {
                         canSendMessages: true,
                     })}
                 >
@@ -63,7 +63,7 @@ describe("ThreadView", () => {
                         initialEvent={initialEvent}
                         resizeNotifier={new ResizeNotifier()}
                     />
-                </ScopedRoomContextProvider>
+                </RoomContext.Provider>
                 ,
             </MatrixClientContext.Provider>
         );

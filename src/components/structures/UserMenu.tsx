@@ -40,6 +40,8 @@ import { UPDATE_SELECTED_SPACE } from "../../stores/spaces";
 import UserIdentifierCustomisations from "../../customisations/UserIdentifier";
 import PosthogTrackers from "../../PosthogTrackers";
 import { ViewHomePagePayload } from "../../dispatcher/payloads/ViewHomePagePayload";
+import { Icon as LiveIcon } from "../../../res/img/compound/live-8px.svg";
+import { VoiceBroadcastRecording, VoiceBroadcastRecordingsStoreEvent } from "../../voice-broadcast";
 import { SDKContext } from "../../contexts/SDKContext";
 import { shouldShowFeedback } from "../../utils/Feedback";
 import DarkLightModeSvg from "../../../res/img/element-icons/roomlist/dark-light-mode.svg";
@@ -56,6 +58,7 @@ interface IState {
     isDarkTheme: boolean;
     isHighContrast: boolean;
     selectedSpace?: Room | null;
+    showLiveAvatarAddon: boolean;
 }
 
 const toRightOf = (rect: PartialDOMRect): MenuProps => {
@@ -76,7 +79,7 @@ const below = (rect: PartialDOMRect): MenuProps => {
 
 export default class UserMenu extends React.Component<IProps, IState> {
     public static contextType = SDKContext;
-    declare public context: React.ContextType<typeof SDKContext>;
+    public declare context: React.ContextType<typeof SDKContext>;
 
     private dispatcherRef?: string;
     private themeWatcherRef?: string;
@@ -91,6 +94,7 @@ export default class UserMenu extends React.Component<IProps, IState> {
             isDarkTheme: this.isUserOnDarkTheme(),
             isHighContrast: this.isUserOnHighContrastTheme(),
             selectedSpace: SpaceStore.instance.activeSpaceRoom,
+            showLiveAvatarAddon: this.context.voiceBroadcastRecordingsStore.hasCurrent(),
         };
     }
 
@@ -98,9 +102,19 @@ export default class UserMenu extends React.Component<IProps, IState> {
         return !!getHomePageUrl(SdkConfig.get(), this.context.client!);
     }
 
+    private onCurrentVoiceBroadcastRecordingChanged = (recording: VoiceBroadcastRecording | null): void => {
+        this.setState({
+            showLiveAvatarAddon: recording !== null,
+        });
+    };
+
     public componentDidMount(): void {
         OwnProfileStore.instance.on(UPDATE_EVENT, this.onProfileUpdate);
         SpaceStore.instance.on(UPDATE_SELECTED_SPACE, this.onSelectedSpaceUpdate);
+        this.context.voiceBroadcastRecordingsStore.on(
+            VoiceBroadcastRecordingsStoreEvent.CurrentChanged,
+            this.onCurrentVoiceBroadcastRecordingChanged,
+        );
         this.dispatcherRef = defaultDispatcher.register(this.onAction);
         this.themeWatcherRef = SettingsStore.watchSetting("theme", null, this.onThemeChanged);
     }
@@ -111,6 +125,10 @@ export default class UserMenu extends React.Component<IProps, IState> {
         defaultDispatcher.unregister(this.dispatcherRef);
         OwnProfileStore.instance.off(UPDATE_EVENT, this.onProfileUpdate);
         SpaceStore.instance.off(UPDATE_SELECTED_SPACE, this.onSelectedSpaceUpdate);
+        this.context.voiceBroadcastRecordingsStore.off(
+            VoiceBroadcastRecordingsStoreEvent.CurrentChanged,
+            this.onCurrentVoiceBroadcastRecordingChanged,
+        );
     }
 
     private isUserOnDarkTheme(): boolean {
@@ -417,6 +435,12 @@ export default class UserMenu extends React.Component<IProps, IState> {
             name = <div className="mx_UserMenu_name">{displayName}</div>;
         }
 
+        const liveAvatarAddon = this.state.showLiveAvatarAddon ? (
+            <div className="mx_UserMenu_userAvatarLive" data-testid="user-menu-live-vb">
+                <LiveIcon className="mx_Icon_8" />
+            </div>
+        ) : null;
+
         return (
             <div className="mx_UserMenu">
                 <ContextMenuButton
@@ -435,6 +459,7 @@ export default class UserMenu extends React.Component<IProps, IState> {
                             size={avatarSize + "px"}
                             className="mx_UserMenu_userAvatar_BaseAvatar"
                         />
+                        {liveAvatarAddon}
                     </div>
                     {name}
                     {this.renderContextMenu()}

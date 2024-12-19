@@ -13,14 +13,14 @@ import { EmojiButton } from "../../EmojiButton";
 import dis from "../../../../../dispatcher/dispatcher";
 import { ComposerInsertPayload } from "../../../../../dispatcher/payloads/ComposerInsertPayload";
 import { Action } from "../../../../../dispatcher/actions";
-import { useScopedRoomContext } from "../../../../../contexts/ScopedRoomContext.tsx";
+import { useRoomContext } from "../../../../../contexts/RoomContext";
 
 interface EmojiProps {
     menuPosition: MenuProps;
 }
 
 export function Emoji({ menuPosition }: EmojiProps): JSX.Element {
-    const roomContext = useScopedRoomContext("timelineRenderingType");
+    const roomContext = useRoomContext();
 
     return (
         <EmojiButton

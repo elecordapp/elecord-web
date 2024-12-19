@@ -208,7 +208,7 @@ const SpaceLanding: React.FC<{ space: Room }> = ({ space }) => {
     const storeIsShowingSpaceMembers = useCallback(
         () =>
             RightPanelStore.instance.isOpenForRoom(space.roomId) &&
-            RightPanelStore.instance.currentCardForRoom(space.roomId)?.phase === RightPanelPhases.MemberList,
+            RightPanelStore.instance.currentCardForRoom(space.roomId)?.phase === RightPanelPhases.SpaceMemberList,
         [space.roomId],
     );
     const isShowingMembers = useEventEmitterState(RightPanelStore.instance, UPDATE_EVENT, storeIsShowingSpaceMembers);
@@ -251,7 +251,7 @@ const SpaceLanding: React.FC<{ space: Room }> = ({ space }) => {
     }
 
     const onMembersClick = (): void => {
-        RightPanelStore.instance.setCard({ phase: RightPanelPhases.MemberList });
+        RightPanelStore.instance.setCard({ phase: RightPanelPhases.SpaceMemberList });
     };
 
     return (
@@ -597,7 +597,7 @@ const SpaceSetupPrivateInvite: React.FC<{
 
 export default class SpaceRoomView extends React.PureComponent<IProps, IState> {
     public static contextType = MatrixClientContext;
-    declare public context: React.ContextType<typeof MatrixClientContext>;
+    public declare context: React.ContextType<typeof MatrixClientContext>;
 
     private dispatcherRef?: string;
 

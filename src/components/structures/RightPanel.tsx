@@ -63,7 +63,7 @@ interface IState {
 
 export default class RightPanel extends React.Component<Props, IState> {
     public static contextType = MatrixClientContext;
-    declare public context: React.ContextType<typeof MatrixClientContext>;
+    public declare context: React.ContextType<typeof MatrixClientContext>;
 
     public constructor(props: Props, context: React.ContextType<typeof MatrixClientContext>) {
         super(props, context);
@@ -109,10 +109,10 @@ export default class RightPanel extends React.Component<Props, IState> {
         }
 
         // redraw the badge on the membership list
-        if (this.state.phase === RightPanelPhases.MemberList) {
+        if (this.state.phase === RightPanelPhases.RoomMemberList) {
             this.delayedUpdate();
         } else if (
-            this.state.phase === RightPanelPhases.MemberInfo &&
+            this.state.phase === RightPanelPhases.RoomMemberInfo &&
             member.userId === this.state.cardState?.member?.userId
         ) {
             // refresh the member info (e.g. new power level)
@@ -157,7 +157,7 @@ export default class RightPanel extends React.Component<Props, IState> {
         const phase = this.props.overwriteCard?.phase ?? this.state.phase;
         const cardState = this.props.overwriteCard?.state ?? this.state.cardState;
         switch (phase) {
-            case RightPanelPhases.MemberList:
+            case RightPanelPhases.RoomMemberList:
                 if (!!roomId) {
                     card = (
                         <MemberList
@@ -170,8 +170,22 @@ export default class RightPanel extends React.Component<Props, IState> {
                     );
                 }
                 break;
+            case RightPanelPhases.SpaceMemberList:
+                if (!!cardState?.spaceId || !!roomId) {
+                    card = (
+                        <MemberList
+                            roomId={cardState?.spaceId ?? roomId!}
+                            key={cardState?.spaceId ?? roomId!}
+                            onClose={this.onClose}
+                            searchQuery={this.state.searchQuery}
+                            onSearchQueryChanged={this.onSearchQueryChanged}
+                        />
+                    );
+                }
+                break;
 
-            case RightPanelPhases.MemberInfo:
+            case RightPanelPhases.RoomMemberInfo:
+            case RightPanelPhases.SpaceMemberInfo:
             case RightPanelPhases.EncryptionPanel: {
                 if (!!cardState?.member) {
                     const roomMember = cardState.member instanceof RoomMember ? cardState.member : undefined;
@@ -189,7 +203,8 @@ export default class RightPanel extends React.Component<Props, IState> {
                 }
                 break;
             }
-            case RightPanelPhases.ThreePidMemberInfo:
+            case RightPanelPhases.Room3pidMemberInfo:
+            case RightPanelPhases.Space3pidMemberInfo:
                 if (!!cardState?.memberInfoEvent) {
                     card = (
                         <ThirdPartyMemberInfo event={cardState.memberInfoEvent} key={roomId} onClose={this.onClose} />

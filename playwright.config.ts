@@ -6,12 +6,11 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
 Please see LICENSE files in the repository root for full details.
 */
 
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig } from "@playwright/test";
 
 const baseURL = process.env["BASE_URL"] ?? "http://localhost:8080";
 
 export default defineConfig({
-    projects: [{ name: "Chrome", use: { ...devices["Desktop Chrome"], channel: "chromium" } }],
     use: {
         viewport: { width: 1280, height: 720 },
         ignoreHTTPSErrors: true,

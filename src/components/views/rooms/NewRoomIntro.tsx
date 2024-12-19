@@ -11,6 +11,7 @@ import { EventType, Room, User, MatrixClient } from "matrix-js-sdk/src/matrix";
 import { KnownMembership } from "matrix-js-sdk/src/types";
 
 import MatrixClientContext from "../../../contexts/MatrixClientContext";
+import RoomContext from "../../../contexts/RoomContext";
 import DMRoomMap from "../../../utils/DMRoomMap";
 import { _t, _td, TranslationKey } from "../../../languageHandler";
 import AccessibleButton, { ButtonEvent } from "../elements/AccessibleButton";
@@ -29,7 +30,6 @@ import { UIComponent } from "../../../settings/UIFeature";
 import { privateShouldBeEncrypted } from "../../../utils/rooms";
 import { LocalRoom } from "../../../models/LocalRoom";
 import { shouldEncryptRoomWithSingle3rdPartyInvite } from "../../../utils/room/shouldEncryptRoomWithSingle3rdPartyInvite";
-import { useScopedRoomContext } from "../../../contexts/ScopedRoomContext.tsx";
 
 function hasExpectedEncryptionSettings(matrixClient: MatrixClient, room: Room): boolean {
     const isEncrypted: boolean = matrixClient.isRoomEncrypted(room.roomId);
@@ -51,7 +51,7 @@ const determineIntroMessage = (room: Room, encryptedSingle3rdPartyInvite: boolea
 
 const NewRoomIntro: React.FC = () => {
     const cli = useContext(MatrixClientContext);
-    const { room, roomId } = useScopedRoomContext("room", "roomId");
+    const { room, roomId } = useContext(RoomContext);
 
     if (!room || !roomId) {
         throw new Error("Unable to create a NewRoomIntro without room and roomId");
