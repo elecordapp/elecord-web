@@ -64,7 +64,7 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
         const cryptoVersion = this.context.getCrypto()?.getVersion() ?? "<not-enabled>";
 
         return {
-            appVersion: `${_t("setting|help_about|brand_version", { brand })} v2.0.0 (${appVersion})`,
+            appVersion: `${_t("setting|help_about|brand_version", { brand })} 2.0.0 (${appVersion})`,
             cryptoVersion: `${_t("setting|help_about|crypto_version")} ${cryptoVersion}`,
         };
     }
