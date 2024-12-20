@@ -3685,8 +3685,8 @@
         "other": "And %(count)s more..."
     },
     "unsupported_browser": {
-        "description": "If you continue, some features may stop working and there is a risk that you may lose data in the future. Update your browser to continue using %(brand)s.",
-        "title": "%(brand)s does not support this browser"
+        "description": "You are using a non-standard browser. While %(brand)s supports all major modern and up-to-date browsers. Please keep in mind that some features might not work as expected when using this browser version.",
+        "title": "%(brand)s might not support this browser"
     },
     "unsupported_server_description": "This server is using an older version of Matrix. Upgrade to Matrix %(version)s to use %(brand)s without errors.",
     "unsupported_server_title": "Your server is unsupported",

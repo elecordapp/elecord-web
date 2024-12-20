@@ -1,7 +1,6 @@
 name: Build
 on:
     pull_request: {}
-    # temporarily disable non-pr builds
     push:
         branches: [release, master]
     merge_group:
