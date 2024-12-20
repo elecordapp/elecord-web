@@ -26,7 +26,7 @@ export class FontWatcher implements IWatcher {
     /**
      * Default delta added to the ${@link DEFAULT_SIZE}
      */
-    public static readonly DEFAULT_DELTA = 0;
+    public static readonly DEFAULT_DELTA = 2;
 
     private dispatcherRef?: string;
 

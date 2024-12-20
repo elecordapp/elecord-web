@@ -2,7 +2,7 @@ name: Build
 on:
     pull_request: {}
     push:
-        branches: [develop, master]
+        branches: [release, master]
     merge_group:
         types: [checks_requested]
 # develop pushes and repository_dispatch handled in build_develop.yaml
@@ -20,8 +20,8 @@ jobs:
             matrix:
                 image:
                     - ubuntu-24.04
-                    - windows-2022
-                    - macos-14
+                    # - windows-2022
+                    # - macos-14
                 isDevelop:
                     - ${{ github.event_name == 'push' && github.ref_name == 'develop' }}
                 # Skip the ubuntu-24.04 build for the develop branch as the dedicated CD build_develop workflow handles that
@@ -46,5 +46,108 @@ jobs:
             - name: Install Dependencies
               run: "./scripts/layered.sh"
 
-            - name: Build
-              run: "yarn build"
+            # - name: Build
+            #   run: "yarn build"
+
+            # Build step from develop workflow
+            - name: Build and Package
+              run: "./scripts/ci_package.sh"
+
+            - run: mv dist/elecord-*.tar.gz dist/elecord.tar.gz
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: webapp
+                  path: dist/elecord.tar.gz
+
+    deploy:
+        needs: build
+        name: Deploy webapp
+        runs-on: ubuntu-24.04
+        permissions: 
+            pull-requests: write 
+        steps:
+            # Download and extract the build folder
+            - name: Download Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: webapp
+                  path: .
+
+            - name: Extract tarball
+              run: tar -xvzf elecord.tar.gz
+
+            - name: Move to dist
+              run: mv elecord-*/ dist
+
+            # Set the Cloudflare pages branch name
+            # - PR to master    : test
+            # - Push to master  : dev
+            # - PR to release   : preview
+            # - Push to release : release (Production environment)
+            - name: Set Pages branch
+              run: |
+                  if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+                      if [[ "${{ github.event.pull_request.base.ref }}" == "master" ]]; then
+                          echo "cf_branch=test" >> $GITHUB_ENV
+                      elif [[ "${{ github.event.pull_request.base.ref }}" == "release" ]]; then
+                          echo "cf_branch=preview" >> $GITHUB_ENV
+                          echo "cf_domain=https://preview.elecord.app / " >> $GITHUB_ENV
+                      fi
+                  elif [[ "${{ github.event_name }}" == "push" ]]; then
+                      if [[ "${{ github.ref_name }}" == "master" ]]; then
+                          echo "cf_branch=dev" >> $GITHUB_ENV
+                          echo "cf_domain=https://dev.elecord.app / " >> $GITHUB_ENV
+                      elif [[ "${{ github.ref_name }}" == "release" ]]; then
+                          echo "cf_branch=release" >> $GITHUB_ENV
+                          echo "cf_domain=https://web.elecord.app / " >> $GITHUB_ENV
+                      fi
+                  fi
+
+            # Deploy to Cloudflare Pages (using wrangler)
+            - name: Deploy to Cloudflare Pages
+              id: cf
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  command: pages deploy dist --project-name=elecord-web --branch=${{ env.cf_branch }}
+
+            # Update PR status comment with deployment URL
+            - name: Update status comment (Failure)
+              if: ${{ github.event_name == 'pull_request' && failure() }}
+              uses: thollander/actions-comment-pull-request@v3
+              with:
+                  message: |
+                      ## Cloudflare Pages deployment
+                      
+                      | **Latest commit** | <code>${{ github.event.pull_request.head.sha || github.sha }}</code> |
+                      |-------------------|:-:|
+                      | **Status**        | ❌ Failure. Check workflow logs for details |
+                      | **Preview URL**   | Not available |
+                  pr-number: ${{ github.event.pull_request.number }}
+                  comment-tag: CFPages-deployment
+                  reactions: -1
+                  mode: recreate
+
+            - name: Update status comment (Success)
+              if: ${{ github.event_name == 'pull_request' && success() }}
+              uses: thollander/actions-comment-pull-request@v3
+              with:
+                  message: |
+                      ## Cloudflare Pages deployment
+                      
+                      | **Latest commit** | <code>${{ github.event.pull_request.head.sha || github.sha }}</code> |
+                      |-------------------|:-:|
+                      | **Status**        | ✅ Deployed! |
+                      | **URL**           | ${{ env.cf_domain }}${{ steps.cf.outputs.deployment-url != '' && steps.cf.outputs.deployment-url || 'Not available' }} |
+                  pr-number: ${{ github.event.pull_request.number }}
+                  comment-tag: CFPages-deployment
+                  reactions: rocket
+                  mode: recreate
+
+            - name: Add URL to summary
+              if: ${{ steps.cf.outputs.deployment-url != '' }}
+              run: |
+                  echo "${{ env.cf_domain }}${{ steps.cf.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY

@@ -344,10 +344,11 @@ export async function setTheme(theme?: string): Promise<void> {
                 a.disabled = true;
             });
             const bodyStyles = global.getComputedStyle(document.body);
-            if (bodyStyles.backgroundColor) {
-                const metaElement = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')!;
-                metaElement.content = bodyStyles.backgroundColor;
-            }
+            // disable meta theme color, done statically in index.html
+            // if (bodyStyles.backgroundColor) {
+            //     const metaElement = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')!;
+            //     metaElement.content = bodyStyles.backgroundColor;
+            // }
             resolve();
         };
 

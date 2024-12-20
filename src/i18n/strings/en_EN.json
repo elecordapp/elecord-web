@@ -318,7 +318,7 @@
         "reset_password_title": "Reset your password",
         "server_picker_custom": "Other homeserver",
         "server_picker_description": "You can use the custom server options to sign into other Matrix servers by specifying a different homeserver URL. This allows you to use %(brand)s with an existing Matrix account on a different homeserver.",
-        "server_picker_description_matrix.org": "Join millions for free on the largest public server",
+        "server_picker_description_matrix.org": "Join for free on the largest public server",
         "server_picker_dialog_title": "Decide where your account is hosted",
         "server_picker_explainer": "Use your preferred Matrix homeserver if you have one, or host your own.",
         "server_picker_failed_validate_homeserver": "Unable to validate homeserver",
@@ -645,7 +645,7 @@
         "stop_voice_message": "Stop recording",
         "voice_message_button": "Voice Message"
     },
-    "console_dev_note": "If you know what you're doing, Element is open-source, be sure to check out our GitHub (https://github.com/vector-im/element-web/) and contribute!",
+    "console_dev_note": "If you know what you're doing, elecord is open-source, be sure to check out our GitHub (https://github.com/elecordapp/elecord-web/) and contribute!",
     "console_scam_warning": "If someone told you to copy/paste something here, there is a high likelihood you're being scammed!",
     "console_wait": "Wait!",
     "create_room": {
@@ -726,9 +726,11 @@
         "subspace_join_rule_restricted_description": "Anyone in <SpaceName/> will be able to find and join."
     },
     "credits": {
-        "default_cover_photo": "The <photo>default cover photo</photo> is © <author>Jesús Roncero</author> used under the terms of <terms>CC-BY-SA 4.0</terms>.",
-        "twemoji": "The <twemoji>Twemoji</twemoji> emoji art is © <author>Twitter, Inc and other contributors</author> used under the terms of <terms>CC-BY 4.0</terms>.",
-        "twemoji_colr": "The <colr>twemoji-colr</colr> font is © <author>Mozilla Foundation</author> used under the terms of <terms>Apache 2.0</terms>."
+        "elecord_web": "The <elecord>elecord-web</elecord> app is © <author1>hazzuk</author1> and provided under the terms of the underlying <element>element-web</element> project source code by <author2>Element</author2>. Licensed under <terms1>AGPLv3</terms1> or <terms2>GPLv3</terms2>.",
+        "elecord_logo": "The <logo>elecord logo</logo> and it's derivatives are © <author>hazzuk</author> used under the terms of the elecord <terms>logo license</terms>.",
+        "default_cover_photo": "The default cover photo is by <author>Felix Mittermeier</author> on <unsplash>Unsplash</unsplash>.",
+        "twemoji": "The <twemoji>Twemoji</twemoji> emoji art is © <author>Twitter, Inc and other contributors</author> used under the terms of the <terms>CC-BY 4.0</terms> license.",
+        "twemoji_colr": "The <colr>twemoji-colr</colr> font is © <author>Mozilla Foundation</author> used under the terms of the <terms>Apache 2.0</terms> license."
     },
     "desktop_default_device_name": "%(brand)s Desktop: %(platformName)s",
     "devtools": {
@@ -1032,11 +1034,11 @@
         "hs_blocked": "This homeserver has been blocked by its administrator.",
         "invalid_configuration_mixed_server": "Invalid configuration: a default_hs_url can't be specified along with default_server_name or default_server_config",
         "invalid_configuration_no_server": "Invalid configuration: no default server specified.",
-        "invalid_json": "Your Element configuration contains invalid JSON. Please correct the problem and reload the page.",
+        "invalid_json": "Your elecord configuration contains invalid JSON. Please correct the problem and reload the page.",
         "invalid_json_detail": "The message from the parser is: %(message)s",
         "invalid_json_generic": "Invalid JSON",
         "mau": "This homeserver has hit its Monthly Active User limit.",
-        "misconfigured": "Your Element is misconfigured",
+        "misconfigured": "Your elecord is misconfigured",
         "mixed_content": "Can't connect to homeserver via HTTP when an HTTPS URL is in your browser bar. Either use HTTPS or <a>enable unsafe scripts</a>.",
         "non_urgent_echo_failure_toast": "Your server isn't responding to some <a>requests</a>.",
         "resource_limits": "This homeserver has exceeded one of its resource limits.",
@@ -3683,8 +3685,8 @@
         "other": "And %(count)s more..."
     },
     "unsupported_browser": {
-        "description": "If you continue, some features may stop working and there is a risk that you may lose data in the future. Update your browser to continue using %(brand)s.",
-        "title": "%(brand)s does not support this browser"
+        "description": "You are using a non-standard browser. While %(brand)s supports all major modern and up-to-date browsers. Please keep in mind that some features might not work as expected when using this browser version.",
+        "title": "%(brand)s might not support this browser"
     },
     "unsupported_server_description": "This server is using an older version of Matrix. Upgrade to Matrix %(version)s to use %(brand)s without errors.",
     "unsupported_server_title": "Your server is unsupported",
@@ -3917,7 +3919,7 @@
         "you_are_presenting": "You are presenting"
     },
     "web_default_device_name": "%(appName)s: %(browserName)s on %(osName)s",
-    "welcome_to_element": "Welcome to Element",
+    "welcome_to_element": "Welcome to elecord",
     "widget": {
         "added_by": "Widget added by",
         "capabilities_dialog": {

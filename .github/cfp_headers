@@ -2,15 +2,38 @@
   ! Access-Control-Allow-Origin
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
+  X-Frame-Options: sameorigin
   Content-Security-Policy: frame-ancestors 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  permissions-policy: autoplay=(*), screen-wake-lock=(*), interest-cohort=()
+  X-Robots-Tag: noindex
+  Referrer-Policy: no-referrer-when-downgrade
+  Cache-Control: no-cache
 
 /version
   Content-Type: text/plain
+  Cache-Control: no-store
 
 /apple-app-site-association
   Content-Type: application/json
 
 /.well-known/assetlinks.json
   Content-Type: application/json
+
+/config.*.json
+  Cache-Control: no-store
+
+/config.json
+  Cache-Control: no-store
+
+/i18n
+  Cache-Control: no-cache
+
+/home
+  Cache-Control: no-store
+
+/sites
+  Cache-Control: no-store
+
+/index.html
+  Cache-Control: no-store
