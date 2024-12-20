@@ -27,15 +27,11 @@
     },
     "terms_and_conditions_links": [
         {
-            "url": "https://element.io/privacy",
+            "url": "https://github.com/elecordapp/elecord-web/blob/master/PRIVACY.md",
             "text": "Privacy Policy"
-        },
-        {
-            "url": "https://element.io/cookie-policy",
-            "text": "Cookie Policy"
         }
     ],
-    "privacy_policy_url": "https://element.io/cookie-policy",
+    "privacy_policy_url": "https://github.com/elecordapp/elecord-web/blob/master/PRIVACY.md",
     "setting_defaults": {
         "RustCrypto.staged_rollout_percent": 100,
         "use_system_theme": false,
