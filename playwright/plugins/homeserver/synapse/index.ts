@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -20,7 +20,7 @@ import { randB64Bytes } from "../../utils/rand";
 // Docker tag to use for synapse docker image.
 // We target a specific digest as every now and then a Synapse update will break our CI.
 // This digest is updated by the playwright-image-updates.yaml workflow periodically.
-const DOCKER_TAG = "develop@sha256:6b82dba715fa7ae641010b4cc5e71edaeb9cc05a50ac5b9e4ff09afa9cd2a80d";
+const DOCKER_TAG = "develop@sha256:39f94b005e87cd3042c2535c37d8d9f915a88072fe79f6283ac18977fe134321";
 
 async function cfgDirFromTemplate(opts: StartHomeserverOpts): Promise<Omit<HomeserverConfig, "dockerUrl">> {
     const templateDir = path.join(__dirname, "templates", opts.template);
@@ -144,6 +144,10 @@ export class Synapse implements Homeserver, HomeserverInstance {
         console.log(`Stopped synapse id ${id}.`);
 
         return [path.join(synapseLogsPath, "stdout.log"), path.join(synapseLogsPath, "stderr.log")];
+    }
+
+    public get baseUrl(): string {
+        return this.config.baseUrl;
     }
 
     private async registerUserInternal(

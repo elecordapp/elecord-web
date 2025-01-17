@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 import { SettingLevel } from "../../../src/settings/SettingLevel";
@@ -324,7 +324,7 @@ test.describe("Threads", () => {
             });
         });
 
-        test("can send voice messages", async ({ page, app, user }) => {
+        test("can send voice messages", { tag: ["@no-firefox", "@no-webkit"] }, async ({ page, app, user }) => {
             // Increase right-panel size, so that voice messages fit
             await page.evaluate(() => {
                 window.localStorage.setItem("mx_rhs_size", "600");
@@ -353,7 +353,7 @@ test.describe("Threads", () => {
 
     test(
         "should send location and reply to the location on ThreadView",
-        { tag: "@screenshot" },
+        { tag: ["@screenshot", "@no-firefox"] },
         async ({ page, app, bot }) => {
             const roomId = await app.client.createRoom({});
             await app.client.inviteUser(roomId, bot.credentials.userId);

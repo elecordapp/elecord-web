@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -40,12 +40,10 @@ export const test = base.extend<{
             },
         });
     },
-    config: async ({ homeserver, startHomeserverOpts, context }, use) => {
+    config: async ({ config, startHomeserverOpts, context }, use) => {
         const issuer = `http://localhost:${(startHomeserverOpts as StartHomeserverOpts).variables["MAS_PORT"]}/`;
         const wellKnown = {
-            "m.homeserver": {
-                base_url: homeserver.config.baseUrl,
-            },
+            ...config.default_server_config,
             "org.matrix.msc2965.authentication": {
                 issuer,
                 account: `${issuer}account`,
@@ -57,9 +55,7 @@ export const test = base.extend<{
             await route.fulfill({ json: wellKnown });
         });
 
-        await use({
-            default_server_config: wellKnown,
-        });
+        await use(config);
     },
 });
 

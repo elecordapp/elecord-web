@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2022 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -352,13 +352,13 @@ describe("DeviceListener", () => {
                     mockCrypto!.getCrossSigningKeyId.mockResolvedValue("abc");
                 });
 
-                it("shows set up encryption toast when user has a key backup available", async () => {
+                it("shows set up recovery toast when user has a key backup available", async () => {
                     // non falsy response
                     mockCrypto.getKeyBackupInfo.mockResolvedValue({} as unknown as KeyBackupInfo);
                     await createAndStart();
 
                     expect(SetupEncryptionToast.showToast).toHaveBeenCalledWith(
-                        SetupEncryptionToast.Kind.SET_UP_ENCRYPTION,
+                        SetupEncryptionToast.Kind.SET_UP_RECOVERY,
                     );
                 });
             });

@@ -238,7 +238,6 @@
         "oidc": {
             "error_title": "We couldn't log you in",
             "generic_auth_error": "Something went wrong during authentication. Go to the sign in page and try again.",
-            "logout_redirect_warning": "You will be redirected to your server's authentication provider to complete sign out.",
             "missing_or_invalid_stored_state": "We asked the browser to remember which homeserver you use to let you sign in, but unfortunately your browser has forgotten it. Go to the sign in page and try again."
         },
         "password_field_keep_going_prompt": "Keep going…",
@@ -916,6 +915,9 @@
             "warning": "If you didn't remove the recovery method, an attacker may be trying to access your account. Change your account password and set a new recovery method immediately in Settings."
         },
         "reset_all_button": "Forgotten or lost all recovery methods? <a>Reset all</a>",
+        "set_up_recovery": "Set up recovery",
+        "set_up_recovery_later": "Not now",
+        "set_up_recovery_toast_description": "Generate a recovery key that can be used to restore your encrypted message history in case you lose access to your devices.",
         "set_up_toast_description": "Safeguard against losing access to encrypted messages & data",
         "set_up_toast_title": "Set up Secure Backup",
         "setup_secure_backup": {
@@ -1460,8 +1462,6 @@
         "notification_settings_beta_caption": "Introducing a simpler way to change your notification settings. Customize your %(brand)s, just the way you like.",
         "notification_settings_beta_title": "Notification Settings",
         "notifications": "Enable the notifications panel in the room header",
-        "oidc_native_flow": "OIDC native authentication",
-        "oidc_native_flow_description": "⚠ WARNING: Experimental. Use OIDC native authentication when supported by the server.",
         "release_announcement": "Release announcement",
         "render_reaction_images": "Render custom images in reactions",
         "render_reaction_images_description": "Sometimes referred to as \"custom emojis\".",
@@ -2822,6 +2822,7 @@
             "inactive_sessions_list_description": "Consider signing out from old sessions (%(inactiveAgeDays)s days or older) you don't use anymore.",
             "ip": "IP address",
             "last_activity": "Last activity",
+            "manage": "Manage this session",
             "mobile_session": "Mobile session",
             "n_sessions_selected": {
                 "one": "%(count)s session selected",
