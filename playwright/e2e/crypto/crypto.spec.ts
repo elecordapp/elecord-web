@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2022-2024 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -81,7 +81,7 @@ test.describe("Cryptography", function () {
              * Verify that the `m.cross_signing.${keyType}` key is available on the account data on the server
              * @param keyType
              */
-            async function verifyKey(app: ElementAppPage, keyType: string) {
+            async function verifyKey(app: ElementAppPage, keyType: "master" | "self_signing" | "user_signing") {
                 const accountData: { encrypted: Record<string, Record<string, string>> } = await app.client.evaluate(
                     (cli, keyType) => cli.getAccountDataFromServer(`m.cross_signing.${keyType}`),
                     keyType,

@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 Suguru Hirahara
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -36,7 +36,7 @@ test.describe("General room settings tab", () => {
         await expect(settings.getByText("Show more")).toBeVisible();
     });
 
-    test("long address should not cause dialog to overflow", async ({ page, app }) => {
+    test("long address should not cause dialog to overflow", { tag: "@no-webkit" }, async ({ page, app }) => {
         const settings = await app.settings.openRoomSettings("General");
         // 1. Set the room-address to be a really long string
         const longString = "abcasdhjasjhdaj1jh1asdhasjdhajsdhjavhjksd".repeat(4);

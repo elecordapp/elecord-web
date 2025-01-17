@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -23,25 +23,14 @@ import { OAuthServer } from "./plugins/oauth_server";
 import { Crypto } from "./pages/crypto";
 import { Toasts } from "./pages/toasts";
 import { Bot, CreateBotOpts } from "./pages/bot";
-import { ProxyInstance, SlidingSyncProxy } from "./plugins/sliding-sync-proxy";
 import { Webserver } from "./plugins/webserver";
 
 // Enable experimental service worker support
 // See https://playwright.dev/docs/service-workers-experimental#how-to-enable
 process.env["PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS"] = "1";
 
+// This is deliberately quite a minimal config.json, so that we can test that the default settings actually work.
 const CONFIG_JSON: Partial<IConfigOptions> = {
-    // This is deliberately quite a minimal config.json, so that we can test that the default settings
-    // actually work.
-    //
-    // The only thing that we really *need* (otherwise Element refuses to load) is a default homeserver.
-    // We point that to a guaranteed-invalid domain.
-    default_server_config: {
-        "m.homeserver": {
-            base_url: "https://server.invalid",
-        },
-    },
-
     // The default language is set here for test consistency
     setting_defaults: {
         language: "en-GB",
@@ -60,7 +49,7 @@ interface CredentialsWithDisplayName extends Credentials {
     displayName: string;
 }
 
-export const test = base.extend<{
+export interface Fixtures {
     axe: AxeBuilder;
     checkA11y: () => Promise<void>;
 
@@ -121,14 +110,32 @@ export const test = base.extend<{
     uut?: Locator; // Unit Under Test, useful place to refer a prepared locator
     botCreateOpts: CreateBotOpts;
     bot: Bot;
-    slidingSyncProxy: ProxyInstance;
     labsFlags: string[];
     webserver: Webserver;
-}>({
-    config: CONFIG_JSON,
-    page: async ({ context, page, config, labsFlags }, use) => {
+}
+
+export const test = base.extend<Fixtures>({
+    context: async ({ context }, use, testInfo) => {
+        // We skip tests instead of using grep-invert to still surface the counts in the html report
+        test.skip(
+            testInfo.tags.includes(`@no-${testInfo.project.name.toLowerCase()}`),
+            `Test does not work on ${testInfo.project.name}`,
+        );
+        await use(context);
+    },
+    config: {}, // We merge this atop the default CONFIG_JSON in the page fixture to make extending it easier
+    page: async ({ homeserver, context, page, config, labsFlags }, use) => {
         await context.route(`http://localhost:8080/config.json*`, async (route) => {
-            const json = { ...CONFIG_JSON, ...config };
+            const json = {
+                ...CONFIG_JSON,
+                ...config,
+                default_server_config: {
+                    "m.homeserver": {
+                        base_url: homeserver.baseUrl,
+                    },
+                    ...config.default_server_config,
+                },
+            };
             json["features"] = {
                 ...json["features"],
                 // Enable the lab features
@@ -212,7 +219,7 @@ export const test = base.extend<{
                 // Ensure the language is set to a consistent value
                 window.localStorage.setItem("mx_local_settings", '{"language":"en"}');
             },
-            { baseUrl: homeserver.config.baseUrl, credentials },
+            { baseUrl: homeserver.baseUrl, credentials },
         );
         await use(page);
     },
@@ -241,6 +248,7 @@ export const test = base.extend<{
     app: async ({ page }, use) => {
         const app = new ElementAppPage(page);
         await use(app);
+        await app.cleanup();
     },
     crypto: async ({ page, homeserver, request }, use) => {
         await use(new Crypto(page, homeserver, request));
@@ -262,25 +270,6 @@ export const test = base.extend<{
         const instance = await mailhog.start();
         await use(instance);
         await mailhog.stop();
-    },
-
-    slidingSyncProxy: async ({ page, user, homeserver }, use) => {
-        const proxy = new SlidingSyncProxy(homeserver.config.dockerUrl);
-        const proxyInstance = await proxy.start();
-        const proxyAddress = `http://localhost:${proxyInstance.port}`;
-        await page.addInitScript((proxyAddress) => {
-            window.localStorage.setItem(
-                "mx_local_settings",
-                JSON.stringify({
-                    feature_sliding_sync_proxy_url: proxyAddress,
-                }),
-            );
-            window.localStorage.setItem("mx_labs_feature_feature_sliding_sync", "true");
-        }, proxyAddress);
-        await page.goto("/");
-        await page.waitForSelector(".mx_MatrixChat", { timeout: 30000 });
-        await use(proxyInstance);
-        await proxy.stop();
     },
 
     // eslint-disable-next-line no-empty-pattern

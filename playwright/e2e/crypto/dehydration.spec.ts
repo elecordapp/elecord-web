@@ -2,26 +2,24 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2024 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
 import { Locator, type Page } from "@playwright/test";
 
-import { test as base, expect } from "../../element-web-test";
+import { test as base, expect, Fixtures } from "../../element-web-test";
 import { viewRoomSummaryByName } from "../right-panel/utils";
 import { isDendrite } from "../../plugins/homeserver/dendrite";
 
-const test = base.extend({
+const test = base.extend<Fixtures>({
     // eslint-disable-next-line no-empty-pattern
     startHomeserverOpts: async ({}, use) => {
         await use("dehydration");
     },
-    config: async ({ homeserver, context }, use) => {
+    config: async ({ config, context }, use) => {
         const wellKnown = {
-            "m.homeserver": {
-                base_url: homeserver.config.baseUrl,
-            },
+            ...config.default_server_config,
             "org.matrix.msc3814": true,
         };
 
@@ -29,9 +27,7 @@ const test = base.extend({
             await route.fulfill({ json: wellKnown });
         });
 
-        await use({
-            default_server_config: wellKnown,
-        });
+        await use(config);
     },
 });
 
@@ -50,8 +46,6 @@ test.describe("Dehydration", () => {
     });
 
     test("Create dehydrated device", async ({ page, user, app }, workerInfo) => {
-        test.skip(workerInfo.project.name === "Legacy Crypto", "This test only works with Rust crypto.");
-
         // Create a backup (which will create SSSS, and dehydrated device)
 
         const securityTab = await app.settings.openUserSettings("Security & Privacy");

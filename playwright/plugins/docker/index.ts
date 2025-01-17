@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 The Matrix.org Foundation C.I.C.
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -140,8 +140,12 @@ export class Docker {
      * Detects whether the docker command is actually podman.
      * To do this, it looks for "podman" in the output of "docker --help".
      */
+    static _isPodman?: boolean;
     static async isPodman(): Promise<boolean> {
-        const { stdout } = await exec("docker", ["--help"], true);
-        return stdout.toLowerCase().includes("podman");
+        if (Docker._isPodman === undefined) {
+            const { stdout } = await exec("docker", ["--help"], true);
+            Docker._isPodman = stdout.toLowerCase().includes("podman");
+        }
+        return Docker._isPodman;
     }
 }

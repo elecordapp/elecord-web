@@ -2,7 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2023 Suguru Hirahara
 
-SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
+SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
 */
 
@@ -39,7 +39,7 @@ test.describe("FilePanel", () => {
         await expect(page.locator(".mx_FilePanel")).toBeVisible();
     });
 
-    test.describe("render", () => {
+    test.describe("render", { tag: ["@no-firefox", "@no-webkit"] }, () => {
         test("should render empty state", { tag: "@screenshot" }, async ({ page }) => {
             // Wait until the information about the empty state is rendered
             await expect(page.locator(".mx_EmptyState")).toBeVisible();
