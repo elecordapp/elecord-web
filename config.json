@@ -52,7 +52,7 @@
         "use_exclusively": true
     },
     "default_theme": "dark",
-    "disable_3pid_login": true,
+    "disable_3pid_login": false,
     "disable_guests": true,
     "force_verification": true,
     "embedded_pages": {
