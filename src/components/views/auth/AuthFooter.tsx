@@ -16,7 +16,7 @@ const AuthFooter = (): ReactElement => {
     const brandingConfig = SdkConfig.getObject("branding");
     const links = brandingConfig?.get("auth_footer_links") ?? [
         { text: "About", url: "https://elecord.app" },
-        { text: "v2.0.0", url: "https://github.com/elecordapp/elecord-web/releases" },
+        { text: "v2.0.1", url: "https://github.com/elecordapp/elecord-web/releases" },
         { text: "Privacy", url: "https://github.com/elecordapp/elecord-web/blob/master/PRIVACY.md" },
         { text: "GitHub", url: "https://github.com/elecordapp/elecord-web" },
     ];

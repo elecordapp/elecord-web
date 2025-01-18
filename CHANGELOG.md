@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.1 - 2025-01-18
+
+### Bug Fixes
+
+- fix(config): enable presence on matrix.org (#20)
+
+### Miscellaneous Tasks
+
+- chore(github): build with js-sdk master (#19)
+
+### Pull Requests
+
+- Merge pull request #21 from elecordapp/element-v1.11.90
+
 ## 2.0.0 - 2024-12-20
 
 ### Bug Fixes
