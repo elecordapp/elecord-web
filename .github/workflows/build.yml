@@ -35,10 +35,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Dev environment icons
-              if: github.event_name == 'push' && github.ref_name == 'master' || github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master'
-              run: "./scripts/dev-icons.sh"
-
             - uses: actions/setup-node@v4
               with:
                   cache: "yarn"
@@ -46,6 +42,14 @@ jobs:
 
             # Workaround for yarn install timeouts, especially on Windows
             - run: yarn config set network-timeout 300000
+
+            - name: Use dev icons
+              if: |
+                  github.event_name == 'push' && github.ref_name == 'master' ||
+                  github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master'
+              run: |
+                  chmod +x ./scripts/dev-icons.sh
+                  ./scripts/dev-icons.sh
 
             - name: Install Dependencies
               run: "./scripts/layered.sh"
