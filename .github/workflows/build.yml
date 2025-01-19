@@ -43,6 +43,14 @@ jobs:
             # Workaround for yarn install timeouts, especially on Windows
             - run: yarn config set network-timeout 300000
 
+            - name: Switch to dev environment
+              if: |
+                  github.event_name == 'push' && github.ref_name == 'master' ||
+                  github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master'
+              run: |
+                  chmod +x ./scripts/dev-env.sh
+                  ./scripts/dev-env.sh
+
             - name: Install Dependencies
               run: "./scripts/layered.sh"
 
