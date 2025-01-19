@@ -13,7 +13,7 @@ VERSION=$version yarn build
 
 # include the sample config in the tarball. Arguably this should be done by
 # `yarn build`, but it's just too painful.
-cp config.sample.json webapp/
+# cp config.sample.json webapp/
 
 # Copy any required files for deployment
 cp .github/cfp_headers webapp/_headers
