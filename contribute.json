@@ -1,13 +1,13 @@
 {
-    "name": "Element",
-    "description": "A glossy Matrix collaboration client for the web.",
+    "name": "elecord",
+    "description": "Privacy focused chat app for gamers.",
     "repository": {
-        "url": "https://github.com/element-hq/element-web",
-        "license": "AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial"
+        "url": "https://github.com/elecordapp/elecord-web",
+        "license": "AGPL-3.0-only"
     },
     "bugs": {
-        "list": "https://github.com/element-hq/element-web/issues",
-        "report": "https://github.com/element-hq/element-web/issues/new/choose"
+        "list": "https://github.com/elecordapp/elecord-web/issues",
+        "report": "https://github.com/elecordapp/elecord-web/issues/new/choose"
     },
-    "keywords": ["chat", "riot", "matrix"]
+    "keywords": ["chat", "web", "matrix"]
 }
