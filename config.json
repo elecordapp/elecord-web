@@ -22,8 +22,8 @@
         "servers": ["matrix.org", "gitter.im"]
     },
     "enable_presence_by_hs_url": {
-        "https://matrix.org": true,
-        "https://matrix-client.matrix.org": true
+        "https://matrix.org": false,
+        "https://matrix-client.matrix.org": false
     },
     "terms_and_conditions_links": [
         {
