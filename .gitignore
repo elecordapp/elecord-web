@@ -29,3 +29,29 @@ electron/pub
 /index.html
 # version file and tarball created by `npm pack` / `yarn pack`
 /git-revision.txt
+# elecord ignores
+/test
+/playwright
+/element.io
+/docs
+/docker
+/debian
+/mocks
+/.husky
+sonar-project.properties
+playwright.config.ts
+localazy.json
+jest.config.ts
+Dockerfile
+CONTRIBUTING.md
+config.sample.json
+code_style.md
+build_config.sample.yaml
+book.toml
+AUTHORS.rst
+.dockerignore
+# elecord build
+/.github/
+!/.github/cfp_headers
+!/.github/workflows/
+!/.github/workflows/build.yml
