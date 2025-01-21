@@ -2,7 +2,7 @@
 
 # elecord-web
 
-<img src="https://github.com/elecordapp/elecord-web/raw/master/banner.webp">
+<img src="https://github.com/elecordapp/elecord-web/raw/master/res/themes/element/img/logos/opengraph.png">
 
 #### Privacy focused chat app for gamers
 
