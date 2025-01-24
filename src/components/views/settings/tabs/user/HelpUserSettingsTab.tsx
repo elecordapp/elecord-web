@@ -135,36 +135,9 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
                                         {sub}
                                     </ExternalLink>
                                 ),
-                                element: (sub) => (
-                                    <ExternalLink
-                                        href="https://github.com/element-hq/element-web"
-                                        rel="noreferrer noopener"
-                                        target="_blank"
-                                    >
-                                        {sub}
-                                    </ExternalLink>
-                                ),
-                                author2: (sub) => (
-                                    <ExternalLink
-                                        href="https://element.io"
-                                        rel="noreferrer noopener"
-                                        target="_blank"
-                                    >
-                                        {sub}
-                                    </ExternalLink>
-                                ),
                                 terms1: (sub) => (
                                     <ExternalLink
                                         href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-AGPL-3.0"
-                                        rel="noreferrer noopener"
-                                        target="_blank"
-                                    >
-                                        {sub}
-                                    </ExternalLink>
-                                ),
-                                terms2: (sub) => (
-                                    <ExternalLink
-                                        href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-GPL-3.0"
                                         rel="noreferrer noopener"
                                         target="_blank"
                                     >
@@ -201,6 +174,41 @@ export default class HelpUserSettingsTab extends React.Component<IProps, IState>
                                     terms: (sub) => (
                                         <ExternalLink
                                             href="https://github.com/elecordapp/elecord-web/blob/master/LOGO_LICENSE.txt"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                },
+                            )}
+                        </li>
+                        <li>
+                            {_t(
+                                "credits|element_web",
+                                {},
+                                {
+                                    element: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/element-hq/element-web"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    author2: (sub) => (
+                                        <ExternalLink
+                                            href="https://element.io"
+                                            rel="noreferrer noopener"
+                                            target="_blank"
+                                        >
+                                            {sub}
+                                        </ExternalLink>
+                                    ),
+                                    terms1: (sub) => (
+                                        <ExternalLink
+                                            href="https://github.com/elecordapp/elecord-web/blob/master/LICENSE-AGPL-3.0"
                                             rel="noreferrer noopener"
                                             target="_blank"
                                         >
