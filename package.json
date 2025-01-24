@@ -1,13 +1,13 @@
 {
     "name": "elecord-web",
-    "version": "1.11.90",
+    "version": "2.0.1",
     "description": "Privacy focused chat app for gamers",
     "author": "hazzuk",
     "repository": {
         "type": "git",
         "url": "https://github.com/elecordapp/elecord-web"
     },
-    "license": "SEE LICENSE IN README.md",
+    "license": "AGPL-3.0-only",
     "files": [
         "lib",
         "res",
