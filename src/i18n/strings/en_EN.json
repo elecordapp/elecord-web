@@ -725,8 +725,9 @@
         "subspace_join_rule_restricted_description": "Anyone in <SpaceName/> will be able to find and join."
     },
     "credits": {
-        "elecord_web": "The <elecord>elecord-web</elecord> app is © <author1>hazzuk</author1> and provided under the terms of the underlying <element>element-web</element> project source code by <author2>Element</author2>. Licensed under <terms1>AGPLv3</terms1> or <terms2>GPLv3</terms2>.",
+        "elecord_web": "The <elecord>elecord-web</elecord> app is © <author1>hazzuk</author1> and is licensed <terms1>AGPL-3.0-only</terms1>.",
         "elecord_logo": "The <logo>elecord logo</logo> and it's derivatives are © <author>hazzuk</author> used under the terms of the elecord <terms>logo license</terms>.",
+        "element_web": "The original <element>element-web</element> project source code is © <author2>New Vector Ltd</author2> and other contributors. Used under the terms of the <terms1>AGPL-3.0-only</terms1> license.",
         "default_cover_photo": "The default cover photo is by <author>Felix Mittermeier</author> on <unsplash>Unsplash</unsplash>.",
         "twemoji": "The <twemoji>Twemoji</twemoji> emoji art is © <author>Twitter, Inc and other contributors</author> used under the terms of the <terms>CC-BY 4.0</terms> license.",
         "twemoji_colr": "The <colr>twemoji-colr</colr> font is © <author>Mozilla Foundation</author> used under the terms of the <terms>Apache 2.0</terms> license."
