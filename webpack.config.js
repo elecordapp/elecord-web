@@ -18,7 +18,7 @@ const VersionFilePlugin = require("webpack-version-file-plugin");
 
 dotenv.config();
 let ogImageUrl = process.env.RIOT_OG_IMAGE_URL;
-if (!ogImageUrl) ogImageUrl = "https://app.element.io/themes/element/img/logos/opengraph.png";
+if (!ogImageUrl) ogImageUrl = "https://web.elecord.app/themes/element/img/logos/opengraph.png";
 
 const cssThemes = {
     // CSS themes

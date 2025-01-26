@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -n "$DIST_VERSION" ]; then
+if [ -n "$DIST_VERSION" ] && [ "$GITHUB_REF_NAME" != "release" ]; then
     version=$DIST_VERSION
 else
     version=`git describe --dirty --tags || echo unknown`
