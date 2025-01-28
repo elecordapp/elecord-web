@@ -10,7 +10,8 @@ env:
     # These must be set for fetchdep.sh to get the right branch
     REPOSITORY: ${{ github.repository }}
     PR_NUMBER: ${{ github.event.pull_request.number }}
-    COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+    PR_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+    GH_COMMIT_SHA: ${{ github.sha }}
 permissions: {} # No permissions required
 jobs:
     build:
