@@ -1,5 +1,6 @@
 # git-cliff ~ configuration file
 # https://git-cliff.org/docs/configuration
+# winget install git-cliff
 
 # template set as unconventional
 # `git cliff --tag 2.3.4 -o CHANGELOG.md`
@@ -72,3 +73,5 @@ filter_commits = false
 topo_order = false
 # sort the commits inside sections by oldest/newest order
 sort_commits = "oldest"
+# use elecord's tag pattern
+tag_pattern = "v2.*"

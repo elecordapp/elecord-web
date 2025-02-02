@@ -37,6 +37,19 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
+            # When a release commit is pushed to master, manage the release branch
+            - name: Check commit message and run release script
+              env:
+                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+              if: >
+                  github.event_name == 'push' &&
+                  github.ref_name == 'master' &&
+                  startsWith(github.event.head_commit.message, 'chore(release): prepare for v')
+              run: |
+                  chmod +x ./scripts/branch-release.sh
+                  ./scripts/branch-release.sh
+                  exit 0
+
             - uses: actions/setup-node@v4
               with:
                   cache: "yarn"
@@ -45,6 +58,7 @@ jobs:
             # Workaround for yarn install timeouts, especially on Windows
             - run: yarn config set network-timeout 300000
 
+            # For pull requests, and when pushing to master, create a dev build
             - name: Switch to dev environment
               if: |
                   github.event_name == 'push' && github.ref_name == 'master' ||
@@ -161,3 +175,17 @@ jobs:
               if: ${{ steps.cf.outputs.deployment-url != '' }}
               run: |
                   echo "${{ env.cf_domain }}${{ steps.cf.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
+
+            - name: Draft GitHub release
+              uses: softprops/action-gh-release@v2
+              env:
+                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+              if: >
+                  github.event_name == 'push' &&
+                  github.ref_name == 'release' &&
+                  startsWith(github.event.head_commit.message, 'chore(release): prepare for v')
+              with:
+                  token: $GH_TOKEN
+                  draft: true
+                  files: webapp
+                  body_path: LATEST.md
