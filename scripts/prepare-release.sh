@@ -67,6 +67,8 @@ update_cliffignore() {
 generate_changelog() {
     # generate the full changelog
     git cliff 01304439eefb1af1bd169d74bbd745d335368cb8..HEAD --tag $VERSION -o CHANGELOG.md
+    git cliff 01304439eefb1af1bd169d74bbd745d335368cb8..HEAD --tag $VERSION -o LATEST.md \
+        --unreleased --strip all
 
     echo "(3/4) changelog generated"
 }
