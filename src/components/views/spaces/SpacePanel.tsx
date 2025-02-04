@@ -50,6 +50,7 @@ import IconizedContextMenu, {
 import SettingsStore from "../../../settings/SettingsStore";
 import { SettingLevel } from "../../../settings/SettingLevel";
 import UIStore from "../../../stores/UIStore";
+import AppVersionButton from "./AppVersionButton";
 import QuickSettingsButton from "./QuickSettingsButton";
 import { useSettingValue } from "../../../hooks/useSettings";
 import UserMenu from "../../structures/UserMenu";
@@ -423,6 +424,8 @@ const SpacePanel: React.FC = () => {
                                 </InnerSpacePanel>
                             )}
                         </Droppable>
+
+                        <AppVersionButton/>
 
                         <ThreadsActivityCentre displayButtonLabel={!isPanelCollapsed} />
 
