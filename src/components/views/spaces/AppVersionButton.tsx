@@ -6,6 +6,7 @@ Please see LICENSE files in the repository root for full details.
 */
 
 import React, { useState, useEffect } from "react";
+import classNames from "classnames";
 
 const AppVersionButton: React.FC = () => {
     const [version, setVersion] = useState<string | null>(null);
@@ -23,7 +24,13 @@ const AppVersionButton: React.FC = () => {
             rel="noreferrer noopener"
             className="mx_AppVersionButton"
         >
-            <p className="mx_AppVersionButton_title">BETA</p>
+            <p
+                className={classNames("mx_AppVersionButton_title", {
+                    "mx_AppVersionButton_dev": version && !version.includes(".")
+                })}
+            >
+                {version && !version.includes(".") ? "DEV" : "BETA"}
+            </p>
             <p className="mx_AppVersionButton_number">{version || "..."}</p>
         </a>
     );
