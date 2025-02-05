@@ -51,7 +51,7 @@ export default class AuthPage extends React.PureComponent<React.PropsWithChildre
             right: 0,
             bottom: 0,
             left: 0,
-            filter: "blur(40px)",
+            filter: "blur(34px)",
             background: pageStyle.background,
         };
 
@@ -63,7 +63,9 @@ export default class AuthPage extends React.PureComponent<React.PropsWithChildre
         };
 
         return (
-            <div className="mx_AuthPage" style={pageStyle}>
+            // elecord, hide background
+            // <div className="mx_AuthPage" style={pageStyle}>
+            <div className="mx_AuthPage">
                 <div className="mx_AuthPage_modal" style={modalStyle}>
                     <div className="mx_AuthPage_modalBlur" style={blurStyle} />
                     <div className="mx_AuthPage_modalContent" style={modalContentStyle}>
