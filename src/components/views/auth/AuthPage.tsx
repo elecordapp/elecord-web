@@ -63,7 +63,9 @@ export default class AuthPage extends React.PureComponent<React.PropsWithChildre
         };
 
         return (
-            <div className="mx_AuthPage" style={pageStyle}>
+            // elecord, hide background
+            // <div className="mx_AuthPage" style={pageStyle}>
+            <div className="mx_AuthPage">
                 <div className="mx_AuthPage_modal" style={modalStyle}>
                     <div className="mx_AuthPage_modalBlur" style={blurStyle} />
                     <div className="mx_AuthPage_modalContent" style={modalContentStyle}>
