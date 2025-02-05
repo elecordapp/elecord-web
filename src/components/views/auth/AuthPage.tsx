@@ -51,7 +51,7 @@ export default class AuthPage extends React.PureComponent<React.PropsWithChildre
             right: 0,
             bottom: 0,
             left: 0,
-            filter: "blur(40px)",
+            filter: "blur(34px)",
             background: pageStyle.background,
         };
 
