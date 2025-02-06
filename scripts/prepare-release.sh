@@ -79,7 +79,7 @@ commit_files() {
     # commit release preparations
     git add $PACKAGE $CHANGELOG $LATEST $CLIFFIGNORE
     git commit -m "chore(release): prepare for v$VERSION"
-    git tag "v$VERSION"
+    git tag "v$VERSION" -a -m "elecord v$VERSION"
 
     echo "(4/4) git commit created"
 }
