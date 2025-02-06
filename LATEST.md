@@ -12,6 +12,8 @@
 - fix(github): commit sha using wrong variable
 - fix(empty state): update background blur to blue
 - fix(auth page): reduce background blue intensity
+- fix(release): remove cliffignore duplicates
+- fix(release): create an annotated git tag
 
 ### Documentation
 
@@ -56,6 +58,8 @@
 - chore(cliff): add cliffignore file
 - chore(github): manage branches on release
 - chore(github): generate draft github release
+- chore(release): add latest.md changelog
+- chore(release): add command to push git changes
 
 ### Other (unconventional)
 
