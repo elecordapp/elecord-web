@@ -12,6 +12,7 @@ VERSION=$1
 PACKAGE=package.json
 CLIFFIGNORE=.cliffignore
 CHANGELOG=CHANGELOG.md
+LATEST=LATEST.md
 
 main() {
     check_files
@@ -28,6 +29,7 @@ check_files() {
         PACKAGE="../package.json"
         CLIFFIGNORE="../.cliffignore"
         CHANGELOG="../CHANGELOG.md"
+        LATEST="../LATEST.md"
         if [ ! -f "$PACKAGE" ]; then
             echo "error: could not find the apps package.json file"
             exit 1
@@ -75,7 +77,7 @@ generate_changelog() {
 
 commit_files() {
     # commit release preparations
-    git add $PACKAGE $CHANGELOG $CLIFFIGNORE
+    git add $PACKAGE $CHANGELOG $LATEST $CLIFFIGNORE
     git commit -m "chore(release): prepare for v$VERSION"
     git tag "v$VERSION"
 
