@@ -61,7 +61,7 @@ update_cliffignore() {
     done
 
     # remove duplicates in .cliffignore
-    sort -u -o $CLIFFIGNORE $CLIFFIGNORE
+    awk '!seen[$0]++' "$CLIFFIGNORE" > .cliffignore_temp && mv .cliffignore_temp "$CLIFFIGNORE"
 
     echo "(2/4) .cliffignore updated"
 }
