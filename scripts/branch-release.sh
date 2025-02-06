@@ -26,6 +26,9 @@ gh api \
     -f "new_name=release-$PREVIOUS_TAG" \
     >/dev/null
 
+# wait for github to rename the branch
+sleep 10
+
 # check renamed branch now exists
 ARCHIVED_BRANCH=$(gh api \
     --method GET \
