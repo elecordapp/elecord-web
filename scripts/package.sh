@@ -3,9 +3,14 @@
 set -e
 
 if [ -n "$DIST_VERSION" ] && [ "$GITHUB_REF_NAME" != "release" ]; then
+    # on pr/dev, use sha as version
     version=$DIST_VERSION
 else
-    version=`git describe --dirty --tags || echo unknown`
+    # on release, set semver version
+    echo "git tag is $(git describe --tags)"
+    # use package.json version number
+    version=$(jq -r '.version // "unknown"' package.json 2>/dev/null || echo "unknown")
+    echo "package.json version is $version"
 fi
 
 yarn clean
