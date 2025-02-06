@@ -20,6 +20,7 @@ main() {
     update_cliffignore
     generate_changelog
     commit_files
+    push_release
     exit 0
 }
 
@@ -41,7 +42,7 @@ update_version() {
     # update package.json version number
     sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" $PACKAGE
 
-    echo "(1/4) package.json updated"
+    echo "(1/5) package.json updated"
 }
 
 update_cliffignore() {
@@ -63,7 +64,7 @@ update_cliffignore() {
     # remove duplicates in .cliffignore
     awk '!seen[$0]++' "$CLIFFIGNORE" > .cliffignore_temp && mv .cliffignore_temp "$CLIFFIGNORE"
 
-    echo "(2/4) .cliffignore updated"
+    echo "(2/5) .cliffignore updated"
 }
 
 generate_changelog() {
@@ -72,7 +73,7 @@ generate_changelog() {
     git cliff 01304439eefb1af1bd169d74bbd745d335368cb8..HEAD --tag $VERSION -o LATEST.md \
         --unreleased --strip all
 
-    echo "(3/4) changelog generated"
+    echo "(3/5) changelog generated"
 }
 
 commit_files() {
@@ -81,7 +82,16 @@ commit_files() {
     git commit -m "chore(release): prepare for v$VERSION"
     git tag "v$VERSION" -a -m "elecord v$VERSION"
 
-    echo "(4/4) git commit created"
+    echo "(4/5) git commit created"
+}
+
+push_release() {
+    # user confirmation to push release
+    read -p "ready to push release? (y/N) " -n 1 -r
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        git push origin --follow-tags
+        echo "(5/5) release pushed"
+    fi
 }
 
 main
