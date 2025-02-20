@@ -22,6 +22,7 @@ VERSION=$version yarn build
 
 # Copy any required files for deployment
 cp .github/cfp_headers webapp/_headers
+cp LATEST.md webapp/
 
 mkdir -p dist
 cp -r webapp elecord-$version

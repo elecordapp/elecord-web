@@ -20,6 +20,7 @@ import MicOnIcon from "@vector-im/compound-design-tokens/assets/web/icons/mic-on
 import LockIcon from "@vector-im/compound-design-tokens/assets/web/icons/lock";
 import LabsIcon from "@vector-im/compound-design-tokens/assets/web/icons/labs";
 import BlockIcon from "@vector-im/compound-design-tokens/assets/web/icons/block";
+import CodeIcon from "@vector-im/compound-design-tokens/assets/web/icons/code";
 import HelpIcon from "@vector-im/compound-design-tokens/assets/web/icons/help";
 
 import TabbedView, { Tab, useActiveTabWithDefault } from "../../structures/TabbedView";
@@ -38,6 +39,7 @@ import { UIFeature } from "../../../settings/UIFeature";
 import BaseDialog from "./BaseDialog";
 import SidebarUserSettingsTab from "../settings/tabs/user/SidebarUserSettingsTab";
 import KeyboardUserSettingsTab from "../settings/tabs/user/KeyboardUserSettingsTab";
+import ChangelogUserSettingsTab from "../settings/tabs/user/ChangelogUserSettingsTab";
 import SessionManagerTab from "../settings/tabs/user/SessionManagerTab";
 import { UserTab } from "./UserTab";
 import { NonEmptyArray } from "../../../@types/common";
@@ -79,6 +81,8 @@ function titleForTabID(tabId: UserTab): React.ReactNode {
             return _t("settings|labs|dialog_title", undefined, subs);
         case UserTab.Mjolnir:
             return _t("settings|labs_mjolnir|dialog_title", undefined, subs);
+        case UserTab.Changelog:
+            return _t("settings|changelog|dialog_title", undefined, subs);
         case UserTab.Help:
             return _t("setting|help_about|dialog_title", undefined, subs);
     }
@@ -195,6 +199,17 @@ export default function UserSettingsDialog(props: IProps): JSX.Element {
                 ),
             );
         }
+
+        tabs.push(
+            new Tab(
+                UserTab.Changelog,
+                _td("settings|changelog|title"),
+                <CodeIcon />,
+                <ChangelogUserSettingsTab />,
+                "UserSettingsChangelog",
+            ),
+        );
+
         tabs.push(
             new Tab(
                 UserTab.Help,
