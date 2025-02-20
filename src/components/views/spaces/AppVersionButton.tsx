@@ -8,6 +8,10 @@ Please see LICENSE files in the repository root for full details.
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 
+import defaultDispatcher from "../../../dispatcher/dispatcher";
+import { Action } from "../../../dispatcher/actions";
+import { UserTab } from "../dialogs/UserTab";
+
 const AppVersionButton: React.FC = () => {
     const [version, setVersion] = useState<string | null>(null);
 
@@ -18,10 +22,13 @@ const AppVersionButton: React.FC = () => {
     }, []);
 
     return (
-        <a
-            href="https://github.com/elecordapp/elecord-web/releases"
-            target="_blank"
-            rel="noreferrer noopener"
+        <div
+            onClick={() => {
+                defaultDispatcher.dispatch({
+                    action: Action.ViewUserSettings,
+                    initialTabId: UserTab.Changelog,
+                });
+            }}
             className="mx_AppVersionButton"
         >
             <p
@@ -32,9 +39,8 @@ const AppVersionButton: React.FC = () => {
                 {version && !version.includes(".") ? "DEV" : "BETA"}
             </p>
             <p className="mx_AppVersionButton_number">{version || "..."}</p>
-        </a>
+        </div>
     );
 };
 
 export default AppVersionButton;
-
