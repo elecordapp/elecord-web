@@ -77,13 +77,13 @@ jobs:
             - name: Build and Package
               run: "./scripts/ci_package.sh"
 
-            - run: mv dist/elecord-*.tar.gz dist/elecord.tar.gz
+            # - run: mv dist/elecord-*.tar.gz dist/elecord.tar.gz
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v4
               with:
                   name: webapp
-                  path: dist/elecord.tar.gz
+                  path: dist/elecord-*.tar.gz
 
     deploy:
         needs: build
@@ -108,7 +108,7 @@ jobs:
                   path: .
 
             - name: Extract tarball
-              run: tar -xvzf elecord.tar.gz
+              run: tar -xvzf elecord-*.tar.gz
 
             - name: Move to dist
               run: mv elecord-*/ dist
@@ -195,5 +195,7 @@ jobs:
                   tag_name: v${{ env.VERSION }}
                   name: v${{ env.VERSION }}
                   draft: true
-                  files: webapp
-                  body_path: LATEST.md
+                  prerelease: false
+                  files: |
+                      ./elecord-*.tar.gz
+                  body_path: ./LATEST.md
