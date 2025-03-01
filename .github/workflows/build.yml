@@ -34,8 +34,6 @@ jobs:
         defaults:
             run:
                 shell: bash
-        secrets:
-            ELECORD_WEB_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
         steps:
             - uses: actions/checkout@v4
 
@@ -91,8 +89,6 @@ jobs:
         runs-on: ubuntu-24.04
         permissions: 
             pull-requests: write
-        secrets:
-            ELECORD_WEB_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
         steps:
             - name: Get app version
               run: |
