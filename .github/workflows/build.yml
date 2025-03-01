@@ -34,13 +34,13 @@ jobs:
         defaults:
             run:
                 shell: bash
+        secrets:
+            ELECORD_WEB_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
         steps:
             - uses: actions/checkout@v4
 
             # When a release commit is pushed to master, manage the release branch
             - name: Check commit message and run release script
-              env:
-                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
               if: >
                   github.event_name == 'push' &&
                   github.ref_name == 'master' &&
@@ -90,7 +90,9 @@ jobs:
         name: Deploy webapp
         runs-on: ubuntu-24.04
         permissions: 
-            pull-requests: write 
+            pull-requests: write
+        secrets:
+            ELECORD_WEB_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
         steps:
             # Download and extract the build folder
             - name: Download Artifact
@@ -178,14 +180,12 @@ jobs:
 
             - name: Draft GitHub release
               uses: softprops/action-gh-release@v2
-              env:
-                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
               if: >
                   github.event_name == 'push' &&
                   github.ref_name == 'release' &&
                   startsWith(github.event.head_commit.message, 'chore(release): prepare for v')
               with:
-                  token: $GH_TOKEN
+                  token: ${{ secrets.ELECORD_WEB_TOKEN }}
                   draft: true
                   files: webapp
                   body_path: LATEST.md
