@@ -90,6 +90,11 @@ jobs:
         permissions: 
             pull-requests: write
         steps:
+            - uses: actions/checkout@v4
+              with:
+                  sparse-checkout-cone-mode: false
+                  sparse-checkout: package.json
+
             - name: Get app version
               run: |
                   version=$(jq -r '.version' package.json)
