@@ -94,6 +94,12 @@ jobs:
         secrets:
             ELECORD_WEB_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
         steps:
+            - name: Get app version
+              run: |
+                  version=$(jq -r '.version' package.json)
+                  echo "VERSION: $version"
+                  echo "VERSION=$version" >> $GITHUB_ENV
+
             # Download and extract the build folder
             - name: Download Artifact
               uses: actions/download-artifact@v4
@@ -186,6 +192,8 @@ jobs:
                   startsWith(github.event.head_commit.message, 'chore(release): prepare for v')
               with:
                   token: ${{ secrets.ELECORD_WEB_TOKEN }}
+                  tag_name: v${{ env.VERSION }}
+                  name: v${{ env.VERSION }}
                   draft: true
                   files: webapp
                   body_path: LATEST.md
