@@ -39,6 +39,8 @@ jobs:
 
             # When a release commit is pushed to master, manage the release branch
             - name: Check commit message and run release script
+              env:
+                  GH_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
               if: >
                   github.event_name == 'push' &&
                   github.ref_name == 'master' &&
