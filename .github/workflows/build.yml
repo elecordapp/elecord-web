@@ -5,6 +5,9 @@ on:
         branches: [release, master]
     merge_group:
         types: [checks_requested]
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref || github.sha }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 # develop pushes and repository_dispatch handled in build_develop.yaml
 env:
     # These must be set for fetchdep.sh to get the right branch
@@ -40,7 +43,7 @@ jobs:
             # When a release commit is pushed to master, manage the release branch
             - name: Check commit message and run release script
               env:
-                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+                  GH_TOKEN: ${{ secrets.ELECORD_WEB_TOKEN }}
               if: >
                   github.event_name == 'push' &&
                   github.ref_name == 'master' &&
@@ -77,21 +80,32 @@ jobs:
             - name: Build and Package
               run: "./scripts/ci_package.sh"
 
-            - run: mv dist/elecord-*.tar.gz dist/elecord.tar.gz
+            # - run: mv dist/elecord-*.tar.gz dist/elecord.tar.gz
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v4
               with:
                   name: webapp
-                  path: dist/elecord.tar.gz
+                  path: dist/elecord-*.tar.gz
 
     deploy:
         needs: build
         name: Deploy webapp
         runs-on: ubuntu-24.04
         permissions: 
-            pull-requests: write 
+            pull-requests: write
         steps:
+            - uses: actions/checkout@v4
+              with:
+                  sparse-checkout-cone-mode: false
+                  sparse-checkout: package.json
+
+            - name: Get app version
+              run: |
+                  version=$(jq -r '.version' package.json)
+                  echo "VERSION: $version"
+                  echo "VERSION=$version" >> $GITHUB_ENV
+
             # Download and extract the build folder
             - name: Download Artifact
               uses: actions/download-artifact@v4
@@ -100,7 +114,7 @@ jobs:
                   path: .
 
             - name: Extract tarball
-              run: tar -xvzf elecord.tar.gz
+              run: tar -xvzf elecord-*.tar.gz
 
             - name: Move to dist
               run: mv elecord-*/ dist
@@ -178,14 +192,16 @@ jobs:
 
             - name: Draft GitHub release
               uses: softprops/action-gh-release@v2
-              env:
-                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
               if: >
                   github.event_name == 'push' &&
                   github.ref_name == 'release' &&
                   startsWith(github.event.head_commit.message, 'chore(release): prepare for v')
               with:
-                  token: $GH_TOKEN
+                  token: ${{ secrets.ELECORD_WEB_TOKEN }}
+                  tag_name: v${{ env.VERSION }}
+                  name: v${{ env.VERSION }}
                   draft: true
-                  files: webapp
-                  body_path: LATEST.md
+                  prerelease: false
+                  files: |
+                      ./elecord-*.tar.gz
+                  body_path: ./LATEST.md

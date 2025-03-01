@@ -57,5 +57,11 @@
     "force_verification": true,
     "embedded_pages": {
         "login_for_welcome": true
+    },
+    "desktop_builds": {
+        "available": true,
+        "logo": "/themes/element/img/logos/element-logo.svg",
+        "url": "https://elecord.app",
+        "url_win64": "https://packages.elecord.app/desktop/install/win32/x64/elecord%20Setup.exe"
     }
 }

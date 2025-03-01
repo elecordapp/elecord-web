@@ -8,6 +8,9 @@
 
 <br>
 
+> [!WARNING]  
+> Elecord is currently in early development, and is not yet ready for public use.
+
 > [!NOTE]
 > Elecord is a modified fork of [Element](https://element.io/), a [Matrix](https://matrix.org/) web client.
 > 
