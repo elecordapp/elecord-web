@@ -183,11 +183,13 @@ export default function UserSettingsDialog(props: IProps): JSX.Element {
             ),
         );
 
-        if (showLabsFlags() || SettingsStore.getFeatureSettingNames().some((k) => SettingsStore.getBetaInfo(k))) {
-            tabs.push(
-                new Tab(UserTab.Labs, _td("common|labs"), <LabsIcon />, <LabsUserSettingsTab />, "UserSettingsLabs"),
-            );
-        }
+        // elecord, hide labs tab
+        // if (showLabsFlags() || SettingsStore.getFeatureSettingNames().some((k) => SettingsStore.getBetaInfo(k))) {
+        //     tabs.push(
+        //         new Tab(UserTab.Labs, _td("common|labs"), <LabsIcon />, <LabsUserSettingsTab />, "UserSettingsLabs"),
+        //     );
+        // }
+
         if (mjolnirEnabled) {
             tabs.push(
                 new Tab(
