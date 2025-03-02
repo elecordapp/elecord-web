@@ -183,7 +183,7 @@ export default class CrossSigningPanel extends React.PureComponent<{}, IState> {
         } else if (crossSigningReady && crossSigningPrivateKeysInStorage) {
             summarisedStatus = (
                 <SettingsSubsectionText data-testid="summarised-status">
-                    ✅ {_t("encryption|cross_signing_ready")}
+                    🔏 {_t("encryption|cross_signing_ready")}
                 </SettingsSubsectionText>
             );
         } else if (crossSigningReady && !crossSigningPrivateKeysInStorage) {

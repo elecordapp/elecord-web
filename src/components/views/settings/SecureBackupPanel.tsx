@@ -247,7 +247,7 @@ export default class SecureBackupPanel extends React.PureComponent<{}, IState> {
 
             if (this.state.activeBackupVersion !== null) {
                 statusDescription = (
-                    <SettingsSubsectionText>✅ {_t("settings|security|key_backup_active")}</SettingsSubsectionText>
+                    <SettingsSubsectionText>🔐 {_t("settings|security|key_backup_active")}</SettingsSubsectionText>
                 );
             } else {
                 statusDescription = (
