@@ -1246,7 +1246,7 @@
         "macos": "Mac",
         "supported_browsers": "For the best experience, use <Chrome>Chrome</Chrome>, <Firefox>Firefox</Firefox>, <Edge>Edge</Edge>, or <Safari>Safari</Safari>.",
         "title": "%(brand)s does not support this browser",
-        "use_desktop_heading": "Use %(brand)s Desktop instead",
+        "use_desktop_heading": "Use %(brand)s desktop instead",
         "use_mobile_heading": "Use %(brand)s on mobile instead",
         "use_mobile_heading_after_desktop": "Or use our mobile app",
         "windows": "Windows (%(bits)s-bit)"
@@ -1642,7 +1642,7 @@
         "download_app_description": "Don’t miss a thing by taking %(brand)s with you",
         "download_app_store": "Download on the App Store",
         "download_brand": "Download %(brand)s",
-        "download_brand_desktop": "Download %(brand)s Desktop",
+        "download_brand_desktop": "Download %(brand)s desktop",
         "download_f_droid": "Get it on F-Droid",
         "download_google_play": "Get it on Google Play",
         "enable_notifications": "Turn on desktop notifications",
