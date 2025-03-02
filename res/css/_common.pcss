@@ -119,6 +119,16 @@ body {
     /* e2e verification */
     $e2e-verified-color: var(--cpd-color-blue-900) !important;
     $e2e-verified-color-light: var(--cpd-color-blue-300) !important;
+    
+    /* elecord, revert to black on-solid-primary */
+    /* share profile button */
+    .mx_ShareDialog_content > button > svg {
+        color: #101317 !important;
+    }
+    /* space invite button */
+    .mx_SpaceRoomView_landing_inviteButton:before {
+        background: #101317 !important;
+    }
 }
 
 pre,
