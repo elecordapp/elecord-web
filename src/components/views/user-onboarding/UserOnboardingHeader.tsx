@@ -30,14 +30,14 @@ export function UserOnboardingHeader({ useCase }: Props): JSX.Element {
     let description = _t("onboarding|free_e2ee_messaging_unlimited_voip", {
         brand: SdkConfig.get("brand"),
     });
-    let image: string;
+    // let image: string;
     let actionLabel: string;
 
     switch (useCase) {
         /* eslint-disable @typescript-eslint/no-require-imports */
         case UseCase.PersonalMessaging:
             title = _t("onboarding|personal_messaging_title");
-            image = require("../../../../res/img/user-onboarding/PersonalMessaging.png");
+            // image = require("../../../../res/img/user-onboarding/PersonalMessaging.png");
             actionLabel = _t("onboarding|personal_messaging_action");
             break;
         case UseCase.WorkMessaging:
@@ -45,20 +45,20 @@ export function UserOnboardingHeader({ useCase }: Props): JSX.Element {
             description = _t("onboarding|free_e2ee_messaging_unlimited_voip", {
                 brand: SdkConfig.get("brand"),
             });
-            image = require("../../../../res/img/user-onboarding/WorkMessaging.png");
+            // image = require("../../../../res/img/user-onboarding/WorkMessaging.png");
             actionLabel = _t("onboarding|work_messaging_action");
             break;
         case UseCase.CommunityMessaging:
             title = _t("onboarding|community_messaging_title");
             description = _t("onboarding|community_messaging_description");
-            image = require("../../../../res/img/user-onboarding/CommunityMessaging.png");
+            // image = require("../../../../res/img/user-onboarding/CommunityMessaging.png");
             actionLabel = _t("onboarding|community_messaging_action");
             break;
         default:
             title = _t("onboarding|welcome_to_brand", {
                 brand: SdkConfig.get("brand"),
             });
-            image = require("../../../../res/img/user-onboarding/PersonalMessaging.png");
+            // image = require("../../../../res/img/user-onboarding/PersonalMessaging.png");
             actionLabel = _t("onboarding|personal_messaging_action");
             break;
         /* eslint-enable @typescript-eslint/no-require-imports */
@@ -76,7 +76,7 @@ export function UserOnboardingHeader({ useCase }: Props): JSX.Element {
                     {actionLabel}
                 </AccessibleButton>
             </div>
-            <img className="mx_UserOnboardingHeader_image" src={image} alt="" />
+            <img className="mx_UserOnboardingHeader_image" src="/themes/element/img/logos/element-logo.svg" alt="" />
         </div>
     );
 }
