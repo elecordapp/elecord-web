@@ -13,6 +13,8 @@ Write-Host "Yarn install completed." -ForegroundColor Cyan
 
 # build the app
 yarn build
+# copy LATEST.md to webapp
+Copy-Item -Path "$(Get-Location)\LATEST.md" -Destination "$(Get-Location)\webapp\LATEST.md"
 Write-Host "Yarn build completed." -ForegroundColor Cyan
 
 # start a Python HTTP server to serve webapp/index.html
