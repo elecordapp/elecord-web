@@ -360,6 +360,10 @@ export class MessageComposer extends React.Component<IProps, IState> {
     };
 
     private renderPlaceholderText = (): string => {
+        // elecord, dynamic placeholder
+        // null check before accessing room name
+        const roomName = this.props.room?.name || "";
+
         if (this.props.replyToEvent) {
             const replyingToThread = this.props.relation?.rel_type === THREAD_RELATION_TYPE.name;
             if (replyingToThread && this.props.e2eStatus) {
@@ -373,9 +377,9 @@ export class MessageComposer extends React.Component<IProps, IState> {
             }
         } else {
             if (this.props.e2eStatus) {
-                return _t("composer|placeholder_encrypted");
+                return _t("composer|placeholder_encrypted", { roomName });
             } else {
-                return _t("composer|placeholder");
+                return _t("composer|placeholder", { roomName });
             }
         }
     };
