@@ -7,17 +7,19 @@ Please see LICENSE files in the repository root for full details.
 */
 
 .mx_ServerPicker {
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     padding-bottom: $spacing-16;
-    border-bottom: 1px solid rgba(141, 151, 165, 0.2);
+    border: 1px solid rgba(161, 161, 161, 20%);
     display: grid;
     grid-template-columns: auto min-content;
     grid-template-rows: auto auto auto;
     font: var(--cpd-font-body-md-regular);
+    padding: 16px;
+    border-radius: 8px;
 
     > h2 {
         font-weight: var(--cpd-font-weight-semibold);
-        margin: 0 0 20px;
+        margin: 0 0 12px;
         grid-column: 1;
         grid-row: 1;
     }
@@ -57,6 +59,11 @@ Please see LICENSE files in the repository root for full details.
         overflow: hidden;
         text-overflow: ellipsis;
         margin-right: 8px;
+        background-color: var(--cpd-color-blue-900);
+        width: fit-content;
+        color: #ffffff;
+        border-radius: 34px;
+        padding: 2px 10px;
     }
 
     .mx_ServerPicker_change {
@@ -65,9 +72,9 @@ Please see LICENSE files in the repository root for full details.
     }
 
     .mx_ServerPicker_desc {
-        margin-top: 4px;
+        margin-top: 7px;
         color: $tertiary-content;
-        grid-column: 1 / 2;
+        grid-column: 1 / span 2;
         grid-row: 3;
     }
 }
