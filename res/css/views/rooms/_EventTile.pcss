@@ -252,7 +252,17 @@ $left-gutter: 64px;
 
         &:hover {
             .mx_EventTile_line {
-                background-color: $event-selected-color;
+                /* elecord, animated hover */
+                /* background-color: $event-selected-color; */
+                background-color: #05060938 !important;
+                transition: background-color 0s ease, transform 0.1s ease;
+                transform: scale(1.01);
+                box-shadow: 0 0px 8px rgba(0, 0, 0, 0.15);
+            }
+            .mx_EventTile_avatar {
+                /* elecord, animated hover */
+                transition: transform 0.1s ease;
+                transform: scale(1.01);
             }
         }
     }
@@ -566,9 +576,13 @@ $left-gutter: 64px;
             }
 
             .mx_EventTile_avatar {
-                top: initial;
                 inset-inline-start: $left-gutter;
                 height: 14px;
+
+                /* elecord, animated hover */
+                /* top: initial; */
+                top: 20px;
+                position: relative;
             }
 
             .mx_EventTile_line {
