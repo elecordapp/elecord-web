@@ -389,7 +389,7 @@ export const SETTINGS: Settings = {
             feedbackLabel: "video-room-feedback",
             feedbackSubheading: _td("labs|video_rooms_feedbackSubheading"),
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            image: require("../../res/img/betas/video_rooms.png"),
+            // image: require("../../res/img/betas/video_rooms.png"),
             requiresRefresh: true,
         },
     },

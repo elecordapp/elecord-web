@@ -72,6 +72,9 @@ Please see LICENSE files in the repository root for full details.
     cursor: pointer;
     user-select: none;
 
+    /* elecord, avoid confusing FacePile as active members */
+    filter: grayscale(1);
+
     /* RoomAvatar doesn't pass classes down to avatar
     So set style here
     using div because compound classes are not stable */
