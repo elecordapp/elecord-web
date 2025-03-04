@@ -30,6 +30,23 @@ Please see LICENSE files in the repository root for full details.
     bottom: 30px;
 }
 
+.mx_LoginSplashView_splashIcon {
+    opacity: 0.9;
+    animation: loginSplashBreathing 10s ease-in-out infinite;
+
+    @keyframes loginSplashBreathing {
+        0% {
+            opacity: 0.9;
+        }
+        50% {
+            opacity: 0.6;
+        }
+        100% {
+            opacity: 0.9;
+        }
+    }
+}
+
 .mx_LoginSplashView_syncError {
     color: $accent-fg-color;
     background-color: #df2a8b; /* Only used here */
