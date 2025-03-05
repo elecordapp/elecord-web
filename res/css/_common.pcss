@@ -108,6 +108,27 @@ body {
     /* see https://github.com/vector-im/element-web/issues/11425 */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* elecord, overwrite colour scheme */
+    --cpd-color-bg-accent-rest: var(--cpd-color-blue-900) !important;
+    --cpd-color-bg-accent-hovered: var(--cpd-color-blue-1000) !important;
+    --cpd-color-bg-accent-pressed: var(--cpd-color-blue-1100) !important;
+    --cpd-color-text-action-accent: var(--cpd-color-blue-900) !important;
+    --cpd-color-icon-accent-tertiary: var(--cpd-color-blue-800) !important;
+    --cpd-color-icon-on-solid-primary: var(--cpd-color-gray-1400) !important;
+    /* e2e verification */
+    $e2e-verified-color: var(--cpd-color-blue-900) !important;
+    $e2e-verified-color-light: var(--cpd-color-blue-300) !important;
+    
+    /* elecord, revert to black on-solid-primary */
+    /* share profile button */
+    .mx_ShareDialog_content > button > svg {
+        color: #101317 !important;
+    }
+    /* space invite button */
+    .mx_SpaceRoomView_landing_inviteButton:before {
+        background: #101317 !important;
+    }
 }
 
 pre,
