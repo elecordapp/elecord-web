@@ -7,12 +7,16 @@ Please see LICENSE files in the repository root for full details.
 */
 
 .mx_LinkPreviewWidget {
-    margin: $spacing-16 0 $spacing-16 auto;
     display: flex;
     column-gap: $spacing-4;
     border-inline-start: 2px solid $preview-widget-bar-color;
-    border-radius: 2px;
     color: $info-plinth-fg-color;
+
+    /* elecord, link preview background */
+    margin: 8px 0 16px auto;
+    padding: 8px 0px;
+    border-radius: 4px;
+    background: #16191e;
 
     .mx_MatrixChat_useCompactLayout & {
         margin-top: 6px;
