@@ -7,10 +7,10 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Com
 Please see LICENSE files in the repository root for full details.
 */
 
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { UNSTABLE_MSC4133_EXTENDED_PROFILES } from "matrix-js-sdk/src/matrix";
 
-import { _t, _td, TranslationKey } from "../languageHandler";
+import { _t, _td, type TranslationKey } from "../languageHandler";
 import DeviceIsolationModeController from "./controllers/DeviceIsolationModeController.ts";
 import {
     NotificationBodyEnabledController,
@@ -21,7 +21,7 @@ import ReloadOnChangeController from "./controllers/ReloadOnChangeController";
 import FontSizeController from "./controllers/FontSizeController";
 import SystemFontController from "./controllers/SystemFontController";
 import { SettingLevel } from "./SettingLevel";
-import SettingController from "./controllers/SettingController";
+import type SettingController from "./controllers/SettingController";
 import { IS_MAC } from "../Keyboard";
 import UIFeatureController from "./controllers/UIFeatureController";
 import { UIFeature } from "./UIFeature";
@@ -35,16 +35,15 @@ import SlidingSyncController from "./controllers/SlidingSyncController";
 import { FontWatcher } from "./watchers/FontWatcher";
 import ServerSupportUnstableFeatureController from "./controllers/ServerSupportUnstableFeatureController";
 import { WatchManager } from "./WatchManager";
-import { CustomTheme } from "../theme";
+import { type CustomTheme } from "../theme";
 import AnalyticsController from "./controllers/AnalyticsController";
 import FallbackIceServerController from "./controllers/FallbackIceServerController";
-import { UseCase } from "./enums/UseCase.tsx";
-import { IRightPanelForRoomStored } from "../stores/right-panel/RightPanelStoreIPanelState.ts";
-import { ILayoutSettings } from "../stores/widgets/WidgetLayoutStore.ts";
-import { ReleaseAnnouncementData } from "../stores/ReleaseAnnouncementStore.ts";
-import { Json, JsonValue } from "../@types/json.ts";
-import { RecentEmojiData } from "../emojipicker/recent.ts";
-import { Assignable } from "../@types/common.ts";
+import { type IRightPanelForRoomStored } from "../stores/right-panel/RightPanelStoreIPanelState.ts";
+import { type ILayoutSettings } from "../stores/widgets/WidgetLayoutStore.ts";
+import { type ReleaseAnnouncementData } from "../stores/ReleaseAnnouncementStore.ts";
+import { type Json, type JsonValue } from "../@types/json.ts";
+import { type RecentEmojiData } from "../emojipicker/recent.ts";
+import { type Assignable } from "../@types/common.ts";
 
 export const defaultWatchManager = new WatchManager();
 
@@ -206,6 +205,7 @@ export interface Settings {
     "feature_location_share_live": IFeature;
     "feature_dynamic_room_predecessors": IFeature;
     "feature_render_reaction_images": IFeature;
+    "feature_new_room_list": IFeature;
     "feature_ask_to_join": IFeature;
     "feature_notifications": IFeature;
     // These are in the feature namespace but aren't actually features
@@ -280,7 +280,6 @@ export interface Settings {
     "analyticsOptIn": IBaseSetting<boolean>;
     "pseudonymousAnalyticsOptIn": IBaseSetting<boolean | null>;
     "deviceClientInformationOptIn": IBaseSetting<boolean>;
-    "FTUE.useCaseSelection": IBaseSetting<UseCase | null>;
     "Registration.mobileRegistrationHelper": IBaseSetting<boolean>;
     "autocompleteDelay": IBaseSetting<number>;
     "readMarkerInViewThresholdMs": IBaseSetting<number>;
@@ -308,7 +307,6 @@ export interface Settings {
         deny?: string[];
     }>;
     "breadcrumbs": IBaseSetting<boolean>;
-    "FTUE.userOnboardingButton": IBaseSetting<boolean>;
     "showHiddenEventsInTimeline": IBaseSetting<boolean>;
     "lowBandwidth": IBaseSetting<boolean>;
     "fallbackICEServerAllowed": IBaseSetting<boolean | null>;
@@ -625,6 +623,15 @@ export const SETTINGS: Settings = {
         supportedLevels: LEVELS_DEVICE_ONLY_SETTINGS_WITH_CONFIG_PRIORITISED,
         supportedLevelsAreOrdered: true,
         default: false,
+    },
+    "feature_new_room_list": {
+        supportedLevels: LEVELS_DEVICE_ONLY_SETTINGS_WITH_CONFIG_PRIORITISED,
+        labsGroup: LabGroup.Ui,
+        displayName: _td("labs|new_room_list"),
+        description: _td("labs|under_active_development"),
+        isFeature: true,
+        default: false,
+        controller: new ReloadOnChangeController(),
     },
     /**
      * With the transition to Compound we are moving to a base font size
@@ -992,10 +999,6 @@ export const SETTINGS: Settings = {
         displayName: _td("settings|security|record_session_details"),
         default: false,
     },
-    "FTUE.useCaseSelection": {
-        supportedLevels: LEVELS_ACCOUNT_SETTINGS,
-        default: null,
-    },
     "Registration.mobileRegistrationHelper": {
         supportedLevels: [SettingLevel.CONFIG],
         default: false,
@@ -1084,11 +1087,6 @@ export const SETTINGS: Settings = {
     "breadcrumbs": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td("settings|show_breadcrumbs"),
-        default: true,
-    },
-    "FTUE.userOnboardingButton": {
-        supportedLevels: LEVELS_ACCOUNT_SETTINGS,
-        displayName: _td("settings|preferences|show_checklist_shortcuts"),
         default: true,
     },
     "showHiddenEventsInTimeline": {
