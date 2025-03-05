@@ -9,6 +9,12 @@ Please see LICENSE files in the repository root for full details.
 .mx_CryptographyPanel_sessionInfo {
     padding: 0em;
     border-spacing: 0px;
+
+    /* elecord, fix element alignment */
+    tbody {
+        display: flex;
+        flex-direction: column;
+    }
 }
 .mx_CryptographyPanel_sessionInfo > tr {
     vertical-align: baseline;

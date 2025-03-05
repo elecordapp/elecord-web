@@ -49,8 +49,9 @@ Please see LICENSE files in the repository root for full details.
             flex-grow: 0;
 
             display: flex;
-            align-items: center;
-            justify-content: center;
+            /* elecord, alignment fix */
+            /* align-items: center;
+            justify-content: center; */
 
             box-sizing: border-box;
             height: $font-16px;
@@ -60,6 +61,9 @@ Please see LICENSE files in the repository root for full details.
             border: 1px solid $radio-circle-color;
             border-radius: $font-16px;
 
+            /* elecord, alignment fix */
+            transform: translate(0%, -23%);
+
             > div {
                 box-sizing: border-box;
 
@@ -67,6 +71,9 @@ Please see LICENSE files in the repository root for full details.
                 width: $font-8px;
 
                 border-radius: $font-8px;
+
+                /* elecord, alignment fix */
+                transform: translate(38%, 38%);
             }
         }
 
