@@ -39,6 +39,7 @@ electron/pub
 /debian
 /mocks
 /.husky
+/__mocks__
 sonar-project.properties
 playwright.config.ts
 localazy.json
@@ -51,6 +52,8 @@ build_config.sample.yaml
 book.toml
 AUTHORS.rst
 .dockerignore
+knip.ts
+developer_guide.md
 # elecord build
 /.github/
 !/.github/cfp_headers
