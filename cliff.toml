@@ -22,7 +22,7 @@ body = """
     ## Unreleased
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | upper_first }}
+    ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
@@ -62,18 +62,18 @@ filter_unconventional = true
 split_commits = false
 # regex for parsing and grouping commits
 commit_parsers = [
-    { message = "^Merge", group = "🗃️ Pull Requests" },
     { message = "^feat", group = "<!-- 0 -->🚀 Features" },
     { message = "^fix", group = "<!-- 1 -->🐛 Bug Fixes" },
-    { message = "^doc", group = "<!-- 7 -->📖 Documentation" },
-    { message = "^perf", group = "<!-- 5 -->⚡ Performance" },
-    { message = "^refactor", group = "<!-- 6 -->🔧 Refactor" },
-    { message = "^style", group = "<!-- 3 -->🎨 Styling" },
-    { message = "^test", group = "<!-- 8 -->🧪 Testing" },
+    { message = "^style", group = "<!-- 2 -->🎨 Styling" },
+    { body = ".*security", group = "<!-- 3 -->🔒 Security" },
+    { message = "^perf", group = "<!-- 4 -->⚡ Performance" },
+    { message = "^refactor", group = "<!-- 5 -->🔧 Refactor" },
+    { message = "^doc", group = "<!-- 6 -->📖 Documentation" },
+    { message = "^test", group = "<!-- 7 -->🧪 Testing" },
     { message = "^chore\\(release\\): prepare for", skip = true },
-    { message = "^chore", group = "<!-- 9 -->⚙️ Miscellaneous" },
-    { body = ".*security", group = "<!-- 4 -->🔒 Security" },
-    { body = ".*", group = "Other (unconventional)" },
+    { message = "^chore", group = "<!-- 8 -->⚙️ Miscellaneous" },
+    { message = "^Merge", group = "<!-- 9 -->🗃️ Pull Requests" },
+    { body = ".*", group = "<!-- X -->Other (unconventional)" },
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = false

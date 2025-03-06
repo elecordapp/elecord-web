@@ -6,7 +6,7 @@ Also added in this release is a new changelog tab (which you can quickly access 
 
 Outside of the app, you can now find the apps website, with a newly created roadmap: [elecord.app](https://elecord.app)
 
-### <!-- 0 -->🚀 Features
+### 🚀 Features
 
 - *(appversion)* Add button hover styling
 - *(auth page)* Add modal blur animation
@@ -28,7 +28,7 @@ Outside of the app, you can now find the apps website, with a newly created road
 - *(theme)* Update theme-color
 
 
-### <!-- 1 -->🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - *(crypto panel)* Session info not aligned
 - *(desktop link)* Still set as element.io
@@ -43,13 +43,13 @@ Outside of the app, you can now find the apps website, with a newly created road
 - *(theme)* Revert to black on-solid-primary
 
 
-### <!-- 7 -->📖 Documentation
+### 📖 Documentation
 
 - *(readme)* Add early development warning
 - Create upstream merge guide
 
 
-### <!-- 9 -->⚙️ Miscellaneous
+### ⚙️ Miscellaneous
 
 - *(build)* Add local environment build script
 - *(build)* Copy changelog in windows script

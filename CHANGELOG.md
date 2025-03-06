@@ -4,7 +4,7 @@ All notable changes to elecord-web will be documented in this file.
 
 ## 2.2.0 - 2025-03-06
 
-### <!-- 0 -->🚀 Features
+### 🚀 Features
 
 - *(appversion)* Add button hover styling
 - *(auth page)* Add modal blur animation
@@ -26,7 +26,7 @@ All notable changes to elecord-web will be documented in this file.
 - *(theme)* Update theme-color
 
 
-### <!-- 1 -->🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - *(crypto panel)* Session info not aligned
 - *(desktop link)* Still set as element.io
@@ -41,13 +41,13 @@ All notable changes to elecord-web will be documented in this file.
 - *(theme)* Revert to black on-solid-primary
 
 
-### <!-- 7 -->📖 Documentation
+### 📖 Documentation
 
 - *(readme)* Add early development warning
 - Create upstream merge guide
 
 
-### <!-- 9 -->⚙️ Miscellaneous
+### ⚙️ Miscellaneous
 
 - *(build)* Add local environment build script
 - *(build)* Copy changelog in windows script
@@ -66,7 +66,7 @@ All notable changes to elecord-web will be documented in this file.
 
 ## 2.1.0 - 2025-02-06
 
-### <!-- 0 -->🚀 Features
+### 🚀 Features
 
 - *(appversion)* Add version number button
 - *(appversion)* Style version number button
@@ -80,7 +80,7 @@ All notable changes to elecord-web will be documented in this file.
 - *(roomtile)* Rounded rooms styling
 
 
-### <!-- 1 -->🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - *(auth page)* Reduce background blue intensity
 - *(authfooter)* Don't use a prefix for versioning
@@ -96,12 +96,12 @@ All notable changes to elecord-web will be documented in this file.
 - *(webpack.config)* Switch domain to elecord
 
 
-### <!-- 7 -->📖 Documentation
+### 📖 Documentation
 
 - *(readme)* Add copyright and license texts
 
 
-### <!-- 9 -->⚙️ Miscellaneous
+### ⚙️ Miscellaneous
 
 - *(cliff)* Filter tag pattern for changelog
 - *(cliff)* Add cliffignore file
@@ -133,19 +133,19 @@ All notable changes to elecord-web will be documented in this file.
 
 ## 2.0.1 - 2025-01-18
 
-### <!-- 1 -->🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - *(config)* Enable presence on matrix.org (#20)
 
 
-### <!-- 9 -->⚙️ Miscellaneous
+### ⚙️ Miscellaneous
 
 - *(github)* Build with js-sdk master (#19)
 
 
 ## 2.0.0 - 2024-12-20
 
-### <!-- 0 -->🚀 Features
+### 🚀 Features
 
 - *(backdrop)* Hide background profile blur
 - *(config)* Update config values
@@ -170,7 +170,7 @@ All notable changes to elecord-web will be documented in this file.
 - Add elecord images
 
 
-### <!-- 1 -->🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - *(changelog)* Update to elecord
 - *(config)* Correct config values
@@ -187,20 +187,20 @@ All notable changes to elecord-web will be documented in this file.
 - *(version)* Remove settings version v prefix
 
 
-### <!-- 6 -->🔧 Refactor
+### 🔧 Refactor
 
 - *(credits)* Move elecord legal text
 - *(icons)* Remove wrapping div
 
 
-### <!-- 7 -->📖 Documentation
+### 📖 Documentation
 
 - *(readme)* Update readme for elecord
 - *(readme)* Add element and matrix links
 - *(readme)* Add spacing below banner
 
 
-### <!-- 9 -->⚙️ Miscellaneous
+### ⚙️ Miscellaneous
 
 - *(build)* Rename build to elecord
 - *(build)* Create app config
