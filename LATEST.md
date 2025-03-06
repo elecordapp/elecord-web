@@ -1,80 +1,68 @@
-## 2.1.0 - 2025-02-06
+## 2.2.0 - 2025-03-06
 
-### Bug Fixes
+**elecord v2.2.0** is a feature release, bringing with it the long overdue elecord desktop app. Installing the desktop app means you'll continue to get automatic updates, but also enhanced functionality. Being able to search messages and browse files inside your private end-to-end encrypted rooms.
 
-- fix(config): allow 3pid logins (#22)
-- fix(github): dev icons script not executable
-- fix(github): remove sample config from build
-- fix(settings): remove static version number
-- fix(webpack.config): switch domain to elecord
-- fix(authfooter): don't use a prefix for versioning
-- fix(github): use latest commit sha
-- fix(github): commit sha using wrong variable
-- fix(empty state): update background blur to blue
-- fix(auth page): reduce background blue intensity
-- fix(release): remove cliffignore duplicates
-- fix(release): create an annotated git tag
+Also added in this release is a new changelog tab (which you can quickly access via the bottom left version button) showing you all the new changes in one place. Plus, there are lots of visual improvements and theme changes, to give you an even more enjoyable, and more user friendly experience.
 
-### Documentation
+Outside of the app, you can now find the apps website, with a newly created roadmap: [elecord.app](https://elecord.app)
 
-- docs(readme): add copyright and license texts
+### <!-- 0 -->🚀 Features
 
-### Features
+- *(appversion)* Add button hover styling
+- *(auth page)* Add modal blur animation
+- *(auth page)* Refine server picker styling
+- *(auth page)* Add repeating background pattern
+- *(changelog tab)* Create changelog settings page
+- *(homepage)* Increase centre icon size
+- *(labs)* Hide setting tab
+- *(link preview)* Better link highlighting
+- *(message composer)* Display dynamic placeholder
+- *(message composer)* Add bubble styling
+- *(onboarding)* Use elecord icon for header image
+- *(room header)* Add greyscale to facepile
+- *(search)* Style e2ee search warning
+- *(security settings)* Change emojis to padlocks
+- *(theme)* Change accent colours
+- *(theme)* Add border to encryption badge
+- *(theme)* Update fallback accent colours
+- *(theme)* Update theme-color
 
-- feat(leftpanel): hide explore button
-- feat(roomtile): rounded rooms styling
-- feat(icons): add dev env icons
-- feat(authfooter): dynamically display app version
-- feat(appversion): add version number button
-- feat(appversion): style version number button
-- feat(appversion): display 'dev' for dev builds
-- feat(event tile): reduce e2ee icon visibility
-- feat(auth page): use static background colour
-- feat(room list header): hide plus button
 
-### Miscellaneous Tasks
+### <!-- 1 -->🐛 Bug Fixes
 
-- chore(github): build with dev env icons
-- chore(github): switch app title on dev
-- chore: remove element's ./test directory
-- chore: remove element's ./playwright directory
-- chore: remove element's ./element.io directory
-- chore: remove element's ./docs directory
-- chore: remove element's ./docker directory
-- chore: remove element's ./debian directory
-- chore: remove element's ./__mocks__ directory
-- chore: remove element's ./.husky directory
-- chore(contribute): update details to elecord
-- chore: remove unnecessary element support files
-- chore(gitignore): add removed files/dirs
-- chore: remove ./knip.ts config
-- chore(readme): replace banner image
-- chore(credits): update legal texts
-- chore(package.json): change values to elecord
-- chore(scripts): shorten git version to match github
-- chore(scripts): on release use standard version
-- chore(cliff): filter tag pattern for changelog
-- chore(scripts): automate release prep process
-- chore(cliff): add cliffignore file
-- chore(github): manage branches on release
-- chore(github): generate draft github release
-- chore(release): add latest.md changelog
-- chore(release): add command to push git changes
+- *(crypto panel)* Session info not aligned
+- *(desktop link)* Still set as element.io
+- *(desktop strings)* Not using correct capitalisation
+- *(github)* Release version unknown
+- *(github)* Wrangler uses elecord package.json
+- *(members list)* Search box too low
+- *(radio button)* Centre icon not aligned
+- *(release)* Branch management errors
+- *(search)* Icon has bad contrast
+- *(search box)* Height changes on focus
+- *(theme)* Revert to black on-solid-primary
 
-### Other (unconventional)
 
-- Revert "fix(config): enable presence on matrix.org (#20)"
+### <!-- 7 -->📖 Documentation
 
-### Pull Requests
+- *(readme)* Add early development warning
+- Create upstream merge guide
 
-- Merge pull request #23 from elecordapp/room-navigation-styling
-- Merge pull request #24 from elecordapp/dev-environment-icon
-- Merge pull request #25 from elecordapp/element-files-cleanup
-- Merge pull request #26 from elecordapp/license-text
-- Merge pull request #27 from elecordapp/versioning-refactor
-- Merge pull request #29 from elecordapp/versioning-refactor
-- Merge pull request #28 from elecordapp/release-automation
-- Merge pull request #30 from elecordapp/revert-20-matrix-org-presence
-- Merge pull request #31 from elecordapp/app-version-button
-- Merge pull request #32 from elecordapp/base-styling-changes
+
+### <!-- 9 -->⚙️ Miscellaneous
+
+- *(build)* Add local environment build script
+- *(build)* Copy changelog in windows script
+- *(config)* Add desktop app values
+- *(desktop strings)* Adjust capitalisation
+- *(gitcliff)* Update changelog config
+- *(github)* Update yarn.lock
+- *(github)* Update secrets definitions
+- *(github)* Use app version for github release
+- *(github)* Use full version on artifact files
+- *(github)* Remove secrets definitions
+- *(github)* Checkout repo for version check
+- *(github)* Revert secret removal
+- *(github)* Add concurrency config to build
+
 

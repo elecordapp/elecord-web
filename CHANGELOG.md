@@ -1,203 +1,239 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to elecord-web will be documented in this file.
+
+## 2.2.0 - 2025-03-06
+
+### <!-- 0 -->🚀 Features
+
+- *(appversion)* Add button hover styling
+- *(auth page)* Add modal blur animation
+- *(auth page)* Refine server picker styling
+- *(auth page)* Add repeating background pattern
+- *(changelog tab)* Create changelog settings page
+- *(homepage)* Increase centre icon size
+- *(labs)* Hide setting tab
+- *(link preview)* Better link highlighting
+- *(message composer)* Display dynamic placeholder
+- *(message composer)* Add bubble styling
+- *(onboarding)* Use elecord icon for header image
+- *(room header)* Add greyscale to facepile
+- *(search)* Style e2ee search warning
+- *(security settings)* Change emojis to padlocks
+- *(theme)* Change accent colours
+- *(theme)* Add border to encryption badge
+- *(theme)* Update fallback accent colours
+- *(theme)* Update theme-color
+
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- *(crypto panel)* Session info not aligned
+- *(desktop link)* Still set as element.io
+- *(desktop strings)* Not using correct capitalisation
+- *(github)* Release version unknown
+- *(github)* Wrangler uses elecord package.json
+- *(members list)* Search box too low
+- *(radio button)* Centre icon not aligned
+- *(release)* Branch management errors
+- *(search)* Icon has bad contrast
+- *(search box)* Height changes on focus
+- *(theme)* Revert to black on-solid-primary
+
+
+### <!-- 7 -->📖 Documentation
+
+- *(readme)* Add early development warning
+- Create upstream merge guide
+
+
+### <!-- 9 -->⚙️ Miscellaneous
+
+- *(build)* Add local environment build script
+- *(build)* Copy changelog in windows script
+- *(config)* Add desktop app values
+- *(desktop strings)* Adjust capitalisation
+- *(gitcliff)* Update changelog config
+- *(github)* Update yarn.lock
+- *(github)* Update secrets definitions
+- *(github)* Use app version for github release
+- *(github)* Use full version on artifact files
+- *(github)* Remove secrets definitions
+- *(github)* Checkout repo for version check
+- *(github)* Revert secret removal
+- *(github)* Add concurrency config to build
+
 
 ## 2.1.0 - 2025-02-06
 
-### Bug Fixes
+### <!-- 0 -->🚀 Features
 
-- fix(config): allow 3pid logins (#22)
-- fix(github): dev icons script not executable
-- fix(github): remove sample config from build
-- fix(settings): remove static version number
-- fix(webpack.config): switch domain to elecord
-- fix(authfooter): don't use a prefix for versioning
-- fix(github): use latest commit sha
-- fix(github): commit sha using wrong variable
-- fix(empty state): update background blur to blue
-- fix(auth page): reduce background blue intensity
-- fix(release): remove cliffignore duplicates
-- fix(release): create an annotated git tag
+- *(appversion)* Add version number button
+- *(appversion)* Style version number button
+- *(appversion)* Display 'dev' for dev builds
+- *(auth page)* Use static background colour
+- *(authfooter)* Dynamically display app version
+- *(event tile)* Reduce e2ee icon visibility
+- *(icons)* Add dev env icons
+- *(leftpanel)* Hide explore button
+- *(room list header)* Hide plus button
+- *(roomtile)* Rounded rooms styling
 
-### Documentation
 
-- docs(readme): add copyright and license texts
+### <!-- 1 -->🐛 Bug Fixes
 
-### Features
+- *(auth page)* Reduce background blue intensity
+- *(authfooter)* Don't use a prefix for versioning
+- *(config)* Allow 3pid logins (#22)
+- *(empty state)* Update background blur to blue
+- *(github)* Dev icons script not executable
+- *(github)* Remove sample config from build
+- *(github)* Use latest commit sha
+- *(github)* Commit sha using wrong variable
+- *(release)* Remove cliffignore duplicates
+- *(release)* Create an annotated git tag
+- *(settings)* Remove static version number
+- *(webpack.config)* Switch domain to elecord
 
-- feat(leftpanel): hide explore button
-- feat(roomtile): rounded rooms styling
-- feat(icons): add dev env icons
-- feat(authfooter): dynamically display app version
-- feat(appversion): add version number button
-- feat(appversion): style version number button
-- feat(appversion): display 'dev' for dev builds
-- feat(event tile): reduce e2ee icon visibility
-- feat(auth page): use static background colour
-- feat(room list header): hide plus button
 
-### Miscellaneous Tasks
+### <!-- 7 -->📖 Documentation
 
-- chore(github): build with dev env icons
-- chore(github): switch app title on dev
-- chore: remove element's ./test directory
-- chore: remove element's ./playwright directory
-- chore: remove element's ./element.io directory
-- chore: remove element's ./docs directory
-- chore: remove element's ./docker directory
-- chore: remove element's ./debian directory
-- chore: remove element's ./__mocks__ directory
-- chore: remove element's ./.husky directory
-- chore(contribute): update details to elecord
-- chore: remove unnecessary element support files
-- chore(gitignore): add removed files/dirs
-- chore: remove ./knip.ts config
-- chore(readme): replace banner image
-- chore(credits): update legal texts
-- chore(package.json): change values to elecord
-- chore(scripts): shorten git version to match github
-- chore(scripts): on release use standard version
-- chore(cliff): filter tag pattern for changelog
-- chore(scripts): automate release prep process
-- chore(cliff): add cliffignore file
-- chore(github): manage branches on release
-- chore(github): generate draft github release
-- chore(release): add latest.md changelog
-- chore(release): add command to push git changes
+- *(readme)* Add copyright and license texts
 
-### Other (unconventional)
 
-- Revert "fix(config): enable presence on matrix.org (#20)"
+### <!-- 9 -->⚙️ Miscellaneous
 
-### Pull Requests
+- *(cliff)* Filter tag pattern for changelog
+- *(cliff)* Add cliffignore file
+- *(contribute)* Update details to elecord
+- *(credits)* Update legal texts
+- *(github)* Build with dev env icons
+- *(github)* Switch app title on dev
+- *(github)* Manage branches on release
+- *(github)* Generate draft github release
+- *(gitignore)* Add removed files/dirs
+- *(package.json)* Change values to elecord
+- *(readme)* Replace banner image
+- *(release)* Add latest.md changelog
+- *(release)* Add command to push git changes
+- *(scripts)* Shorten git version to match github
+- *(scripts)* On release use standard version
+- *(scripts)* Automate release prep process
+- Remove element's ./test directory
+- Remove element's ./playwright directory
+- Remove element's ./element.io directory
+- Remove element's ./docs directory
+- Remove element's ./docker directory
+- Remove element's ./debian directory
+- Remove element's ./__mocks__ directory
+- Remove element's ./.husky directory
+- Remove unnecessary element support files
+- Remove ./knip.ts config
 
-- Merge pull request #23 from elecordapp/room-navigation-styling
-- Merge pull request #24 from elecordapp/dev-environment-icon
-- Merge pull request #25 from elecordapp/element-files-cleanup
-- Merge pull request #26 from elecordapp/license-text
-- Merge pull request #27 from elecordapp/versioning-refactor
-- Merge pull request #29 from elecordapp/versioning-refactor
-- Merge pull request #28 from elecordapp/release-automation
-- Merge pull request #30 from elecordapp/revert-20-matrix-org-presence
-- Merge pull request #31 from elecordapp/app-version-button
-- Merge pull request #32 from elecordapp/base-styling-changes
 
 ## 2.0.1 - 2025-01-18
 
-### Bug Fixes
+### <!-- 1 -->🐛 Bug Fixes
 
-- fix(config): enable presence on matrix.org (#20)
+- *(config)* Enable presence on matrix.org (#20)
 
-### Miscellaneous Tasks
 
-- chore(github): build with js-sdk master (#19)
+### <!-- 9 -->⚙️ Miscellaneous
 
-### Pull Requests
+- *(github)* Build with js-sdk master (#19)
 
-- Merge pull request #21 from elecordapp/element-v1.11.90
 
 ## 2.0.0 - 2024-12-20
 
-### Bug Fixes
+### <!-- 0 -->🚀 Features
 
-- fix(res): wrong favicon.ico
-- fix(res): static opengraph image url
-- fix(headers): caching requirements
-- fix(mobile): remove blank ios app
-- fix(login): remove icon styling
-- fix(config): correct config values
-- fix(i18n): shorten server description
-- fix(credits): adjust wording of legal text
-- fix(credits): remove element faq section
-- fix(changelog): update to elecord
-- fix(login): loading page icon not aligned
-- fix(version): remove settings version v prefix
-- fix(toast): container width too small
+- *(backdrop)* Hide background profile blur
+- *(config)* Update config values
+- *(credits)* Update settings menu legal text
+- *(credits)* Add elecord mono icon
+- *(font)* Increase default font size
+- *(github)* Update cloudflare cache headers
+- *(github)* Switch to no-cache
+- *(index)* Tweak meta theme colour
+- *(leftpanel)* Reduce default panel width
+- *(leftpanel)* Add box shadow for contrast
+- *(login)* Add elecord icon on splash view
+- *(login)* Add elecord footer links
+- *(mobile)* Update names to elecord
+- *(mobile)* Hide client configuration steps
+- *(mobile)* Update mobile apps to element x
+- *(res)* Add monochromatic icon
+- *(strings)* Reduce severity of unsupported browser
+- *(theme)* Disable dynamic meta theme colour
+- *(version)* Add static version number
+- Add elecord naming
+- Add elecord images
 
-### Documentation
 
-- docs(readme): update readme for elecord
-- docs(readme): add element and matrix links
-- docs(readme): add spacing below banner
+### <!-- 1 -->🐛 Bug Fixes
 
-### Features
+- *(changelog)* Update to elecord
+- *(config)* Correct config values
+- *(credits)* Adjust wording of legal text
+- *(credits)* Remove element faq section
+- *(headers)* Caching requirements
+- *(i18n)* Shorten server description
+- *(login)* Remove icon styling
+- *(login)* Loading page icon not aligned
+- *(mobile)* Remove blank ios app
+- *(res)* Wrong favicon.ico
+- *(res)* Static opengraph image url
+- *(toast)* Container width too small
+- *(version)* Remove settings version v prefix
 
-- feat: add elecord naming
-- feat: add elecord images
-- feat(mobile): update names to elecord
-- feat(mobile): hide client configuration steps
-- feat(mobile): update mobile apps to element x
-- feat(theme): disable dynamic meta theme colour
-- feat(res): add monochromatic icon
-- feat(login): add elecord icon on splash view
-- feat(github): update cloudflare cache headers
-- feat(github): switch to no-cache
-- feat(index): tweak meta theme colour
-- feat(config): update config values
-- feat(backdrop): hide background profile blur
-- feat(leftpanel): reduce default panel width
-- feat(font): increase default font size
-- feat(credits): update settings menu legal text
-- feat(credits): add elecord mono icon
-- feat(strings): reduce severity of unsupported browser
-- feat(login): add elecord footer links
-- feat(version): add static version number
-- feat(leftpanel): add box shadow for contrast
 
-### Miscellaneous Tasks
+### <!-- 6 -->🔧 Refactor
 
-- chore(github): remove element issue templates
-- chore(github): remove element repo files
-- chore(github): remove element workflows
-- chore(github): modify build workflow
-- chore(build): rename build to elecord
-- chore(build): create app config
-- chore(build): include cloudflare headers
-- chore(build): add permissions-policy header
-- chore(github): create cloudflare deploy step
-- chore(github): add cf pages command
-- chore(github): fix webapp dist location
-- chore(github): simplify deployment steps
-- chore(github): print deploy urls
-- chore(github): comment deploy url
-- chore(github): fix pr comment
-- chore(github): add comment reactions
-- chore(github): change pages branch
-- chore(github): add comments to workflow
-- chore(github): remove element deploy workflow
-- chore(github): rename pages prod env
-- chore(github): fix preview url formatting
-- chore(github): adjust headers
-- chore(github): add screen-wake-lock permission
-- chore(github): print deployment url to summary
-- chore(github): refactor deployment url
-- chore(github): temporarily disable non-pr builds
-- chore(license): add elecord logo license
-- chore(package): change to elecord
-- chore(scripts): update to elecord
-- chore(build): switch js-sdk to elecord fork
-- chore(github): tidy comments
-- chore(privacy): add elecord privacy policy
+- *(credits)* Move elecord legal text
+- *(icons)* Remove wrapping div
 
-### Pull Requests
 
-- Merge pull request #1 from elecordapp/github-actions
-- Merge pull request #2 from elecordapp/github-actions
-- Merge pull request #3 from elecordapp/build-config
-- Merge pull request #4 from elecordapp/github-actions
-- Merge pull request #5 from elecordapp/elecord-brand
-- Merge pull request #7 from elecordapp/mobile-setup
-- Merge pull request #8 from elecordapp/react-changes
-- Merge pull request #10 from elecordapp/cache-test
-- Merge pull request #11 from elecordapp/element-triage
-- Merge pull request #12 from elecordapp/settings-credits
-- Merge pull request #13 from elecordapp/build-dependencies
-- Merge element-web v1.11.89
-- Merge pull request #17 from elecordapp/misc-changes
+### <!-- 7 -->📖 Documentation
 
-### Refactor
+- *(readme)* Update readme for elecord
+- *(readme)* Add element and matrix links
+- *(readme)* Add spacing below banner
 
-- refactor(credits): move elecord legal text
-- refactor(icons): remove wrapping div
+
+### <!-- 9 -->⚙️ Miscellaneous
+
+- *(build)* Rename build to elecord
+- *(build)* Create app config
+- *(build)* Include cloudflare headers
+- *(build)* Add permissions-policy header
+- *(build)* Switch js-sdk to elecord fork
+- *(github)* Remove element issue templates
+- *(github)* Remove element repo files
+- *(github)* Remove element workflows
+- *(github)* Modify build workflow
+- *(github)* Create cloudflare deploy step
+- *(github)* Add cf pages command
+- *(github)* Fix webapp dist location
+- *(github)* Simplify deployment steps
+- *(github)* Print deploy urls
+- *(github)* Comment deploy url
+- *(github)* Fix pr comment
+- *(github)* Add comment reactions
+- *(github)* Change pages branch
+- *(github)* Add comments to workflow
+- *(github)* Remove element deploy workflow
+- *(github)* Rename pages prod env
+- *(github)* Fix preview url formatting
+- *(github)* Adjust headers
+- *(github)* Add screen-wake-lock permission
+- *(github)* Print deployment url to summary
+- *(github)* Refactor deployment url
+- *(github)* Temporarily disable non-pr builds
+- *(github)* Tidy comments
+- *(license)* Add elecord logo license
+- *(package)* Change to elecord
+- *(privacy)* Add elecord privacy policy
+- *(scripts)* Update to elecord
+
 
 <!-- generated by git-cliff -->
