@@ -6,8 +6,6 @@ Pre-requisites
 
 ---
 
-<br>
-
 1. Create a branch named 'element-v1.xx.xx'
 
 1. Merge the upstream master branch
@@ -22,13 +20,18 @@ Pre-requisites
     > Use elecord file
     > - CHANGELOG.md
     > - README.md
-    > 
+
     > Use upstream/master
     > - yarn.lock
 
 1. Run the build locally
 
 1. Commit the yarn lock ('chore: update yarn.lock')
+
+1. Commit any required regression fixes
+
+    > [!NOTE]  
+    > Any commits made to this branch won't be included in the changelog
 
 1. Publish the branch
 
@@ -37,3 +40,6 @@ Pre-requisites
 1. Test the app
 
 1. Merge (don’t squash)
+
+> [!IMPORTANT]  
+> elecord-desktop will also need to be updated
