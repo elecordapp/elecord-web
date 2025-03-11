@@ -22,6 +22,9 @@ import { DragDropContext, Draggable, Droppable, type DroppableProvidedProps } fr
 import classNames from "classnames";
 import { type Room } from "matrix-js-sdk/src/matrix";
 
+// elecord, rpc
+import UserRPC from "../../structures/UserRPC";
+
 import { _t } from "../../../languageHandler";
 import { useContextMenu } from "../../structures/ContextMenu";
 import SpaceCreateMenu from "./SpaceCreateMenu";
@@ -411,6 +414,10 @@ const SpacePanel: React.FC = () => {
                                 }
                             />
                         </UserMenu>
+
+                        {/* elecord, rpc */}
+                        <UserRPC />
+
                         <Droppable droppableId="top-level-spaces">
                             {(provided, snapshot) => (
                                 <InnerSpacePanel
