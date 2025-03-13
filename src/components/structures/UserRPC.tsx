@@ -32,10 +32,15 @@ const UserRPC: React.FC = () => {
     return (
         <div className="mx_UserRPC">
             <div className="mx_UserRPC_activity">
-                {activity !== null ? (
-                    <img src={`https://dcdn.dstn.to/app-icons/${activity?.application_id}`} alt={activity?.name} referrerPolicy="no-referrer" loading="lazy"/>
+                {activity?.application_id ? (
+                    <img
+                        src={`https://dcdn.dstn.to/app-icons/${activity?.application_id}`}
+                        alt={activity?.name}
+                        referrerPolicy="no-referrer"
+                        loading="lazy"
+                    />
                 ) : (
-                    <p>X</p>
+                    <p>-</p>
                 )}
             </div>
         </div>
