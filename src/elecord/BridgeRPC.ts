@@ -27,35 +27,41 @@ export type RpcMessage = {
 export class BridgeRPC {
     private ws: WebSocket | null = null;
     private activity: Activity | null = null;
+    private previousID: string = "";
+    private delay: number = 15000;
+    private reconnecting: boolean = false;
+    private reconnectAttempt: number = 0;
 
     constructor() {
-        this.initRpcScript();
+        this.initRPC();
     }
 
-    private initRpcScript() {
-        let previousID = "";
+    private initRPC() {
 
-        logger.info("elecord RPC: Initializing RPC web bridge");
+        logger.info("elecord RPC: Initializing RPC web bridge...");
 
         try {
+
             // connect to websocket server
             {
                 this.ws = new WebSocket("ws://127.0.0.1:1337");
+                this.reconnecting = false;
 
                 this.ws.onopen = () => {
                     logger.info("elecord RPC: Websocket connected");
-                };
-
-                this.ws.onclose = () => {
-                    logger.warn("elecord RPC: Websocket closed");
-                    sendActivity(this.emptyActivity(), previousID);
-                    previousID = "";
+                    this.reconnectAttempt = 0;
                 };
 
                 this.ws.onerror = (error) => {
                     logger.error("elecord RPC: Websocket error:", error);
-                    sendActivity(this.emptyActivity(), previousID);
-                    previousID = "";
+                    this.ws?.close();
+                };
+
+                this.ws.onclose = () => {
+                    logger.warn("elecord RPC: Websocket closed");
+                    sendActivity(this.emptyActivity(), this.previousID);
+                    this.previousID = "";
+                    return this.reconnectRPC();
                 };
             }
 
@@ -65,55 +71,70 @@ export class BridgeRPC {
                 let msg: RpcMessage;
                 {
                     try {
+                        // parse message
                         msg = JSON.parse(x.data);
+
+                        // handle empty activity
+                        if (!msg.activity) {
+                            logger.debug("elecord RPC: Received empty activity");
+                            sendActivity(this.emptyActivity(), this.previousID);
+                            this.previousID = "";
+                        } else {
+
+                            // handle updated activity
+                            logger.debug("elecord RPC: Received updated activity");
+                            this.activity = msg.activity;
+
+                            // calculate elapsed time
+                            {
+                                const timeInSeconds = (Date.now() - msg.activity.timestamps.start) / 1000;
+
+                                let unit, divisor;
+                                if (timeInSeconds < 60) {
+                                    unit = "s";
+                                    divisor = 1;
+                                } else if (timeInSeconds < 3600) {
+                                    unit = "m";
+                                    divisor = 60;
+                                } else {
+                                    unit = "h";
+                                    divisor = 3600;
+                                }
+
+                                const elapsedTime = `${Math.floor(timeInSeconds / divisor)}${unit}`;
+                                logger.debug(`elecord RPC: Elapsed time [${elapsedTime}]`);
+                                this.activity.elapsedTime = elapsedTime;
+                            }
+
+                            // send activity
+                            sendActivity(this.activity, this.previousID);
+                            this.previousID = msg.activity.application_id;
+                        }
+
                     } catch (e) {
                         logger.error("elecord RPC: Failed to parse RPC message:", e);
                         return;
-                    }
-
-                    // handle empty activity
-                    if (!msg.activity) {
-                        logger.debug("elecord RPC: Received empty activity");
-                        sendActivity(this.emptyActivity(), previousID);
-                        previousID = "";
-                    } else {
-
-                        // handle updated activity
-                        logger.debug("elecord RPC: Received updated activity");
-                        this.activity = msg.activity;
-
-                        // calculate elapsed time
-                        {
-                            const timeInSeconds = (Date.now() - msg.activity.timestamps.start) / 1000;
-
-                            let unit, divisor;
-                            if (timeInSeconds < 60) {
-                                unit = "s";
-                                divisor = 1;
-                            } else if (timeInSeconds < 3600) {
-                                unit = "m";
-                                divisor = 60;
-                            } else {
-                                unit = "h";
-                                divisor = 3600;
-                            }
-
-                            const elapsedTime = `${Math.floor(timeInSeconds / divisor)}${unit}`;
-                            logger.debug(`elecord RPC: Elapsed time [${elapsedTime}]`);
-                            this.activity.elapsedTime = elapsedTime;
-                        }
-
-                        // send activity
-                        sendActivity(this.activity, previousID);
-                        previousID = msg.activity.application_id;
                     }
                 }
             };
 
         } catch (error) {
-            logger.error("elecord RPC: Failed to initialize websocket bridge:", error);
+            logger.error("elecord RPC: An unexpected error occurred:", error);
+            this.ws?.close();
         }
 
+    }
+
+    private reconnectRPC() {
+        if (this.reconnecting) return
+
+        this.reconnecting = true
+        this.reconnectAttempt++
+
+        setTimeout(() => {
+            logger.info("elecord RPC: Reconnecting websocket...")
+            this.initRPC()
+        }, (this.delay * this.reconnectAttempt));
     }
 
     private emptyActivity() {
