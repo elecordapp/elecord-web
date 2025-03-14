@@ -34,7 +34,7 @@ const UserRPC: React.FC = () => {
             <div className="mx_UserRPC_activity">
                 {activity?.application_id ? (
                     <img
-                        src={`https://dcdn.dstn.to/app-icons/${activity?.application_id}`}
+                        src={`https://dcdn.dstn.to/app-icons/${activity?.application_id}?size=32`}
                         alt={activity?.name}
                         referrerPolicy="no-referrer"
                         loading="lazy"

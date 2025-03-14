@@ -80,8 +80,8 @@ export class BridgeRPC {
                             this.previousID = "";
                         } else {
 
-                            // handle updated activity
-                            logger.debug("elecord RPC: Received updated activity");
+                            // handle activity message
+                            logger.debug("elecord RPC: Received activity message");
                             this.activity = {
                                 application_id: msg.activity.application_id,
                                 name: msg.activity.name,
