@@ -17,7 +17,6 @@ export type Activity = {
     timestamps: {
         start: number;
     };
-    elapsedTime: string;
 };
 
 export type RpcMessage = {
@@ -38,7 +37,7 @@ export class BridgeRPC {
 
     private initRPC() {
 
-        logger.info("elecord RPC: Initializing RPC web bridge...");
+        logger.info("elecord RPC: ⏳ Initializing RPC web bridge...");
 
         try {
 
@@ -48,17 +47,17 @@ export class BridgeRPC {
                 this.reconnecting = false;
 
                 this.ws.onopen = () => {
-                    logger.info("elecord RPC: Websocket connected");
+                    logger.info("elecord RPC: ✅ Websocket connected");
                     this.reconnectAttempt = 0;
                 };
 
                 this.ws.onerror = (error) => {
-                    logger.error("elecord RPC: Websocket error:", error);
+                    logger.error("elecord RPC: ❌ Websocket error:", error);
                     this.ws?.close();
                 };
 
                 this.ws.onclose = () => {
-                    logger.warn("elecord RPC: Websocket closed");
+                    logger.warn("elecord RPC: ⚠️ Websocket closed");
                     sendActivity(this.emptyActivity(), this.previousID);
                     this.previousID = "";
                     return this.reconnectRPC();
@@ -83,28 +82,13 @@ export class BridgeRPC {
 
                             // handle updated activity
                             logger.debug("elecord RPC: Received updated activity");
-                            this.activity = msg.activity;
-
-                            // calculate elapsed time
-                            {
-                                const timeInSeconds = (Date.now() - msg.activity.timestamps.start) / 1000;
-
-                                let unit, divisor;
-                                if (timeInSeconds < 60) {
-                                    unit = "s";
-                                    divisor = 1;
-                                } else if (timeInSeconds < 3600) {
-                                    unit = "m";
-                                    divisor = 60;
-                                } else {
-                                    unit = "h";
-                                    divisor = 3600;
+                            this.activity = {
+                                application_id: msg.activity.application_id,
+                                name: msg.activity.name,
+                                timestamps: {
+                                    start: msg.activity.timestamps.start
                                 }
-
-                                const elapsedTime = `${Math.floor(timeInSeconds / divisor)}${unit}`;
-                                logger.debug(`elecord RPC: Elapsed time [${elapsedTime}]`);
-                                this.activity.elapsedTime = elapsedTime;
-                            }
+                            };
 
                             // send activity
                             sendActivity(this.activity, this.previousID);
@@ -112,14 +96,14 @@ export class BridgeRPC {
                         }
 
                     } catch (e) {
-                        logger.error("elecord RPC: Failed to parse RPC message:", e);
+                        logger.error("elecord RPC: 🚫 Failed to parse RPC message:", e);
                         return;
                     }
                 }
             };
 
         } catch (error) {
-            logger.error("elecord RPC: An unexpected error occurred:", error);
+            logger.error("elecord RPC: ❌ An unexpected error occurred:", error);
             this.ws?.close();
         }
 
@@ -132,9 +116,10 @@ export class BridgeRPC {
         this.reconnectAttempt++
 
         setTimeout(() => {
-            logger.info("elecord RPC: Reconnecting websocket...")
+            logger.info("elecord RPC: 🔄 Reconnecting websocket...")
             this.initRPC()
-        }, (this.delay * this.reconnectAttempt));
+            // exponential backoff delay, up to 4 minutes
+        }, Math.min((this.delay * this.reconnectAttempt), 240000));
     }
 
     private emptyActivity() {
@@ -143,9 +128,8 @@ export class BridgeRPC {
             name: "",
             timestamps: {
                 start: 0
-            },
-            elapsedTime: ""
-        }
+            }
+        };
     }
 
     public getActivity() {
