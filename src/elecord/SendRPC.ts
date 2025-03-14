@@ -26,18 +26,17 @@ export async function sendActivity(this: any, activity: Activity, previousID: st
     if (activity.application_id === previousID) {
         logger.debug("elecord RPC: Activity has not changed:", activity);
         return;
-    } else if (activity === null && previousID === "") {
-        logger.debug("elecord RPC: Activity has not changed (empty):", activity);
-        return;
+    } else if (activity.application_id !== previousID && activity.application_id === "") {
+        logger.info("elecord RPC: 🔎 Activity ended:", activity);
     } else {
-        logger.info("elecord RPC: Activity has changed:", activity);
+        logger.info("elecord RPC: 🔎 Activity changed:", activity);
     }
 
     // send room state event
     try {
         await client.sendStateEvent(ROOM_ID, EVENT_TYPE, activity, STATE_KEY);
         logger.debug("elecord RPC: State event values:", STATE_KEY, EVENT_TYPE, ROOM_ID);
-        logger.info("elecord RPC: Sent activity update");
+        logger.info("elecord RPC: 🚀 Sent activity update");
     } catch (error) {
         logger.error("elecord RPC: Failed to send activity update:", error);
     }
