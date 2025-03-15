@@ -14,16 +14,20 @@ import { type MessagePreview } from "../../../stores/room-list/MessagePreviewSto
 import { type Call } from "../../../models/Call";
 import { RoomTileCallSummary } from "./RoomTileCallSummary";
 
+import RoomTileRPC from "./RoomTileRPC";
+
 interface Props {
     call: Call | null;
     messagePreview: MessagePreview | null;
     roomId: string;
     showMessagePreview: boolean;
+    isDirectMessage: boolean;
+    dmUserID: string;
 }
 
 const messagePreviewId = (roomId: string): string => `mx_RoomTile_messagePreview_${roomId}`;
 
-export const RoomTileSubtitle: React.FC<Props> = ({ call, messagePreview, roomId, showMessagePreview }) => {
+export const RoomTileSubtitle: React.FC<Props> = ({ call, messagePreview, roomId, showMessagePreview, isDirectMessage, dmUserID }) => {
     if (call) {
         return (
             <div className="mx_RoomTile_subtitle">
@@ -43,6 +47,15 @@ export const RoomTileSubtitle: React.FC<Props> = ({ call, messagePreview, roomId
             <div className={className} id={messagePreviewId(roomId)} title={messagePreview.text}>
                 {icon}
                 <span className="mx_RoomTile_subtitle_text">{messagePreview.text}</span>
+            </div>
+        );
+    }
+
+    // elecord, rpc
+    if (isDirectMessage && dmUserID) {
+        return (
+            <div className="mx_RoomTile_subtitle">
+                <RoomTileRPC roomId={roomId} dmUserID={dmUserID} />
             </div>
         );
     }
