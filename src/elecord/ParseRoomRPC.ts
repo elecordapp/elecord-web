@@ -13,6 +13,8 @@ import { Room } from "matrix-js-sdk/src/models/room";
 import {
     type MatrixEvent,
     EventTimeline,
+    RoomStateEvent,
+    type RoomState,
 } from "matrix-js-sdk/src/matrix";
 
 import { Activity } from './BridgeRPC';
@@ -25,6 +27,7 @@ export class ParseRoomRPC {
     private client: MatrixClient;
     private roomId: string;
     private dmUserID: string;
+    public cleanup: () => void = () => {};
 
     constructor(client: MatrixClient, roomId: string, dmUserID: string) {
         this.client = client;
@@ -61,9 +64,12 @@ export class ParseRoomRPC {
      * Monitor for new state events and call the provided callback when a new event is received.
      */
     public onActivity(callback: (activity: Activity) => void): void {
-        this.client.on(EVENT_TYPE, (event: MatrixEvent) => {
-            if (event.getType() === EVENT_TYPE && event.getStateKey() === this.dmUserID && event.getRoomId() === this.roomId) {
+        const room = this.client.getRoom(this.roomId);
+        if (!room) return;
 
+        const handleEvent = (state: RoomState) => {
+            const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
+            if (event && event.getType() === EVENT_TYPE && event.getStateKey() === this.dmUserID && event.getRoomId() === this.roomId) {
                 this.activity = event.getContent() as Activity;
 
                 // sanitize content
@@ -72,6 +78,13 @@ export class ParseRoomRPC {
 
                 callback({ ...this.activity });
             }
-        });
+        };
+
+        room.on(RoomStateEvent.Update, handleEvent);
+
+        // Clean up the event listener when it's no longer needed
+        this.cleanup = () => {
+            room.off(RoomStateEvent.Update, handleEvent);
+        };
     }
 }

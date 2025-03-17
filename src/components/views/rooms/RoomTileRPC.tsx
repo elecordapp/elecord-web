@@ -14,8 +14,8 @@ import { Activity } from '../../../elecord/BridgeRPC';
 // elecord rpc room tile component - displays user activity on dm rooms
 
 interface Props {
-    roomId: string
-    dmUserID: string
+    roomId: string;
+    dmUserID: string;
 }
 
 const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
@@ -27,10 +27,14 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
 
         setActivity(parseRoomRPC.getActivity());
 
-        // monitor for new state events
+        // monitor for new state events and clean up the listener when the component unmounts
         parseRoomRPC.onActivity(newActivity => {
             setActivity(newActivity);
         });
+
+        return () => {
+            parseRoomRPC.cleanup();
+        };
     }, [roomId, dmUserID]);
 
     // rpc activity (icon and text)
