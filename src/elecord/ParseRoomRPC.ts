@@ -16,9 +16,9 @@ import {
 } from "matrix-js-sdk/src/matrix";
 
 import { Activity } from './BridgeRPC';
+import DOMPurify from "dompurify";
 
-// Define the event type
-const EVENT_TYPE = "app.elecord.rpc.activity";
+const EVENT_TYPE: any = "app.elecord.rpc.activity";
 
 export class ParseRoomRPC {
     private activity: Activity | null = null;
@@ -30,17 +30,16 @@ export class ParseRoomRPC {
         this.client = client;
         this.roomId = roomId;
         this.dmUserID = dmUserID;
-        this.fetchRPC();
     }
 
-    // send rpc.activity state event to ParseRoomRPC.ts
-    // - ⚠️sanitise content
+    // TODO
     // - 🕑correctly format timestamps
+    // "2d ago: Monster Hunter: World"
 
     /**
      * Fetch the current state event for the given user and room.
      */
-    private fetchRPC() {
+    public getActivity() {
         const room: Room | null = this.client.getRoom(this.roomId);
         if (!room) return null;
 
@@ -50,21 +49,29 @@ export class ParseRoomRPC {
         logger.info("elecord RPC2: Activity received from room state:", event.getContent());
 
         this.activity = event.getContent() as Activity;
-    }
 
-    public getActivity() {
+        // sanitize content
+        this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
+        this.activity.name = DOMPurify.sanitize(this.activity.name);
+
         return this.activity;
     }
-
 
     /**
      * Monitor for new state events and call the provided callback when a new event is received.
      */
-    // public monitorStateEvents(callback: (event: RPCEvent) => void): void {
-    //     this.client.on("event", (event: MatrixEvent) => {
-    //         if (event.getType() === EVENT_TYPE && event.getStateKey() === this.dmUserID && event.getRoomId() === this.roomId) {
-    //             callback({ content: event.getContent() });
-    //         }
-    //     });
-    // }
+    public onActivity(callback: (activity: Activity) => void): void {
+        this.client.on(EVENT_TYPE, (event: MatrixEvent) => {
+            if (event.getType() === EVENT_TYPE && event.getStateKey() === this.dmUserID && event.getRoomId() === this.roomId) {
+
+                this.activity = event.getContent() as Activity;
+
+                // sanitize content
+                this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
+                this.activity.name = DOMPurify.sanitize(this.activity.name);
+
+                callback({ ...this.activity });
+            }
+        });
+    }
 }
