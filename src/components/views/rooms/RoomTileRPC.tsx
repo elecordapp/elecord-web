@@ -27,21 +27,13 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
 
         setActivity(parseRoomRPC.getActivity());
 
-        // Fetch the current state event
-        // parseRoomRPC.fetchCurrentState().then(event || null => {
-        //     if (event) {
-        //         setRpcEvent(event);
-        //     }
-        // });
-
-        // // Monitor for new state events
-        // parseRoomRPC.monitorStateEvents(event => {
-        //     setRpcEvent(event);
-        // });
+        // monitor for new state events
+        parseRoomRPC.onActivity(newActivity => {
+            setActivity(newActivity);
+        });
     }, [roomId, dmUserID]);
 
-    // return html of rpc activity icon and text
-    // e.g. ICON | "2d ago: Monster Hunter: World"
+    // rpc activity (icon and text)
     return (
         <div className="mx_RoomRPC">
             {activity?.application_id ? (
