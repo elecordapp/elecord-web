@@ -17,21 +17,30 @@ Pre-requisites
 
 1. Resolve merge conflicts
 
-    > Use elecord file
+    > Use branch file
     > - CHANGELOG.md
     > - README.md
 
     > Use upstream/master
     > - yarn.lock
 
+    > Run gitrm.sh
+    > `git rm --cached -r docs\config.md`
+    > `git rm --cached -r playwright`
+
+    > Do not use the `package.json` branch file, resolve merge conflicts as there might be unseen changes
+
+1. Check for any new files added or unwanted changes
+
 1. Run the build locally
 
-1. Commit the yarn lock ('chore: update yarn.lock')
+1. Commit the yarn lock 'chore: update yarn.lock'
+
+    > Only include additions, no local paths or minified package locks
 
 1. Commit any required regression fixes
 
-    > [!NOTE]  
-    > Any commits made to this branch won't be included in the changelog
+    > Note, any commits made to this branch won't be included in the changelog
 
 1. Publish the branch
 
