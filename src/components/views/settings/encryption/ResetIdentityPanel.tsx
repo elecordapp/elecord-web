@@ -8,7 +8,7 @@
 import { Breadcrumb, Button, VisualList, VisualListItem } from "@vector-im/compound-web";
 import CheckIcon from "@vector-im/compound-design-tokens/assets/web/icons/check";
 import InfoIcon from "@vector-im/compound-design-tokens/assets/web/icons/info";
-import ErrorIcon from "@vector-im/compound-design-tokens/assets/web/icons/error";
+import ErrorIcon from "@vector-im/compound-design-tokens/assets/web/icons/error-solid";
 import React, { type MouseEventHandler } from "react";
 
 import { _t } from "../../../../languageHandler";
@@ -16,6 +16,7 @@ import { EncryptionCard } from "./EncryptionCard";
 import { useMatrixClientContext } from "../../../../contexts/MatrixClientContext";
 import { uiAuthCallback } from "../../../../CreateCrossSigning";
 import { EncryptionCardButtons } from "./EncryptionCardButtons";
+import { EncryptionCardEmphasisedContent } from "./EncryptionCardEmphasisedContent";
 
 interface ResetIdentityPanelProps {
     /**
@@ -59,9 +60,8 @@ export function ResetIdentityPanel({ onCancelClick, onFinish, variant }: ResetId
                         ? _t("settings|encryption|advanced|breadcrumb_title_forgot")
                         : _t("settings|encryption|advanced|breadcrumb_title")
                 }
-                className="mx_ResetIdentityPanel"
             >
-                <div className="mx_ResetIdentityPanel_content">
+                <EncryptionCardEmphasisedContent>
                     <VisualList>
                         <VisualListItem Icon={CheckIcon} success={true}>
                             {_t("settings|encryption|advanced|breadcrumb_first_description")}
@@ -74,7 +74,7 @@ export function ResetIdentityPanel({ onCancelClick, onFinish, variant }: ResetId
                         </VisualListItem>
                     </VisualList>
                     {variant === "compromised" && <span>{_t("settings|encryption|advanced|breadcrumb_warning")}</span>}
-                </div>
+                </EncryptionCardEmphasisedContent>
                 <EncryptionCardButtons>
                     <Button
                         destructive={true}
