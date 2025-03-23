@@ -51,12 +51,12 @@ export class ParseRoomRPC {
 
         logger.info("elecord RPC2: Activity received from room state:", event.getContent());
 
+        // set activity
         this.activity = event.getContent() as Activity;
-
         // sanitize content
         this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
         this.activity.name = DOMPurify.sanitize(this.activity.name);
-
+        // return
         return this.activity;
     }
 
@@ -70,12 +70,15 @@ export class ParseRoomRPC {
         const handleEvent = (state: RoomState) => {
             const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
             if (event && event.getType() === EVENT_TYPE && event.getStateKey() === this.dmUserID && event.getRoomId() === this.roomId) {
-                this.activity = event.getContent() as Activity;
 
+                logger.info("elecord RPC2: New activity received from room state:", event.getContent());
+
+                // set activity
+                this.activity = event.getContent() as Activity;
                 // sanitize content
                 this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
                 this.activity.name = DOMPurify.sanitize(this.activity.name);
-
+                // callback
                 callback({ ...this.activity });
             }
         };
