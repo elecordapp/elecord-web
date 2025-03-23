@@ -27,7 +27,7 @@ export class ParseRoomRPC {
     private client: MatrixClient;
     private roomId: string;
     private dmUserID: string;
-    public cleanup: () => void = () => {};
+    public cleanup: () => void = () => { };
 
     constructor(client: MatrixClient, roomId: string, dmUserID: string) {
         this.client = client;
@@ -35,59 +35,97 @@ export class ParseRoomRPC {
         this.dmUserID = dmUserID;
     }
 
-    // TODO
-    // - 🕑correctly format timestamps
-    // "2d ago: Monster Hunter: World"
-
     /**
      * Fetch the current state event for the given user and room.
      */
     public getActivity() {
+        // get room
         const room: Room | null = this.client.getRoom(this.roomId);
-        if (!room) return null;
+        // room not found
+        if (!room) {
+            logger.error("elecord RPC2: Room not found:", this.roomId);
+            return null;
+        }
 
-        const event: MatrixEvent | null | undefined = room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(EVENT_TYPE, this.dmUserID);
-        if (!event) return null;
+        // get state event
+        const timeline = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
+        const event: MatrixEvent | null | undefined =
+            timeline?.getStateEvents(EVENT_TYPE, this.dmUserID);
+        if (
+            event &&
+            event.getType() === EVENT_TYPE &&           // check event type
+            event.getStateKey() === this.dmUserID &&    // verify sender
+            event.getRoomId() === this.roomId           // check room
+        ) {
 
-        logger.info("elecord RPC2: Activity received from room state:", event.getContent());
-
-        // set activity
-        this.activity = event.getContent() as Activity;
-        // sanitize content
-        this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
-        this.activity.name = DOMPurify.sanitize(this.activity.name);
-        // return
-        return this.activity;
-    }
-
-    /**
-     * Monitor for new state events and call the provided callback when a new event is received.
-     */
-    public onActivity(callback: (activity: Activity) => void): void {
-        const room = this.client.getRoom(this.roomId);
-        if (!room) return;
-
-        const handleEvent = (state: RoomState) => {
-            const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
-            if (event && event.getType() === EVENT_TYPE && event.getStateKey() === this.dmUserID && event.getRoomId() === this.roomId) {
-
-                logger.info("elecord RPC2: New activity received from room state:", event.getContent());
+            // use new activity
+            {
+                logger.info("elecord RPC2: Activity found from room state:", event.getContent());
 
                 // set activity
                 this.activity = event.getContent() as Activity;
                 // sanitize content
                 this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
                 this.activity.name = DOMPurify.sanitize(this.activity.name);
-                // callback
+            }
+
+            // end
+            return this.activity;
+
+        } else {
+            logger.error("elecord RPC2: State event not found:",
+                EVENT_TYPE, this.dmUserID, this.roomId);
+        }
+    }
+
+    /**
+     * Monitor for new state events and call the provided callback when a new event is received.
+     */
+    public onActivity(callback: (activity: Activity) => void): void {
+        // get room
+        const room: Room | null = this.client.getRoom(this.roomId);
+        // room not found
+        if (!room) {
+            logger.error("elecord RPC2: Room not found:", this.roomId);
+            return;
+        }
+
+        const handleEvent = (state: RoomState) => {
+            // get state event
+            const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
+            if (
+                event &&
+                event.getType() === EVENT_TYPE &&           // check event type
+                event.getStateKey() === this.dmUserID &&    // verify sender
+                event.getRoomId() === this.roomId           // check room
+            ) {
+                // use new activity
+                {
+                    logger.info("elecord RPC2: New activity received:", event.getContent());
+
+                    // set activity
+                    this.activity = event.getContent() as Activity;
+                    // sanitize content
+                    this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
+                    this.activity.name = DOMPurify.sanitize(this.activity.name);
+                }
+
+                // end
                 callback({ ...this.activity });
+
+            } else {
+                logger.error("elecord RPC2: State event not found:",
+                    EVENT_TYPE, this.dmUserID, this.roomId);
             }
         };
 
         room.on(RoomStateEvent.Update, handleEvent);
 
-        // Clean up the event listener when it's no longer needed
+        // clean up the event listener when it's no longer needed
         this.cleanup = () => {
             room.off(RoomStateEvent.Update, handleEvent);
         };
     }
 }
+
+

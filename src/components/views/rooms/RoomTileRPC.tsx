@@ -19,7 +19,7 @@ interface Props {
 }
 
 const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
-    const [activity, setActivity] = useState<Activity | null>(null);
+    const [activity, setActivity] = useState<Activity | null | undefined>(null);
 
     useEffect(() => {
         const client = MatrixClientPeg.safeGet();
