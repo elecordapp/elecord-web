@@ -8,8 +8,8 @@ Please see LICENSE files in the repository root for full details.
 import React, { FC, useEffect, useState } from 'react';
 
 import { MatrixClientPeg } from "../../../MatrixClientPeg";
-import { ParseRoomRPC, } from "../../../elecord/ParseRoomRPC";
-import { Activity } from '../../../elecord/BridgeRPC';
+import { ParseRoomRPC, } from "../../../elecord/rpc/ParseRoomRPC";
+import { Activity } from '../../../elecord/rpc/BridgeRPC';
 
 // elecord rpc room tile component - displays user activity on dm rooms
 
