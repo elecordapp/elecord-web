@@ -7,7 +7,7 @@ Please see LICENSE files in the repository root for full details.
 
 import { logger } from "matrix-js-sdk/src/logger";
 
-import DMRoomMap from "../utils/DMRoomMap";
+import DMRoomMap from "../../utils/DMRoomMap";
 
 // elecord rpc route - returns routes to dm rooms for activity updates
 

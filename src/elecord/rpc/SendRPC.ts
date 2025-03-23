@@ -9,7 +9,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 
 import { Activity } from "./BridgeRPC";
 import { routeActivity } from "./RouteRPC";
-import { MatrixClientPeg } from "../MatrixClientPeg";
+import { MatrixClientPeg } from "../../MatrixClientPeg";
 
 // elecord rpc sender - sends activity updates as room state events
 
