@@ -39,92 +39,89 @@ export class ParseRoomRPC {
      * Fetch the current state event for the given user and room.
      */
     public getActivity() {
+        logger.debug("elecord RPC2: Fetching initial activity for user:", this.dmUserID);
+
         // get room
+        const room = this.getRoom();
+        if (!room) return null;
+
+        // get event
+        const timeline = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
+        const event: MatrixEvent | null | undefined = timeline?.getStateEvents(EVENT_TYPE, this.dmUserID);
+
+        // send activity
+        return this.processEvent(event);
+    }
+
+    /**
+     * Callback when a new state event is received.
+     */
+    public onActivity(callback: (activity: Activity) => void): void {
+        logger.info("elecord RPC2: Monitoring activity for user:", this.dmUserID);
+
+        // get room
+        const room = this.getRoom();
+        if (!room) return;
+
+        // get event
+        const handleEvent = (state: RoomState) => {
+            const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
+            const activity = this.processEvent(event);
+
+            // send activity
+            if (activity) {
+                callback({ ...activity });
+            }
+        };
+
+        // register listener
+        room.on(RoomStateEvent.Update, handleEvent);
+
+        // cleanup listener
+        this.cleanup = () => {
+            room.off(RoomStateEvent.Update, handleEvent);
+        };
+    }
+
+    /**
+     * Get the room by roomId.
+     * @returns The Room object or undefined if the room is not found.
+     */
+    private getRoom(): Room | undefined {
         const room: Room | null = this.client.getRoom(this.roomId);
-        // room not found
         if (!room) {
             logger.error("elecord RPC2: Room not found:", this.roomId);
-            return null;
+            return;
         }
+        return room;
+    }
 
-        // get state event
-        const timeline = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
-        const event: MatrixEvent | null | undefined =
-            timeline?.getStateEvents(EVENT_TYPE, this.dmUserID);
+    /**
+     * Process the event and extract the activity.
+     * @param event The MatrixEvent to process.
+     * @returns The extracted Activity or null if the event is invalid.
+     */
+    private processEvent(event: MatrixEvent | null | undefined): Activity | null {
         if (
             event &&
             event.getType() === EVENT_TYPE &&           // check event type
             event.getStateKey() === this.dmUserID &&    // verify sender
             event.getRoomId() === this.roomId           // check room
         ) {
+            logger.info("elecord RPC2: Activity found from room state:", event.getContent());
 
-            // use new activity
-            {
-                logger.info("elecord RPC2: Activity found from room state:", event.getContent());
+            // set activity
+            this.activity = event.getContent() as Activity;
+            // sanitize user content
+            this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
+            this.activity.name = DOMPurify.sanitize(this.activity.name);
 
-                // set activity
-                this.activity = event.getContent() as Activity;
-                // sanitize content
-                this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
-                this.activity.name = DOMPurify.sanitize(this.activity.name);
-            }
-
-            // end
             return this.activity;
 
         } else {
-            logger.error("elecord RPC2: State event not found:",
-                EVENT_TYPE, this.dmUserID, this.roomId);
+            logger.error("elecord RPC2: State event not found:", EVENT_TYPE, this.dmUserID, this.roomId);
+            return null;
         }
-    }
-
-    /**
-     * Monitor for new state events and call the provided callback when a new event is received.
-     */
-    public onActivity(callback: (activity: Activity) => void): void {
-        // get room
-        const room: Room | null = this.client.getRoom(this.roomId);
-        // room not found
-        if (!room) {
-            logger.error("elecord RPC2: Room not found:", this.roomId);
-            return;
-        }
-
-        const handleEvent = (state: RoomState) => {
-            // get state event
-            const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
-            if (
-                event &&
-                event.getType() === EVENT_TYPE &&           // check event type
-                event.getStateKey() === this.dmUserID &&    // verify sender
-                event.getRoomId() === this.roomId           // check room
-            ) {
-                // use new activity
-                {
-                    logger.info("elecord RPC2: New activity received:", event.getContent());
-
-                    // set activity
-                    this.activity = event.getContent() as Activity;
-                    // sanitize content
-                    this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
-                    this.activity.name = DOMPurify.sanitize(this.activity.name);
-                }
-
-                // end
-                callback({ ...this.activity });
-
-            } else {
-                logger.error("elecord RPC2: State event not found:",
-                    EVENT_TYPE, this.dmUserID, this.roomId);
-            }
-        };
-
-        room.on(RoomStateEvent.Update, handleEvent);
-
-        // clean up the event listener when it's no longer needed
-        this.cleanup = () => {
-            room.off(RoomStateEvent.Update, handleEvent);
-        };
     }
 }
 
