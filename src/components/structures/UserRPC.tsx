@@ -7,7 +7,7 @@ Please see LICENSE files in the repository root for full details.
 
 import React, { useEffect, useState } from 'react';
 
-import { BridgeRPC, Activity } from '../../elecord/BridgeRPC';
+import { BridgeRPC, Activity } from '../../elecord/rpc/BridgeRPC';
 
 // elecord rpc user component - gets and displays user activity
 // this component starts the full rpc lifecycle
