@@ -17,6 +17,7 @@ export type Activity = {
     status: boolean;
     timestamps: {
         start: number;
+        expire: number;
     };
 };
 
@@ -32,7 +33,6 @@ export class BridgeRPC {
     private reconnectAttempt: number = 0;
     private readonly tenMinutes: number = 10 * 60 * 1000;
     private readonly fourMinutes: number = 4 * 60 * 1000;
-    private sendTimestamp: number | null = null;
 
     constructor() {
         this.initRPC();
@@ -93,19 +93,22 @@ export class BridgeRPC {
                                 name: msg.activity.name,
                                 status: true,
                                 timestamps: {
-                                    start: msg.activity.timestamps.start
+                                    start: msg.activity.timestamps.start,
+                                    expire: this.activity?.timestamps?.expire || 0
                                 }
                             };
 
                             // send activity
-                            if (this.sendTimestamp === null) {
-                                // first activity
+                            if (this.activity.timestamps.expire === 0) {
+                                // new activity
+                                logger.debug("elecord RPC: Sending new activity");
                                 sendActivity(this.activity, this.previousID);
-                                this.sendTimestamp = Date.now();
-                            } else if (Date.now() - this.sendTimestamp > this.tenMinutes) {
-                                // ten minutes have passed
+                                this.activity.timestamps.expire = Date.now() + this.tenMinutes;
+                            } else if (Date.now() > this.activity.timestamps.expire) {
+                                // previously sent activity expired
+                                logger.debug("elecord RPC: Previously sent activity expired");
                                 sendActivity(this.activity, this.previousID);
-                                this.sendTimestamp = Date.now();
+                                this.activity.timestamps.expire = Date.now() + this.tenMinutes;
                             }
                             this.previousID = msg.activity.application_id;
                         }
@@ -144,12 +147,14 @@ export class BridgeRPC {
             return this.activity;
         } else {
             // activity was null
+            // interpret as rpc disabled
             return this.activity = {
                 application_id: "",
                 name: "",
                 status: false,
                 timestamps: {
-                    start: 0
+                    start: 0,
+                    expire: 0,
                 }
             };
         }
