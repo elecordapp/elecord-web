@@ -46,20 +46,16 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
             setActivity(newActivity);
         });
 
+        // periodically re-fetch activity manually
+        const interval = setInterval(() => {
+            setActivity(parseRoomRPC.getActivity());
+        }, 360000);
+
         return () => {
             parseRoomRPC.cleanup();
+            clearInterval(interval);
         };
     }, [roomId, dmUserID]);
-
-
-    // update `now` state every minute to refresh time-ago text
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setNow(Date.now());
-    //     }, 60000); // update every minute
-
-    //     return () => clearInterval(interval);
-    // }, []);
 
     // Self-adjusting timeout: update more frequently when activity is new,
     // and switch to updating every hour once it's older than an hour.
