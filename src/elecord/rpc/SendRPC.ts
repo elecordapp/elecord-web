@@ -18,8 +18,8 @@ export async function sendActivity(this: any, activity: Activity, previousID: st
     // check if activity has changed
     {
         if (activity.application_id === previousID) {
-            logger.debug("elecord RPC: Activity has not changed:", activity);
-            return;
+            logger.info("elecord RPC: Activity has not changed:", activity);
+            // return;
         } else if (activity.application_id !== previousID && activity.application_id === "") {
             logger.info("elecord RPC: 🔎 Activity ended:", activity);
         } else {

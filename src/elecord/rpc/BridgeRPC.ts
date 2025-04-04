@@ -14,6 +14,7 @@ import { sendActivity } from "./SendRPC";
 export type Activity = {
     application_id: string;
     name: string;
+    status: boolean;
     timestamps: {
         start: number;
     };
@@ -27,9 +28,11 @@ export class BridgeRPC {
     private ws: WebSocket | null = null;
     private activity: Activity | null = null;
     private previousID: string = "";
-    private delay: number = 15000;
     private reconnecting: boolean = false;
     private reconnectAttempt: number = 0;
+    private readonly tenMinutes: number = 10 * 60 * 1000;
+    private readonly fourMinutes: number = 4 * 60 * 1000;
+    private sendTimestamp: number | null = null;
 
     constructor() {
         this.initRPC();
@@ -58,8 +61,11 @@ export class BridgeRPC {
 
                 this.ws.onclose = () => {
                     logger.warn("elecord RPC: ⚠️ Websocket closed");
-                    sendActivity(this.emptyActivity(), this.previousID);
-                    this.previousID = "";
+                    // end activity if active
+                    if (this.activity?.status === true) {
+                        sendActivity(this.endActivity(), this.previousID);
+                        this.previousID = "";
+                    }
                     return this.reconnectRPC();
                 };
             }
@@ -76,7 +82,7 @@ export class BridgeRPC {
                         // handle empty activity
                         if (!msg.activity) {
                             logger.debug("elecord RPC: Received empty activity");
-                            sendActivity(this.emptyActivity(), this.previousID);
+                            sendActivity(this.endActivity(), this.previousID);
                             this.previousID = "";
                         } else {
 
@@ -85,13 +91,22 @@ export class BridgeRPC {
                             this.activity = {
                                 application_id: msg.activity.application_id,
                                 name: msg.activity.name,
+                                status: true,
                                 timestamps: {
                                     start: msg.activity.timestamps.start
                                 }
                             };
 
                             // send activity
-                            sendActivity(this.activity, this.previousID);
+                            if (this.sendTimestamp === null) {
+                                // first activity
+                                sendActivity(this.activity, this.previousID);
+                                this.sendTimestamp = Date.now();
+                            } else if (Date.now() - this.sendTimestamp > this.tenMinutes) {
+                                // ten minutes have passed
+                                sendActivity(this.activity, this.previousID);
+                                this.sendTimestamp = Date.now();
+                            }
                             this.previousID = msg.activity.application_id;
                         }
 
@@ -119,17 +134,25 @@ export class BridgeRPC {
             logger.info("elecord RPC: 🔄 Reconnecting websocket...")
             this.initRPC()
             // exponential backoff delay, up to 4 minutes
-        }, Math.min((this.delay * this.reconnectAttempt), 240000));
+        }, Math.min((15000 * this.reconnectAttempt), this.fourMinutes));
     }
 
-    private emptyActivity() {
-        return this.activity = {
-            application_id: "",
-            name: "",
-            timestamps: {
-                start: 0
-            }
-        };
+    private endActivity() {
+        if (this.activity) {
+            // activity ended
+            this.activity.status = false;
+            return this.activity;
+        } else {
+            // activity was null
+            return this.activity = {
+                application_id: "",
+                name: "",
+                status: false,
+                timestamps: {
+                    start: 0
+                }
+            };
+        }
     }
 
     public getActivity() {

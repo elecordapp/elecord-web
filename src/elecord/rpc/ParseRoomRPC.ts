@@ -49,7 +49,12 @@ export class ParseRoomRPC {
         const timeline = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
         const event: MatrixEvent | null | undefined = timeline?.getStateEvents(EVENT_TYPE, this.dmUserID);
 
-        // send activity
+        // [FEAT] 
+        // here we will first check if the user actually has rpc enabled,
+        // an empty (content: {}) activity means rpc is disabled
+        // if not, then we will return null
+
+        // provide activity
         return this.processEvent(event);
     }
 
@@ -68,7 +73,7 @@ export class ParseRoomRPC {
             const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
             const activity = this.processEvent(event);
 
-            // send activity
+            // provide activity
             if (activity) {
                 callback({ ...activity });
             }
@@ -116,6 +121,27 @@ export class ParseRoomRPC {
             this.activity.application_id = DOMPurify.sanitize(this.activity.application_id);
             this.activity.name = DOMPurify.sanitize(this.activity.name);
 
+            // check activity status is valid
+            if (this.activity.status === true) {
+                logger.info("elecord RPC2: Activity status:", this.activity.status);
+
+                // check the event was sent within the last 10.5 minutes
+                // if not, set status to false (as it's too old to be valid)
+                const now = new Date().getTime();
+                const sent = event.getTs();
+                const diff = now - sent;
+                if (diff > 630000) {
+                    logger.info("elecord RPC2: Activity status too old:", diff/1000);
+                    // correct the invalid status
+                    this.activity.status = false;
+                    this.activity.timestamps.start = sent;
+                }
+            } else if (this.activity.status === false) {
+                logger.info("elecord RPC2: Activity status:", this.activity.status);
+                this.activity.timestamps.start = event.getTs();
+            }
+
+            // return activity after sanitization and status validation
             return this.activity;
 
         } else {
