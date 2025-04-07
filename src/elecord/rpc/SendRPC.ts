@@ -15,22 +15,22 @@ import { MatrixClientPeg } from "../../MatrixClientPeg";
 
 export async function sendActivity(this: any, activity: Activity, previousID: string) {
 
-    // check if activity has changed
-    {
-        if (activity.application_id === previousID) {
-            logger.info("elecord RPC: Activity has not changed:", activity);
-            // return;
-        } else if (activity.application_id !== previousID && activity.application_id === "") {
-            logger.info("elecord RPC: 🔎 Activity ended:", activity);
-        } else {
-            logger.info("elecord RPC: 🔎 Activity changed:", activity);
-        }
-    }
+    // // check if activity has changed
+    // {
+    //     if (activity.application_id === previousID) {
+    //         logger.debug("SendRPC: Activity not changed:", activity);
+    //         // return;
+    //     } else if (activity.application_id !== previousID && activity.application_id === "") {
+    //         logger.info("SendRPC: 🔎 Activity ended:", activity);
+    //     } else {
+    //         logger.info("SendRPC: 🔎 Activity changed:", activity);
+    //     }
+    // }
 
     // send changed activity update
     {
         // get matrix client
-        const client = MatrixClientPeg.safeGet();
+        const client = await MatrixClientPeg.safeGet();
 
         // prepare state event values
         const ROOM_IDS = await routeActivity();
@@ -38,16 +38,20 @@ export async function sendActivity(this: any, activity: Activity, previousID: st
         const STATE_KEY = client.getSafeUserId();
 
         // send state events
-        for (const ROOM_ID of ROOM_IDS) {
-            try {
-                await client.sendStateEvent(ROOM_ID, EVENT_TYPE, activity, STATE_KEY);
-                logger.debug("elecord RPC: State event values:", STATE_KEY, EVENT_TYPE, ROOM_ID);
-            } catch (error) {
-                logger.error("elecord RPC: Failed to send activity update:", error);
-            }
+        if (ROOM_IDS && ROOM_IDS instanceof Set) {
+            await Promise.all(
+                Array.from(ROOM_IDS).map(async (ROOM_ID: string) => {
+                    try {
+                        await client.sendStateEvent(ROOM_ID, EVENT_TYPE, activity, STATE_KEY);
+                        logger.debug("SendRPC: State event values:", STATE_KEY, EVENT_TYPE, ROOM_ID);
+                    } catch (error) {
+                        logger.error("SendRPC: 💥 Failed to send activity update:", error);
+                    }
+                })
+            );
         }
 
-        logger.info("elecord RPC: 🚀 Sent activity updates");
+        logger.info("SendRPC: 🚀 Sent activity updates");
     }
 }
 

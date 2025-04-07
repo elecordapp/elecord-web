@@ -38,9 +38,9 @@ export class BridgeRPC {
         this.initRPC();
     }
 
-    private initRPC() {
+    private async initRPC() {
 
-        logger.info("elecord RPC: ⏳ Initializing RPC web bridge...");
+        logger.info("UserRPC: ⏳ Initializing websocket...");
 
         try {
 
@@ -49,45 +49,45 @@ export class BridgeRPC {
                 this.ws = new WebSocket("ws://127.0.0.1:1337");
                 this.reconnecting = false;
 
-                this.ws.onopen = () => {
-                    logger.info("elecord RPC: ✅ Websocket connected");
+                this.ws.addEventListener("open", () => {
+                    logger.info("UserRPC: ✅ Websocket connected");
                     this.reconnectAttempt = 0;
-                };
+                });
 
-                this.ws.onerror = (error) => {
-                    logger.error("elecord RPC: ❌ Websocket error:", error);
+                this.ws.addEventListener("error", (error) => {
+                    logger.error("UserRPC: ❌ Websocket error:", error);
                     this.ws?.close();
-                };
+                });
 
-                this.ws.onclose = () => {
-                    logger.warn("elecord RPC: ⚠️ Websocket closed");
+                this.ws.addEventListener("close", () => {
+                    logger.warn("UserRPC: ⚠️ Websocket closed");
                     // end activity if active
                     if (this.activity?.status === true) {
                         sendActivity(this.endActivity(), this.previousID);
                         this.previousID = "";
                     }
-                    return this.reconnectRPC();
-                };
+                    this.reconnectRPC();
+                });
             }
 
-            this.ws.onmessage = (x) => {
+            this.ws.addEventListener("message", async (x) => {
 
                 // receive new message
                 let msg: RpcMessage;
                 {
                     try {
                         // parse message
-                        msg = JSON.parse(x.data);
+                        msg = JSON.parse(await x.data);
 
                         // handle empty activity
                         if (!msg.activity) {
-                            logger.debug("elecord RPC: Received empty activity");
+                            logger.info("UserRPC: ✖️ Received end message");
                             sendActivity(this.endActivity(), this.previousID);
                             this.previousID = "";
                         } else {
 
                             // handle activity message
-                            logger.debug("elecord RPC: Received activity message");
+                            logger.debug("UserRPC: Received message");
                             this.activity = {
                                 application_id: msg.activity.application_id,
                                 name: msg.activity.name,
@@ -101,12 +101,12 @@ export class BridgeRPC {
                             // send activity
                             if (this.activity.timestamps.expire === 0) {
                                 // new activity
-                                logger.debug("elecord RPC: Sending new activity");
+                                logger.info("UserRPC: ✨ Sending new activity:", this.activity);
                                 sendActivity(this.activity, this.previousID);
                                 this.activity.timestamps.expire = Date.now() + this.tenMinutes;
                             } else if (Date.now() > this.activity.timestamps.expire) {
                                 // previously sent activity expired
-                                logger.debug("elecord RPC: Previously sent activity expired");
+                                logger.info("UserRPC: ⌛ Previously sent activity expired");
                                 sendActivity(this.activity, this.previousID);
                                 this.activity.timestamps.expire = Date.now() + this.tenMinutes;
                             }
@@ -114,28 +114,28 @@ export class BridgeRPC {
                         }
 
                     } catch (e) {
-                        logger.error("elecord RPC: 🚫 Failed to parse RPC message:", e);
+                        logger.error("UserRPC: 🚫 Failed to parse RPC message:", e);
                         return;
                     }
                 }
-            };
+            });
 
         } catch (error) {
-            logger.error("elecord RPC: ❌ An unexpected error occurred:", error);
+            logger.error("UserRPC: 💥 An unexpected error occurred:", error);
             this.ws?.close();
         }
 
     }
 
-    private reconnectRPC() {
+    private async reconnectRPC() {
         if (this.reconnecting) return
 
         this.reconnecting = true
         this.reconnectAttempt++
 
-        setTimeout(() => {
-            logger.info("elecord RPC: 🔄 Reconnecting websocket...")
-            this.initRPC()
+        setTimeout(async () => {
+            logger.info("UserRPC: 🔄 Reconnecting websocket...")
+            await this.initRPC()
             // exponential backoff delay, up to 4 minutes
         }, Math.min((15000 * this.reconnectAttempt), this.fourMinutes));
     }

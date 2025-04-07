@@ -21,40 +21,44 @@ interface Props {
 }
 
 const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
+    // State to store the activity.
     const [activity, setActivity] = useState<Activity | null | undefined>(null);
     // State to trigger re-renders to update the time-ago text.
     const [now, setNow] = useState(Date.now());
 
     // Fetch and subscribe to activity updates.
     useEffect(() => {
-        const client = MatrixClientPeg.safeGet();
-        const parseRoomRPC = new ParseRoomRPC(client, roomId, dmUserID);
+        (async () => {
+            const client = MatrixClientPeg.safeGet();
+            const parseRoomRPC = new ParseRoomRPC(client, roomId, dmUserID);
 
-        // fetch initial activity
+            // fetch initial activity
+            logger.info("RoomRPC: 🚩 Fetching initial activity:", dmUserID, roomId);
+            const initialActivity = await parseRoomRPC.getActivity();
+            setActivity(initialActivity);
+            if (initialActivity === null) {
+                logger.debug("RoomRPC: Initial activity is null:", dmUserID, roomId);
+                parseRoomRPC.cleanup();
+            }
 
-        // [FEAT]
-        // make this so if getActivity returns null,
-        // we do NOT start monitoring for this room tile afterwards
+            // monitor for new state events and clean up the listener when the component unmounts
+            parseRoomRPC.onActivity(newActivity => {
+                logger.debug("RoomRPC: 🔦 Room state changed:", dmUserID);
+                setActivity(newActivity);
+            });
 
-        logger.info("elecord RPC2: getActivity():", dmUserID);
-        setActivity(parseRoomRPC.getActivity());
+            // periodically re-fetch activity manually
+            const interval = setInterval(async () => {
+                logger.debug("RoomRPC: ⚙️ Manually refetching activity:", dmUserID);
+                const refetchedActivity = await parseRoomRPC.getActivity();
+                setActivity(refetchedActivity);
+            }, 360000);
 
-        // monitor for new state events and clean up the listener when the component unmounts
-        parseRoomRPC.onActivity(newActivity => {
-            // [DEBUG]
-            // do we need set activity here? because they both seem to set the activity?
-            setActivity(newActivity);
-        });
-
-        // periodically re-fetch activity manually
-        const interval = setInterval(() => {
-            setActivity(parseRoomRPC.getActivity());
-        }, 360000);
-
-        return () => {
-            parseRoomRPC.cleanup();
-            clearInterval(interval);
-        };
+            return () => {
+                parseRoomRPC.cleanup();
+                clearInterval(interval);
+            };
+        })();
     }, [roomId, dmUserID]);
 
     // Self-adjusting timeout: update more frequently when activity is new,
@@ -62,7 +66,7 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
 
-        const tick = () => {
+        const tick = async () => {
             setNow(Date.now());
 
             // Default update frequency is 1 minute.
@@ -85,6 +89,9 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
     // format elapsed time since activity start
     const formatTimeAgo = (start: number): string => {
         const diffMinutes = Math.floor((now - start) / (1000 * 60));
+
+        // less than 1 minute
+        if (diffMinutes < 1) return "1m ago: ";
 
         // less than 1 hour
         if (diffMinutes < 60) return `${diffMinutes}m ago: `;
@@ -111,13 +118,19 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
                 <img
                     src={`https://dcdn.dstn.to/app-icons/${activity.application_id}?size=16`}
                     alt={activity.name}
+                    title={activity.name}
                     referrerPolicy="no-referrer"
                     loading="lazy"
                 />
             ) : (
                 null
             )}
-            <span className="mx_RoomTile_subtitle_text">{displayName}</span>
+            <span
+                className="mx_RoomTile_subtitle_text"
+                title={displayName}
+            >
+                {displayName}
+            </span>
         </div>
     );
 };
