@@ -7,13 +7,15 @@ Please see LICENSE files in the repository root for full details.
 
 import React, { useEffect, useState } from 'react';
 
+import { logger } from "matrix-js-sdk/src/logger";
+
 import { BridgeRPC, Activity } from '../../elecord/rpc/BridgeRPC';
 
 // elecord rpc user component - gets and displays user activity
 // this component starts the full rpc lifecycle
 
 const UserRPC: React.FC = () => {
-    const [activity, setActivity] = useState<Activity | null>(null);
+    const [activity, setActivity] = useState<Activity | null | undefined>(null);
 
     // start rpc bridge
     useEffect(() => {
@@ -32,10 +34,11 @@ const UserRPC: React.FC = () => {
     return (
         <div className="mx_UserRPC">
             <div className="mx_UserRPC_activity">
-                {activity?.application_id ? (
+                {activity?.application_id && activity.status ? (
                     <img
-                        src={`https://dcdn.dstn.to/app-icons/${activity?.application_id}?size=32`}
-                        alt={activity?.name}
+                        src={`https://dcdn.dstn.to/app-icons/${activity.application_id}?size=32`}
+                        alt={activity.name}
+                        title={activity.name}
                         referrerPolicy="no-referrer"
                         loading="lazy"
                     />

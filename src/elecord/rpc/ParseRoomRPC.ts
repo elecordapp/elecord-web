@@ -38,8 +38,8 @@ export class ParseRoomRPC {
     /**
      * Fetch the current state event for the given user and room.
      */
-    public getActivity() {
-        logger.debug("elecord RPC2: Fetching initial activity for user:", this.dmUserID);
+    public async getActivity() {
+        logger.debug("ViewRPC: getActivity() called:", this.dmUserID);
 
         // get room
         const room = this.getRoom();
@@ -62,14 +62,14 @@ export class ParseRoomRPC {
      * Callback when a new state event is received.
      */
     public onActivity(callback: (activity: Activity) => void): void {
-        logger.info("elecord RPC2: Monitoring activity for user:", this.dmUserID);
+        logger.debug("ViewRPC: 🏳️ onActivity() started:", this.dmUserID);
 
         // get room
         const room = this.getRoom();
         if (!room) return;
 
         // get event
-        const handleEvent = (state: RoomState) => {
+        const handleEvent = async (state: RoomState) => {
             const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
             const activity = this.processEvent(event);
 
@@ -95,7 +95,7 @@ export class ParseRoomRPC {
     private getRoom(): Room | undefined {
         const room: Room | null = this.client.getRoom(this.roomId);
         if (!room) {
-            logger.error("elecord RPC2: Room not found:", this.roomId);
+            logger.error("ViewRPC: 🏚️ Room not found:", this.roomId);
             return;
         }
         return room;
@@ -113,7 +113,7 @@ export class ParseRoomRPC {
             event.getStateKey() === this.dmUserID &&    // verify sender
             event.getRoomId() === this.roomId           // check room
         ) {
-            logger.info("elecord RPC2: Activity found from room state:", event.getContent());
+            logger.debug("ViewRPC: Activity found:", event.getContent());
 
             // set activity
             this.activity = event.getContent() as Activity;
@@ -123,7 +123,7 @@ export class ParseRoomRPC {
 
             // check activity status is valid
             if (this.activity.status === true) {
-                logger.info("elecord RPC2: Activity status:", this.activity.status);
+                logger.debug("ViewRPC: Activity status:", this.activity.status, this.dmUserID);
 
                 // check the event was sent within the last 10.5 minutes
                 // if not, set status to false (as it's too old to be valid)
@@ -131,13 +131,13 @@ export class ParseRoomRPC {
                 const sent = event.getTs();
                 const diff = now - sent;
                 if (diff > 630000) {
-                    logger.info("elecord RPC2: Activity status too old:", diff/1000);
+                    logger.warn("ViewRPC: ⌛ Activity status too old:", Math.round(diff/60000) + "m", this.dmUserID);
                     // correct the invalid status
                     this.activity.status = false;
                     this.activity.timestamps.start = sent;
                 }
             } else if (this.activity.status === false) {
-                logger.info("elecord RPC2: Activity status:", this.activity.status);
+                logger.debug("ViewRPC: Activity status:", this.activity.status, this.dmUserID);
                 this.activity.timestamps.start = event.getTs();
             }
 
@@ -145,10 +145,9 @@ export class ParseRoomRPC {
             return this.activity;
 
         } else {
-            logger.error("elecord RPC2: State event not found:", EVENT_TYPE, this.dmUserID, this.roomId);
+            logger.warn("ViewRPC: ❔ State event not found:", this.dmUserID, EVENT_TYPE, this.roomId);
             return null;
         }
     }
 }
-
 

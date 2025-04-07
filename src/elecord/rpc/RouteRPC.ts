@@ -15,11 +15,11 @@ export async function routeActivity() {
     
     // get dm room ids
     const dmRooms = DMRoomMap.shared().getRoomIds();
-    logger.debug("elecord RPC: DM room ids:", dmRooms);
+    logger.debug("RouteRPC: 🗺️ DM room ids:", dmRooms);
 
     // don't send if user has more than 8 DM rooms
     if (dmRooms.size > 8) {
-        logger.error("elecord RPC: User has more than 8 DM rooms, cannot send activity updates");
+        logger.error("RouteRPC: User has more than 8 DM rooms, cannot send activity updates");
         return "";
     } else {
         return dmRooms;
