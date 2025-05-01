@@ -2762,6 +2762,17 @@
         },
         "prompt_invite": "Prompt before sending invites to potentially invalid matrix IDs",
         "replace_plain_emoji": "Automatically replace plain text Emoji",
+        "rich_presence": {
+            "title": "Rich Presence",
+            "dialog_title": "<strong>Settings:</strong> Rich Presence",
+            "setup_heading": "RPC Setup",
+            "description": "Rich Presence lets your friends see what you're playing in real time.",
+            "usage": "When enabled, elecord will show your current game to your friends (also displayed under your profile picture).",
+            "setup_steps": "To enable sending Rich Presence, you'll need to download the elecord-rpc app. Just follow the simple on-screen instructions to get started. Once installed, elecord-rpc will run automatically as a lightweight background service, detecting the games you play while using elecord.",
+            "download_button": "Download",
+            "sending_notice": "When RPC is enabled, elecord will currently display your active game to any user you have a direct message with. Additionally, there's a temporary limit of up to 8 friends to be able to send RPC messages (this is to prevent unintentionally spamming your homeserver with RPC messages).",
+            "detection_notice": "Please note that elecord might not always detect your game reliably (especially new releases). This is a known issue and game detection will be continuously improved with future updates."
+        },
         "security": {
             "4s_public_key_in_account_data": "in account data",
             "4s_public_key_status": "Secret storage public key:",
