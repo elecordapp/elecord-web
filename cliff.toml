@@ -72,7 +72,8 @@ commit_parsers = [
     { message = "^test", group = "<!-- 7 -->🧪 Testing" },
     { message = "^chore\\(release\\): prepare for", skip = true },
     { message = "^chore", group = "<!-- 8 -->⚙️ Miscellaneous" },
-    { message = "^Merge", group = "<!-- 9 -->🗃️ Pull Requests" },
+    { message = "^build", group = "<!-- 9 -->🏗️ Build" },
+    { message = "^Merge", group = "<!-- A -->🗃️ Pull Requests" },
     { body = ".*", group = "<!-- X -->Other (unconventional)" },
 ]
 # filter out the commits that are not matched by commit parsers
