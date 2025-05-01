@@ -44,6 +44,7 @@ import { shouldShowComponent } from "../../../customisations/helpers/UIComponent
 import { UIComponent } from "../../../settings/UIFeature";
 import { isKnockDenied } from "../../../utils/membership";
 import SettingsStore from "../../../settings/SettingsStore";
+import DMRoomMap from "../../../utils/DMRoomMap";
 
 interface Props {
     room: Room;
@@ -60,6 +61,8 @@ interface State {
     generalMenuPosition: PartialDOMRect | null;
     call: Call | null;
     messagePreview: MessagePreview | null;
+    isDirectMessage: boolean;
+    dmUserID: string;
 }
 
 const messagePreviewId = (roomId: string): string => `mx_RoomTile_messagePreview_${roomId}`;
@@ -81,6 +84,8 @@ class RoomTile extends React.PureComponent<Props, State> {
     public constructor(props: Props) {
         super(props);
 
+        const dmUserID = DMRoomMap.shared().getUserIdForRoomId(this.props.room.roomId);
+
         this.state = {
             selected: SdkContextClass.instance.roomViewStore.getRoomId() === this.props.room.roomId,
             notificationsMenuPosition: null,
@@ -88,6 +93,8 @@ class RoomTile extends React.PureComponent<Props, State> {
             call: CallStore.instance.getCall(this.props.room.roomId),
             // generatePreview() will return nothing if the user has previews disabled
             messagePreview: null,
+            isDirectMessage: !!dmUserID,
+            dmUserID: dmUserID || "",
         };
 
         this.notificationState = RoomNotificationStateStore.instance.getRoomState(this.props.room);
@@ -366,9 +373,10 @@ class RoomTile extends React.PureComponent<Props, State> {
      * RoomTile has a subtile if one of the following applies:
      * - there is a call
      * - message previews are enabled and there is a previewable message
+     * - the room is a DM
      */
     private get shouldRenderSubtitle(): boolean {
-        return !!this.state.call || (this.props.showMessagePreview && !!this.state.messagePreview);
+        return !!this.state.call || (this.props.showMessagePreview && !!this.state.messagePreview) || this.state.isDirectMessage;
     }
 
     public render(): React.ReactElement {
@@ -380,6 +388,7 @@ class RoomTile extends React.PureComponent<Props, State> {
             mx_RoomTile_selected: this.state.selected,
             mx_RoomTile_hasMenuOpen: !!(this.state.generalMenuPosition || this.state.notificationsMenuPosition),
             mx_RoomTile_minimized: this.props.isMinimized,
+            mx_RoomTile_dm: this.state.isDirectMessage,
         });
 
         let name = this.props.room.name;
@@ -402,6 +411,8 @@ class RoomTile extends React.PureComponent<Props, State> {
                 messagePreview={this.state.messagePreview}
                 roomId={this.props.room.roomId}
                 showMessagePreview={this.props.showMessagePreview}
+                isDirectMessage={this.state.isDirectMessage}
+                dmUserID={this.state.dmUserID}
             />
         ) : null;
 
