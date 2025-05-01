@@ -18,6 +18,7 @@ import KeyboardIcon from "@vector-im/compound-design-tokens/assets/web/icons/key
 import KeyIcon from "@vector-im/compound-design-tokens/assets/web/icons/key";
 import SidebarIcon from "@vector-im/compound-design-tokens/assets/web/icons/sidebar";
 import MicOnIcon from "@vector-im/compound-design-tokens/assets/web/icons/mic-on";
+import WorkspaceIcon from "@vector-im/compound-design-tokens/assets/web/icons/workspace";
 import LockIcon from "@vector-im/compound-design-tokens/assets/web/icons/lock";
 import LabsIcon from "@vector-im/compound-design-tokens/assets/web/icons/labs";
 import BlockIcon from "@vector-im/compound-design-tokens/assets/web/icons/block";
@@ -34,6 +35,7 @@ import SecurityUserSettingsTab from "../settings/tabs/user/SecurityUserSettingsT
 import NotificationUserSettingsTab from "../settings/tabs/user/NotificationUserSettingsTab";
 import PreferencesUserSettingsTab from "../settings/tabs/user/PreferencesUserSettingsTab";
 import VoiceUserSettingsTab from "../settings/tabs/user/VoiceUserSettingsTab";
+import RichPresenceUserSettingsTab from "../settings/tabs/user/RichPresenceUserSettingsTab";
 import HelpUserSettingsTab from "../settings/tabs/user/HelpUserSettingsTab";
 import MjolnirUserSettingsTab from "../settings/tabs/user/MjolnirUserSettingsTab";
 import { UIFeature } from "../../../settings/UIFeature";
@@ -78,6 +80,8 @@ function titleForTabID(tabId: UserTab): React.ReactNode {
             return _t("settings|sidebar|dialog_title", undefined, subs);
         case UserTab.Voice:
             return _t("settings|voip|dialog_title", undefined, subs);
+        case UserTab.RichPresence:
+            return _t("settings|rich_presence|dialog_title", undefined, subs);
         case UserTab.Security:
             return _t("settings|security|dialog_title", undefined, subs);
         case UserTab.Encryption:
@@ -179,6 +183,17 @@ export default function UserSettingsDialog(props: IProps): JSX.Element {
             );
         }
 
+        // elecord, rich presence tab
+        tabs.push(
+            new Tab(
+                UserTab.RichPresence,
+                _td("settings|rich_presence|title"),
+                <WorkspaceIcon />,
+                <RichPresenceUserSettingsTab />,
+                "UserSettingsRichPresence",
+            ),
+        );
+
         tabs.push(
             new Tab(
                 UserTab.Security,
@@ -212,6 +227,7 @@ export default function UserSettingsDialog(props: IProps): JSX.Element {
             );
         }
 
+        // elecord, changelog tab
         tabs.push(
             new Tab(
                 UserTab.Changelog,
