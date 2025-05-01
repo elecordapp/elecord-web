@@ -9,7 +9,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 
 import { sendActivity } from "./SendRPC";
 
-// elecord rpc bridge - communicates with the local game presence websocket server
+// elecord rpc: bridge - communicate with local erpc websocket server
 
 export type Activity = {
     application_id: string;
@@ -164,4 +164,3 @@ export class BridgeRPC {
         return this.activity;
     }
 }
-

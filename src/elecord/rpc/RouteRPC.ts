@@ -9,7 +9,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 
 import DMRoomMap from "../../utils/DMRoomMap";
 
-// elecord rpc route - returns routes to dm rooms for activity updates
+// elecord rpc: router - return routes to dm rooms
 
 export async function routeActivity() {
     
@@ -25,4 +25,3 @@ export async function routeActivity() {
         return dmRooms;
     }
 }
-

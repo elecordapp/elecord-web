@@ -11,7 +11,7 @@ import { Activity } from "./BridgeRPC";
 import { routeActivity } from "./RouteRPC";
 import { MatrixClientPeg } from "../../MatrixClientPeg";
 
-// elecord rpc sender - sends activity updates as room state events
+// elecord rpc: sender - send rpc activity state events
 
 export async function sendActivity(this: any, activity: Activity, previousID: string) {
 
@@ -54,4 +54,3 @@ export async function sendActivity(this: any, activity: Activity, previousID: st
         logger.info("SendRPC: 🚀 Sent activity updates");
     }
 }
-

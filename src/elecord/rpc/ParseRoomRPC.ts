@@ -20,6 +20,8 @@ import {
 import { Activity } from './BridgeRPC';
 import DOMPurify from "dompurify";
 
+// elecord rpc: parser - fetch and format rpc activity state events
+
 const EVENT_TYPE: any = "app.elecord.rpc.activity";
 
 export class ParseRoomRPC {
@@ -35,9 +37,7 @@ export class ParseRoomRPC {
         this.dmUserID = dmUserID;
     }
 
-    /**
-     * Fetch the current state event for the given user and room.
-     */
+    // fetch current state event for given user, and room
     public async getActivity() {
         logger.debug("ViewRPC: getActivity() called:", this.dmUserID);
 
@@ -54,13 +54,11 @@ export class ParseRoomRPC {
         // an empty (content: {}) activity means rpc is disabled
         // if not, then we will return null
 
-        // provide activity
+        // return rpc activity
         return this.processEvent(event);
     }
 
-    /**
-     * Callback when a new state event is received.
-     */
+    // callback when new state event received
     public onActivity(callback: (activity: Activity) => void): void {
         logger.debug("ViewRPC: 🏳️ onActivity() started:", this.dmUserID);
 
@@ -73,7 +71,7 @@ export class ParseRoomRPC {
             const event = state.getStateEvents(EVENT_TYPE, this.dmUserID);
             const activity = this.processEvent(event);
 
-            // provide activity
+            // return rpc activity
             if (activity) {
                 callback({ ...activity });
             }
@@ -88,10 +86,7 @@ export class ParseRoomRPC {
         };
     }
 
-    /**
-     * Get the room by roomId.
-     * @returns The Room object or undefined if the room is not found.
-     */
+    // get room by roomId
     private getRoom(): Room | undefined {
         const room: Room | null = this.client.getRoom(this.roomId);
         if (!room) {
@@ -101,11 +96,7 @@ export class ParseRoomRPC {
         return room;
     }
 
-    /**
-     * Process the event and extract the activity.
-     * @param event The MatrixEvent to process.
-     * @returns The extracted Activity or null if the event is invalid.
-     */
+    // process state event, and extract activity
     private processEvent(event: MatrixEvent | null | undefined): Activity | null {
         if (
             event &&
@@ -124,18 +115,17 @@ export class ParseRoomRPC {
             // check activity status is valid
             if (this.activity.status === true) {
                 logger.debug("ViewRPC: Activity status:", this.activity.status, this.dmUserID);
-
-                // check the event was sent within the last 10.5 minutes
-                // if not, set status to false (as it's too old to be valid)
+                // check event sent within last 10.5 minutes
                 const now = new Date().getTime();
                 const sent = event.getTs();
                 const diff = now - sent;
                 if (diff > 630000) {
                     logger.warn("ViewRPC: ⌛ Activity status too old:", Math.round(diff/60000) + "m", this.dmUserID);
-                    // correct the invalid status
+                    // correct invalid status (too old to be valid)
                     this.activity.status = false;
                     this.activity.timestamps.start = sent;
                 }
+
             } else if (this.activity.status === false) {
                 logger.debug("ViewRPC: Activity status:", this.activity.status, this.dmUserID);
                 this.activity.timestamps.start = event.getTs();
@@ -150,4 +140,3 @@ export class ParseRoomRPC {
         }
     }
 }
-

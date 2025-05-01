@@ -13,7 +13,9 @@ import { MatrixClientPeg } from "../../../MatrixClientPeg";
 import { ParseRoomRPC } from "../../../elecord/rpc/ParseRoomRPC";
 import { Activity } from '../../../elecord/rpc/BridgeRPC';
 
-// elecord rpc room tile component - displays user activity on dm rooms
+// elecord rpc: room tile component - display external user rpc activity on dm rooms
+
+// (starts external user rpc activity lifecycle)
 
 interface Props {
     roomId: string;
@@ -21,12 +23,12 @@ interface Props {
 }
 
 const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
-    // State to store the activity.
+    // state to store activity
     const [activity, setActivity] = useState<Activity | null | undefined>(null);
-    // State to trigger re-renders to update the time-ago text.
+    // state to trigger re-renders to update time-ago text
     const [now, setNow] = useState(Date.now());
 
-    // Fetch and subscribe to activity updates.
+    // fetch and subscribe to activity updates
     useEffect(() => {
         (async () => {
             const client = MatrixClientPeg.safeGet();
@@ -41,7 +43,8 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
                 parseRoomRPC.cleanup();
             }
 
-            // monitor for new state events and clean up the listener when the component unmounts
+            // monitor for new state events,
+            // clean up listener when component unmounts
             parseRoomRPC.onActivity(newActivity => {
                 logger.debug("RoomRPC: 🔦 Room state changed:", dmUserID);
                 setActivity(newActivity);
@@ -61,26 +64,27 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
         })();
     }, [roomId, dmUserID]);
 
-    // Self-adjusting timeout: update more frequently when activity is new,
-    // and switch to updating every hour once it's older than an hour.
+    // self-adjusting timeout: update more frequently when activity is new,
+    // switch to updating every hour once it's older than an hour
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
 
         const tick = async () => {
             setNow(Date.now());
 
-            // Default update frequency is 1 minute.
+            // default update frequency: 1m 
             let nextDelay = 60000;
             if (activity?.timestamps?.start && !activity.status) {
                 const elapsed = Date.now() - activity.timestamps.start;
-                // Switch to updating every hour if activity is older than one hour.
+                // check activity older than 1h
                 if (elapsed >= 3600000) {
+                    // update frequency: 1h
                     nextDelay = 3600000;
                 }
             }
             timer = setTimeout(tick, nextDelay);
         };
-        // Start the cycle.
+        // start cycle
         timer = setTimeout(tick, 60000);
 
         return () => clearTimeout(timer);
@@ -136,4 +140,3 @@ const RoomTileRPC: FC<Props> = ({ roomId, dmUserID }) => {
 };
 
 export default RoomTileRPC;
-

@@ -11,8 +11,9 @@ import { logger } from "matrix-js-sdk/src/logger";
 
 import { BridgeRPC, Activity } from '../../elecord/rpc/BridgeRPC';
 
-// elecord rpc user component - gets and displays user activity
-// this component starts the full rpc lifecycle
+// elecord rpc: user component - display local user rpc activity
+
+// (starts rpc activity sender lifecycle)
 
 const UserRPC: React.FC = () => {
     const [activity, setActivity] = useState<Activity | null | undefined>(null);
@@ -51,4 +52,3 @@ const UserRPC: React.FC = () => {
 };
 
 export default UserRPC;
-
