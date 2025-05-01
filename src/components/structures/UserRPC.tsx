@@ -7,7 +7,11 @@ Please see LICENSE files in the repository root for full details.
 
 import React, { useEffect, useState } from 'react';
 
-import { logger } from "matrix-js-sdk/src/logger";
+// import { logger } from "matrix-js-sdk/src/logger";
+
+import defaultDispatcher from "../../dispatcher/dispatcher";
+import { Action } from "../../dispatcher/actions";
+import { UserTab } from "../views/dialogs/UserTab";
 
 import { BridgeRPC, Activity } from '../../elecord/rpc/BridgeRPC';
 
@@ -33,7 +37,15 @@ const UserRPC: React.FC = () => {
 
     // render user activity
     return (
-        <div className="mx_UserRPC">
+        <div
+            onClick={() => {
+                defaultDispatcher.dispatch({
+                    action: Action.ViewUserSettings,
+                    initialTabId: UserTab.RichPresence,
+                });
+            }}
+            className="mx_UserRPC"
+        >
             <div className="mx_UserRPC_activity">
                 {activity?.application_id && activity.status ? (
                     <img
