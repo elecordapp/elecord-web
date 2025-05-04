@@ -732,7 +732,7 @@ export const SETTINGS: Settings = {
     "showRedactions": {
         supportedLevels: LEVELS_ROOM_SETTINGS_WITH_ROOM,
         displayName: _td("settings|show_redaction_placeholder"),
-        default: true,
+        default: false,
         invertedSettingName: "hideRedactions",
     },
     "showJoinLeaves": {
