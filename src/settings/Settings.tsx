@@ -1279,7 +1279,7 @@ export const SETTINGS: Settings = {
     },
     [UIFeature.LocationSharing]: {
         supportedLevels: LEVELS_UI_FEATURE,
-        default: true,
+        default: false,
     },
     [UIFeature.Voip]: {
         supportedLevels: LEVELS_UI_FEATURE,
