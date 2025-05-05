@@ -762,7 +762,7 @@ export const SETTINGS: Settings = {
     "showTwelveHourTimestamps": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td("settings|use_12_hour_format"),
-        default: false,
+        default: true,
     },
     "alwaysShowTimestamps": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,

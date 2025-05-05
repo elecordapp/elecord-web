@@ -34,11 +34,7 @@
     "privacy_policy_url": "https://github.com/elecordapp/elecord-web/blob/master/PRIVACY.md",
     "setting_defaults": {
         "RustCrypto.staged_rollout_percent": 100,
-        "use_system_theme": false,
-        "showRedactions": false,
-        "showTwelveHourTimestamps": true,
-        "urlPreviewsEnabled_e2ee": true,
-        "useOnlyCurrentProfiles": true
+        "use_system_theme": false
     },
     "features": {
         "feature_video_rooms": true,
