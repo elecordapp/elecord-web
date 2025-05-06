@@ -51,7 +51,7 @@ const RichPresenceUserSettingsTab: React.FC = () => {
                 {/* download button */}
                 <AccessibleButton kind="primary_outline" onClick={onDownloadClick}>
                     {_t("settings|rich_presence|download_button")}
-                    <PopOutIcon height={20} width={20} />
+                    <PopOutIcon height={20} width={20} style={{ marginLeft: "var(--cpd-space-2x)" }}/>
                 </AccessibleButton>
 
                 {/* detection notice */}
