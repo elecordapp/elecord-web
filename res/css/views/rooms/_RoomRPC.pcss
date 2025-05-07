@@ -6,14 +6,24 @@ Please see LICENSE files in the repository root for full details.
 */
 
 .mx_RoomRPC {
+    /* hide text overflow on hover */
     display: contents;
 
+    /* crop icon to circle */
     img {
         border-radius: 50%;
     }
 }
 
+/* adjust subtitle down */
 .mx_RoomTile_dm
 .mx_RoomTile_subtitle {
-    top: 0px !important;
+    top: 1px !important;
+}
+
+/* fix dm room title ascenders clipping subtitle */
+.mx_RoomTile_titleWithSubtitle {
+    margin-bottom: -0.2em;
+    overflow: visible;
+    mask-image: linear-gradient(to bottom, #000 85%, transparent 100%);
 }

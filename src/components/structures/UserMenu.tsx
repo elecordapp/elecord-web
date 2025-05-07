@@ -370,6 +370,15 @@ export default class UserMenu extends React.Component<IProps, IState> {
             ? toRightOf(this.state.contextMenuPosition)
             : below(this.state.contextMenuPosition);
 
+        // elecord, remove matrix.org username suffix
+        function removeMatrixOrgSuffix(userId: string | null): string | null {
+            const suffix = ':matrix.org';
+            if (userId?.endsWith(suffix)) {
+                return userId.slice(0, -suffix.length);
+            }
+            return userId;
+        }
+
         return (
             <IconizedContextMenu {...position} onFinished={this.onCloseMenu} className="mx_UserMenu_contextMenu">
                 <div className="mx_UserMenu_contextMenu_header">
@@ -378,11 +387,13 @@ export default class UserMenu extends React.Component<IProps, IState> {
                             {OwnProfileStore.instance.displayName}
                         </span>
                         <span className="mx_UserMenu_contextMenu_userId">
-                            {UserIdentifierCustomisations.getDisplayUserIdentifier(
-                                MatrixClientPeg.safeGet().getSafeUserId(),
-                                {
-                                    withDisplayName: true,
-                                },
+                            {removeMatrixOrgSuffix(
+                                UserIdentifierCustomisations.getDisplayUserIdentifier(
+                                    MatrixClientPeg.safeGet().getSafeUserId(),
+                                    {
+                                        withDisplayName: true,
+                                    },
+                                )
                             )}
                         </span>
                     </div>

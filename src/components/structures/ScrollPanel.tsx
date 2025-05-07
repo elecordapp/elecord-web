@@ -918,7 +918,7 @@ export default class ScrollPanel extends React.Component<IProps> {
                 const currentOffset = messageList.clientHeight - (offsetNode.offsetTop + offsetNode.clientHeight);
                 const offsetDiff = offsetFromBottom - currentOffset;
                 if (offsetDiff > 0 && balanceElement) {
-                    balanceElement.style.paddingBottom = `${offsetDiff}px`;
+                    // balanceElement.style.paddingBottom = `${offsetDiff}px`; /* elecord, excessive padding added */
                     debuglog("update prevent shrinking ", offsetDiff, "px from bottom");
                 } else if (offsetDiff < 0) {
                     shouldClear = true;

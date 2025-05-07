@@ -48,7 +48,15 @@ Please see LICENSE files in the repository root for full details.
     .mx_ReplyPreview {
         /* Add box-shadow to the reply preview on the main (left) panel only. */
         /* It is not added to the preview on the (right) panel for threads and a chat with a maximized widget. */
-        box-shadow: 0px -16px 32px $composer-shadow-color;
-        border-radius: 8px 8px 0 0;
+        /* box-shadow: 0px -16px 32px $composer-shadow-color; */
+        /* border-radius: 8px 8px 0 0; */
+
+        /* elecord implementation */
+        filter: drop-shadow(0 -42px 32px rgba(0, 0, 0, 0.18)); /* drop-shadow is more direct */
+        border-radius: 0 8px 0 0;
+        /* adjust cancel button position */
+        .mx_ReplyPreview_header_cancel {
+            margin-right: 4px;
+        }
     }
 }

@@ -159,7 +159,10 @@ Please see LICENSE files in the repository root for full details.
                     display: grid;
                     grid-template-columns: 20px auto;
                     gap: 6px 8px;
-                    align-items: center;
+
+                    /* elecord, aligned room list */
+                    align-items: start;
+
                     flex: 1; /* wrap action buttons */
 
                     .mx_SpaceHierarchy_roomTile_avatar {
@@ -173,7 +176,9 @@ Please see LICENSE files in the repository root for full details.
 
                         .mx_InfoTooltip,
                         .mx_SpaceHierarchy_roomTile_joined {
-                            margin-left: 12px;
+                            /* elecord, aligned room list */
+                            /* margin-left: 12px; */
+
                             color: $tertiary-content;
                             font-size: $font-12px;
                             line-height: $font-15px;
@@ -196,7 +201,10 @@ Please see LICENSE files in the repository root for full details.
                         }
 
                         .mx_SpaceHierarchy_roomTile_joined {
-                            display: inline;
+                            /* elecord, aligned room list */
+                            display: block;
+                            margin-top: 3px;
+
                             position: relative;
                             padding-left: 16px;
 

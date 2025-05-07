@@ -732,7 +732,7 @@ export const SETTINGS: Settings = {
     "showRedactions": {
         supportedLevels: LEVELS_ROOM_SETTINGS_WITH_ROOM,
         displayName: _td("settings|show_redaction_placeholder"),
-        default: true,
+        default: false,
         invertedSettingName: "hideRedactions",
     },
     "showJoinLeaves": {
@@ -762,7 +762,7 @@ export const SETTINGS: Settings = {
     "showTwelveHourTimestamps": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td("settings|use_12_hour_format"),
-        default: false,
+        default: true,
     },
     "alwaysShowTimestamps": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
@@ -1279,7 +1279,7 @@ export const SETTINGS: Settings = {
     },
     [UIFeature.LocationSharing]: {
         supportedLevels: LEVELS_UI_FEATURE,
-        default: true,
+        default: false,
     },
     [UIFeature.Voip]: {
         supportedLevels: LEVELS_UI_FEATURE,
