@@ -2,6 +2,7 @@
 Copyright 2024 New Vector Ltd.
 Copyright 2019, 2020 The Matrix.org Foundation C.I.C.
 Copyright 2015, 2016 OpenMarket Ltd
+Copyright 2025 hazzuk.
 
 SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Commercial
 Please see LICENSE files in the repository root for full details.
@@ -75,6 +76,10 @@ const DEFAULT_EVENT_POWER_LEVELS = {
     [EventType.RoomEncryption]: 100,
 };
 
+// elecord, default room avatars
+const speakerImg = require("../res/img/rooms/speaker.png") as string;
+const hashImg = require("../res/img/rooms/hash.png") as string;
+
 /**
  * Create a new room, and switch to it.
  *
@@ -100,6 +105,33 @@ export default async function createRoom(client: MatrixClient, opts: IOpts): Pro
     if (opts.spinner === undefined) opts.spinner = true;
     if (opts.guestAccess === undefined) opts.guestAccess = true;
     if (opts.encryption === undefined) opts.encryption = false;
+
+    // elecord, set default room avatar
+    if (!opts.avatar) {
+        let filePromise: Promise<File>;
+
+        // fetch image and convert to file
+        async function fetchImageAsFile(url: string, fileName: string): Promise<File> {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch image at ${url}: ${response.statusText}`);
+            }
+            const blob = await response.blob();
+            return new File([blob], fileName, { type: blob.type });
+        }
+
+        // determine default avatar based on room type
+        switch (opts.roomType) {
+            case RoomType.ElementVideo:
+            case RoomType.UnstableCall:
+                filePromise = fetchImageAsFile(speakerImg, "speaker.png");
+                break;
+            default:
+                filePromise = fetchImageAsFile(hashImg, "hash.png");
+        }
+        // set room avatar option
+        opts.avatar = await filePromise;
+    }
 
     if (client.isGuest()) {
         dis.dispatch({ action: "require_registration" });
