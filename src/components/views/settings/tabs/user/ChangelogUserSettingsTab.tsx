@@ -18,7 +18,8 @@ import DOMPurify from "dompurify";
 import { SettingsSubsectionText } from "../../shared/SettingsSubsection";
 import SdkConfig from "../../../../../SdkConfig";
 
-const CHANGELOG_URL = "https://roadmap.elecord.app/";
+const ROADMAP_URL = "https://roadmap.elecord.app/";
+const RELEASES_URL = "https://github.com/elecordapp/elecord-web/releases";
 
 const ChangelogUserSettingsTab: React.FC = () => {
     const [changelog, setChangelog] = useState<string>("");
@@ -26,8 +27,13 @@ const ChangelogUserSettingsTab: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     // open external roadmap
-    const onOpenChangelog = (): void => {
-        window.open(CHANGELOG_URL, "_blank");
+    const onOpenRoadmap = (): void => {
+        window.open(ROADMAP_URL, "_blank");
+    };
+
+    // open github releases
+    const onOpenReleases = (): void => {
+        window.open(RELEASES_URL, "_blank");
     };
 
     // fetch LATEST.md changelog
@@ -67,16 +73,29 @@ const ChangelogUserSettingsTab: React.FC = () => {
     return (
         <SettingsTab>
             <SettingsSection heading={_t("settings|changelog|latest_changes")}>
+
+                {/* description */}
                 <SettingsSubsectionText>
                     {_t("settings|changelog|description", { brand: SdkConfig.get("brand") })}
                 </SettingsSubsectionText>
-                {/* roadmap button */}
-                <AccessibleButton kind="primary_outline" onClick={onOpenChangelog}>
-                    {_t("settings|changelog|roadmap")}
-                    <PopOutIcon height={20} width={20} />
-                </AccessibleButton>
+
+                {/* external links */}
+                <div className="mx_ChangelogDescription_buttons">
+                    {/* roadmap button */}
+                    <AccessibleButton kind="primary_outline" onClick={onOpenRoadmap}>
+                        {_t("settings|changelog|roadmap")}
+                        <PopOutIcon height={20} width={20} />
+                    </AccessibleButton>
+                    {/* releases button */}
+                    <AccessibleButton kind="primary_outline" onClick={onOpenReleases}>
+                        {_t("settings|changelog|releases")}
+                        <PopOutIcon height={20} width={20} />
+                    </AccessibleButton>
+                </div>
+
                 {/* render changelog */}
                 <div dangerouslySetInnerHTML={{ __html: changelog }} />
+
             </SettingsSection>
         </SettingsTab>
     );

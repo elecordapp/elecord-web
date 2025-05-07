@@ -2469,6 +2469,7 @@
             "latest_changes": "Latest changes",
             "loading_changelog": "Loading changelog…",
             "roadmap": "Roadmap",
+            "releases": "Release history",
             "description": "Read about %(brand)s's latest new features and bug fixes here. Or see what's coming next by checking out the roadmap."
         },
         "code_block_expand_default": "Expand code blocks by default",
