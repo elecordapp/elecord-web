@@ -11,7 +11,7 @@ import { type ImageContent } from "matrix-js-sdk/src/types";
 
 import MImageBody from "./MImageBody";
 
-const FORCED_IMAGE_HEIGHT = 44;
+const FORCED_IMAGE_HEIGHT = 66;
 
 export default class MImageReplyBody extends MImageBody {
     public onClick = (ev: React.MouseEvent): void => {
