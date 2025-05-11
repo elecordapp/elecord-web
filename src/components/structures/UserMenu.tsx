@@ -379,12 +379,12 @@ export default class UserMenu extends React.Component<IProps, IState> {
             return userId;
         }
 
-        const userIdentifierString = removeMatrixOrgSuffix(UserIdentifierCustomisations.getDisplayUserIdentifier(
+        const userIdentifierString = UserIdentifierCustomisations.getDisplayUserIdentifier(
             MatrixClientPeg.safeGet().getSafeUserId(),
             {
                 withDisplayName: true,
             },
-        ));
+        );
 
         return (
             <IconizedContextMenu {...position} onFinished={this.onCloseMenu} className="mx_UserMenu_contextMenu">
@@ -394,7 +394,7 @@ export default class UserMenu extends React.Component<IProps, IState> {
                             {OwnProfileStore.instance.displayName}
                         </span>
                         <span className="mx_UserMenu_contextMenu_userId" title={userIdentifierString || ""}>
-                            {userIdentifierString}
+                            {removeMatrixOrgSuffix(userIdentifierString)}
                         </span>
                     </div>
 
