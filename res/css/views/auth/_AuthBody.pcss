@@ -129,6 +129,14 @@ Please see LICENSE files in the repository root for full details.
             background-color: $authpage-focus-bg-color;
         }
     }
+
+    /* elecord, login button uses original sso button style */
+    .mx_AccessibleButton.mx_Login_fullWidthButton {
+        background-color: var(--cpd-color-text-action-accent);
+        border-color: var(--cpd-color-text-action-accent);
+        border-radius: 8px;
+        width: -webkit-fill-available;
+    }
 }
 
 /* specialisation for password reset views */
