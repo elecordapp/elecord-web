@@ -51,7 +51,7 @@ interface SquirrelUpdate {
     updateURL: string;
 }
 
-const SSO_ID_KEY = "element-desktop-ssoid";
+const SSO_ID_KEY = "elecord-desktop-ssoid";
 
 const isMac = navigator.platform.toUpperCase().includes("MAC");
 
@@ -141,7 +141,7 @@ export default class ElectronPlatform extends BasePlatform {
 
         // try to flush the rageshake logs to indexeddb before quit.
         window.electron.on("before-quit", function () {
-            logger.log("element-desktop closing");
+            logger.log("elecord-desktop closing");
             rageshake.flush();
         });
 
@@ -390,7 +390,7 @@ export default class ElectronPlatform extends BasePlatform {
 
     public getSSOCallbackUrl(fragmentAfterLogin?: string): URL {
         const url = super.getSSOCallbackUrl(fragmentAfterLogin);
-        url.protocol = "element";
+        url.protocol = "elecord";
         url.searchParams.set(SSO_ID_KEY, this.ssoID);
         return url;
     }
@@ -452,12 +452,12 @@ export default class ElectronPlatform extends BasePlatform {
 
     public get baseUrl(): string {
         // This configuration is element-desktop specific so the types here do not know about it
-        return (SdkConfig.get() as unknown as Record<string, string>)["web_base_url"] ?? "https://app.element.io";
+        return (SdkConfig.get() as unknown as Record<string, string>)["web_base_url"] ?? "https://web.elecord.app";
     }
 
     public get defaultOidcClientUri(): string {
         // Default to element.io as our scheme `io.element.desktop` is within its scope on default MAS policies
-        return "https://element.io";
+        return "https://elecord.app";
     }
 
     public async getOidcClientMetadata(): Promise<OidcRegistrationClientMetadata> {
@@ -477,7 +477,7 @@ export default class ElectronPlatform extends BasePlatform {
      */
     public getOidcCallbackUrl(): URL {
         const url = super.getOidcCallbackUrl();
-        url.protocol = "io.element.desktop";
+        url.protocol = "app.elecord.desktop";
         // Trim the double slash into a single slash to comply with https://datatracker.ietf.org/doc/html/rfc8252#section-7.1
         if (url.href.startsWith(`${url.protocol}//`)) {
             url.href = url.href.replace("://", ":/");

@@ -6,4 +6,4 @@
  * Please see LICENSE files in the repository root for full details.
  */
 
-export const ELEMENT_CLIENT_ID = "io.element.web";
+export const ELEMENT_CLIENT_ID = "app.elecord.web";
