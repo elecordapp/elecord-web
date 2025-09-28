@@ -13,7 +13,7 @@ import { MImageBodyInner } from "./MImageBody";
 import { type IBodyProps } from "./IBodyProps";
 import { useMediaVisible } from "../../../hooks/useMediaVisible";
 
-const FORCED_IMAGE_HEIGHT = 44;
+const FORCED_IMAGE_HEIGHT = 66;
 
 class MImageReplyBodyInner extends MImageBodyInner {
     public onClick = (ev: React.MouseEvent): void => {

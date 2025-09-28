@@ -23,11 +23,23 @@ Please see LICENSE files in the repository root for full details.
     }
 }
 
+// elecord, splash icon
+.mx_LoginSplashView_splashIcon {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
 .mx_LoginSplashView_splashButtons {
     text-align: center;
     width: 100%;
     position: absolute;
     bottom: 30px;
+
+    .mx_AccessibleButton.mx_AccessibleButton_kind_link_inline {
+        color: var(--cpd-color-text-secondary);
+    }
 }
 
 .mx_LoginSplashView_syncError {

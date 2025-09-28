@@ -70,14 +70,14 @@ export function LoginSplashView(props: Props): JSX.Element {
     return (
         <div className="mx_MatrixChat_splash">
             {errorBox}
-            {spinnerOrProgress}
+
+            {/* elecord mono icon on loading screen */}
+            <div className="mx_LoginSplashView_splashIcon">
+                <img src="vector-icons/128-mono.png" />
+            </div>
+
             <div className="mx_LoginSplashView_splashButtons">
-
-                {/* elecord mono icon on loading screen */}
-                <div>
-                    <img src="vector-icons/128-mono.png" />
-                </div>
-
+                {spinnerOrProgress}
                 <AccessibleButton kind="link_inline" onClick={props.onLogoutClick}>
                     {_t("action|logout")}
                 </AccessibleButton>
