@@ -122,3 +122,6 @@ rm .github/workflows/update-topics.yaml
 rm -rf __mocks__/
 rm knip.ts
 rm developer_guide.md
+
+git rm --cached -r .storybook/
+rm -rf .storybook/
