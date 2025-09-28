@@ -19,7 +19,7 @@ import KeyboardIcon from "@vector-im/compound-design-tokens/assets/web/icons/key
 import KeyIcon from "@vector-im/compound-design-tokens/assets/web/icons/key";
 import SidebarIcon from "@vector-im/compound-design-tokens/assets/web/icons/sidebar";
 import MicOnIcon from "@vector-im/compound-design-tokens/assets/web/icons/mic-on";
-import WorkspaceIcon from "@vector-im/compound-design-tokens/assets/web/icons/workspace";
+import SpaceIcon from "@vector-im/compound-design-tokens/assets/web/icons/space";
 import LockIcon from "@vector-im/compound-design-tokens/assets/web/icons/lock";
 import LabsIcon from "@vector-im/compound-design-tokens/assets/web/icons/labs";
 import BlockIcon from "@vector-im/compound-design-tokens/assets/web/icons/block";
@@ -214,7 +214,7 @@ export default function UserSettingsDialog(props: IProps): JSX.Element {
             new Tab(
                 UserTab.RichPresence,
                 _td("settings|rich_presence|title"),
-                <WorkspaceIcon />,
+                <SpaceIcon />,
                 <RichPresenceUserSettingsTab />,
                 "UserSettingsRichPresence",
             ),
