@@ -21,7 +21,6 @@ import {
 } from "matrix-js-sdk/src/matrix";
 import { KnownMembership } from "matrix-js-sdk/src/types";
 import { logger } from "matrix-js-sdk/src/logger";
-import { defer } from "matrix-js-sdk/src/utils";
 
 import { AsyncStoreWithClient } from "../AsyncStoreWithClient";
 import defaultDispatcher from "../../dispatcher/dispatcher";
@@ -50,7 +49,7 @@ import {
     UPDATE_SUGGESTED_ROOMS,
     UPDATE_TOP_LEVEL_SPACES,
 } from ".";
-import { getCachedRoomIDForAlias } from "../../RoomAliasCache";
+import { getCachedRoomIdForAlias } from "../../RoomAliasCache";
 import { EffectiveMembership, getEffectiveMembership } from "../../utils/membership";
 import {
     flattenSpaceHierarchyWithCache,
@@ -153,7 +152,7 @@ export class SpaceStoreClass extends AsyncStoreWithClient<EmptyObject> {
     private _enabledMetaSpaces: MetaSpace[] = [];
     /** Whether the feature flag is set for MSC3946 */
     private _msc3946ProcessDynamicPredecessor: boolean = SettingsStore.getValue("feature_dynamic_room_predecessors");
-    private _storeReadyDeferred = defer();
+    private _storeReadyDeferred = Promise.withResolvers<void>();
 
     public constructor() {
         super(defaultDispatcher, {});
@@ -1250,7 +1249,8 @@ export class SpaceStoreClass extends AsyncStoreWithClient<EmptyObject> {
                 let roomId = payload.room_id;
 
                 if (payload.room_alias && !roomId) {
-                    roomId = getCachedRoomIDForAlias(payload.room_alias);
+                    const result = getCachedRoomIdForAlias(payload.room_alias);
+                    if (result) roomId = result.roomId;
                 }
 
                 if (!roomId) return; // we'll get re-fired with the room ID shortly
@@ -1303,11 +1303,11 @@ export class SpaceStoreClass extends AsyncStoreWithClient<EmptyObject> {
                         const newValue = SettingsStore.getValue("Spaces.allRoomsInHome");
                         if (this.allRoomsInHome !== newValue) {
                             this._allRoomsInHome = newValue;
-                            this.emit(UPDATE_HOME_BEHAVIOUR, this.allRoomsInHome);
                             if (this.enabledMetaSpaces.includes(MetaSpace.Home)) {
                                 this.rebuildHomeSpace();
                             }
                             this.sendUserProperties();
+                            this.emit(UPDATE_HOME_BEHAVIOUR, this.allRoomsInHome);
                         }
                         break;
                     }
