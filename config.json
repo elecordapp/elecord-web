@@ -14,8 +14,7 @@
         "https://scalar.vector.im/_matrix/integrations/v1",
         "https://scalar.vector.im/api",
         "https://scalar-staging.vector.im/_matrix/integrations/v1",
-        "https://scalar-staging.vector.im/api",
-        "https://scalar-staging.riot.im/scalar/api"
+        "https://scalar-staging.vector.im/api"
     ],
     "show_labs_settings": false,
     "room_directory": {
